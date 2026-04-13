@@ -10,9 +10,9 @@ export default function ContactPage() {
    return (
       // Added flex, flex-col, and justify-center to vertically center the content. 
       // Adjusted padding (pt-24 pb-8) so it stays visually balanced against your fixed navbar.
-      <div className="min-h-screen pt-32 pb-12">
-         <section className="container mx-auto px-6 relative z-10 w-full max-w-5xl">
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent-blue/10 blur-[150px] pointer-events-none rounded-full"></div>
+      <div className="min-h-screen pt-24 md:pt-32 pb-12">
+         <section className="container mx-auto px-6 relative z-10 w-full max-w-5xl overflow-hidden md:overflow-visible">
+            <div className="absolute top-0 right-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-accent-blue/10 blur-[100px] md:blur-[150px] pointer-events-none rounded-full"></div>
 
             <div className="text-center mb-8 relative z-10">
                <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-2 block inline-flex items-center gap-4">
@@ -28,7 +28,7 @@ export default function ContactPage() {
                </p>
             </div>
 
-            <div className="flex flex-col lg:flex-row gap-12 relative z-10 items-stretch">
+            <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 relative z-10 items-stretch">
                {/* Info Column */}
                <div className="lg:w-1/3 flex flex-col gap-6">
                   <div className="grid grid-cols-1 gap-4">
