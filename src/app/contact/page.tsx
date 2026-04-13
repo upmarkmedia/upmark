@@ -10,7 +10,7 @@ export default function ContactPage() {
    return (
       // Added flex, flex-col, and justify-center to vertically center the content. 
       // Adjusted padding (pt-24 pb-8) so it stays visually balanced against your fixed navbar.
-      <div className="min-h-screen pt-12 pb-12">
+      <div className="min-h-screen pt-32 pb-12">
          <section className="container mx-auto px-6 relative z-10 w-full max-w-5xl">
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent-blue/10 blur-[150px] pointer-events-none rounded-full"></div>
 
