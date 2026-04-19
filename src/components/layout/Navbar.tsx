@@ -31,18 +31,16 @@ export const Navbar = () => {
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "About Us", href: "/#about" },
-    { name: "The Work", href: "/work" },
-    { name: "Services", href: "/services" },
     {
-      name: "Case Studies",
-      href: "/case-studies",
+      name: "Work",
+      href: "/work",
       dropdownItems: [
-        { name: "Studies", href: "/case-studies#studies" },
-        { name: "Success stories", href: "/case-studies#success-stories" },
-        { name: "Stills and Motions", href: "/case-studies#stills-and-motions" },
-        { name: "Testimonials", href: "/case-studies#testimonials" },
+        { name: "Portfolio", href: "/work" },
+        { name: "Testimonials", href: "/work#testimonials" },
       ],
     },
+    { name: "Services", href: "/services" },
+    { name: "Case Studies", href: "/case-studies" },
     { name: "Contact Us", href: "/contact", isCTA: true },
   ];
 

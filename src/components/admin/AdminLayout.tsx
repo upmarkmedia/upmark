@@ -13,6 +13,7 @@ import {
   X,
   Settings,
   MessageSquareQuote,
+  Globe,
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
 
@@ -35,6 +36,12 @@ const navItems = [
     href: "/admin/testimonials",
     label: "Testimonials",
     icon: MessageSquareQuote,
+    exact: false,
+  },
+  {
+    href: "/admin/seo",
+    label: "SEO",
+    icon: Globe,
     exact: false,
   },
   {

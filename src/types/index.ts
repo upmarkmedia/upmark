@@ -49,6 +49,7 @@ export interface Testimonial {
   quote: string;
   name: string;
   role: string;
+  featured?: boolean;
   order?: number;
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
@@ -82,6 +83,13 @@ export interface Advantage {
   desc: string;
 }
 
+export interface SeoPageConfig {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  keywords?: string;
+}
+
 export interface SiteSettings {
   heroVideoUrl?: string;
   // Hero metrics
@@ -96,6 +104,8 @@ export interface SiteSettings {
   contentItems?: ContentItem[];
   studioCapabilities?: string[];
   advantages?: Advantage[];
+  // SEO configuration
+  seo?: Record<string, SeoPageConfig>;
   updatedAt?: Timestamp;
 }
 

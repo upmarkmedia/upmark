@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getLeads, getCaseStudies, getServices, getTestimonials } from "@/lib/firestore";
-import { Users, FileText, Briefcase, TrendingUp, MessageSquareQuote } from "lucide-react";
+import { Users, FileText, Briefcase, TrendingUp, MessageSquareQuote, Globe } from "lucide-react";
 import Link from "next/link";
 
 export default function AdminOverviewPage() {
@@ -66,6 +66,13 @@ export default function AdminOverviewPage() {
       icon: MessageSquareQuote,
       href: "/admin/testimonials",
       color: "#A855F7",
+    },
+    {
+      label: "SEO",
+      value: "—",
+      icon: Globe,
+      href: "/admin/seo",
+      color: "#10B981",
     },
   ];
 
@@ -146,6 +153,13 @@ export default function AdminOverviewPage() {
           >
             <Users size={18} className="text-[#F59E0B]" />
             <span className="text-sm text-[#F8FAFC]">Review Leads</span>
+          </Link>
+          <Link
+            href="/admin/seo"
+            className="flex items-center gap-3 px-4 py-3 bg-[#0F172A] rounded-lg border border-white/5 hover:border-[#3B82F6]/30 transition-colors"
+          >
+            <Globe size={18} className="text-[#10B981]" />
+            <span className="text-sm text-[#F8FAFC]">Manage SEO</span>
           </Link>
         </div>
       </div>

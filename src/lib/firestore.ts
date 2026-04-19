@@ -138,6 +138,23 @@ export async function getTestimonials(): Promise<Testimonial[]> {
   return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }) as Testimonial);
 }
 
+export async function getFeaturedTestimonials(): Promise<Testimonial[]> {
+  try {
+    const all = await getTestimonials();
+    const featured = all.filter((t) => t.featured === true);
+    if (featured.length > 0) {
+      return featured.slice(0, 3);
+    }
+    // Fallback: return first 3 by order
+    return all
+      .sort((a, b) => (a.order ?? 999) - (b.order ?? 999))
+      .slice(0, 3);
+  } catch (error) {
+    console.error("Error fetching featured testimonials:", error);
+    return [];
+  }
+}
+
 export async function createTestimonial(
   data: Omit<Testimonial, "id" | "createdAt" | "updatedAt">
 ): Promise<string> {

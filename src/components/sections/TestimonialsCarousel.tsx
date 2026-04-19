@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { Quote } from "lucide-react";
+import { HorizontalCarousel } from "@/components/ui/HorizontalCarousel";
+import { PreviewDialog } from "@/components/ui/PreviewDialog";
 import type { Testimonial } from "@/types";
 
 const DEFAULT_TESTIMONIALS: Testimonial[] = [
@@ -29,87 +29,62 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = [
 
 interface TestimonialsCarouselProps {
   testimonials?: Testimonial[];
+  maxItems?: number;
 }
 
-export const TestimonialsCarousel = ({ testimonials }: TestimonialsCarouselProps) => {
-  const displayTestimonials = testimonials && testimonials.length > 0 ? testimonials : DEFAULT_TESTIMONIALS;
-  const [currentIndex, setCurrentIndex] = useState(0);
+export const TestimonialsCarousel = ({ testimonials, maxItems = 3 }: TestimonialsCarouselProps) => {
+  const allTestimonials = testimonials && testimonials.length > 0 ? testimonials : DEFAULT_TESTIMONIALS;
+  const displayTestimonials = allTestimonials.slice(0, maxItems);
+  
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [selectedTestimonial, setSelectedTestimonial] = useState<Testimonial | null>(null);
 
-  const nextTestimonial = () => {
-    setCurrentIndex((prev) => (prev + 1) % displayTestimonials.length);
+  const openPreview = (t: Testimonial) => {
+    setSelectedTestimonial(t);
+    setPreviewOpen(true);
   };
-
-  const prevTestimonial = () => {
-    setCurrentIndex((prev) => (prev - 1 + displayTestimonials.length) % displayTestimonials.length);
-  };
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      nextTestimonial();
-    }, 8000);
-    return () => clearInterval(timer);
-  }, [displayTestimonials.length]);
 
   return (
     <section className="container mx-auto px-4 sm:px-6 relative z-10 my-16 sm:my-24 md:my-32">
-      <div className="flex flex-col items-center mb-10 sm:mb-16 text-center">
-         <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-4 block inline-flex items-center gap-4">
-            <span className="w-8 h-[1px] bg-accent-blue"></span>
-            CLIENT STORIES
-            <span className="w-8 h-[1px] bg-accent-blue"></span>
-         </span>
-         <h2 className="text-3xl sm:text-4xl md:text-6xl font-black font-heading text-white tracking-tight mb-4 sm:mb-6">
-            Don&apos;t just take <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-indigo-400">our word for it.</span>
-         </h2>
-      </div>
-
-      <div className="max-w-5xl mx-auto relative">
-        <div className="absolute -top-6 sm:-top-10 -left-4 sm:-left-10 text-white/5 z-0">
-          <Quote size={80} className="sm:w-[120px] sm:h-[120px]" />
-        </div>
-        
-        {/* Replaced backdrop-blur-md with solid semi-transparent bg for perf */}
-        <div className="relative z-10 bg-secondary-surface/60 border border-white/10 p-6 sm:p-10 md:p-16 rounded-2xl sm:rounded-3xl overflow-hidden min-h-[240px] sm:min-h-[300px] flex items-center">
-           <AnimatePresence mode="wait">
-             <motion.div
-               key={currentIndex}
-               initial={{ opacity: 0, x: 15 }}
-               animate={{ opacity: 1, x: 0 }}
-               exit={{ opacity: 0, x: -15 }}
-               transition={{ duration: 0.35, ease: "easeOut" }}
-               className="flex flex-col gap-8 w-full"
-             >
-                <p className="text-base sm:text-xl md:text-3xl font-light text-white leading-relaxed italic">
-                  &quot;{displayTestimonials[currentIndex].quote}&quot;
-                </p>
-                <div className="flex items-center justify-between mt-4">
-                   <div>
-                     <h4 className="text-white font-bold text-base sm:text-lg">{displayTestimonials[currentIndex].name}</h4>
-                     <p className="text-accent-blue text-sm">{displayTestimonials[currentIndex].role}</p>
-                   </div>
+      <HorizontalCarousel
+        label="CLIENT STORIES"
+        title={<>Don&apos;t just take <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-indigo-400">our word for it.</span></>}
+      >
+        {displayTestimonials.map((t) => (
+          <div
+            key={t.id}
+            onClick={() => openPreview(t)}
+            className="snap-start flex-shrink-0 w-[320px] sm:w-[400px] md:w-[450px] cursor-pointer group"
+          >
+            <div className="relative z-10 bg-secondary-surface/60 border border-white/10 p-6 sm:p-8 rounded-2xl sm:rounded-3xl overflow-hidden h-full flex flex-col gap-6 hover:border-accent-blue/30 transition-all duration-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
+              <Quote size={32} className="text-white/10 flex-shrink-0" />
+              <p className="text-sm sm:text-base font-light text-white leading-relaxed italic flex-grow line-clamp-5">
+                &quot;{t.quote}&quot;
+              </p>
+              <div className="flex items-center gap-3 mt-auto pt-4 border-t border-white/10">
+                <div className="w-10 h-10 rounded-full bg-accent-blue/20 flex items-center justify-center text-accent-blue font-bold text-sm uppercase flex-shrink-0">
+                  {t.name.charAt(0)}
                 </div>
-             </motion.div>
-           </AnimatePresence>
-        </div>
-
-        {/* Controls */}
-        <div className="flex justify-between items-center mt-6 sm:mt-8 px-0 sm:px-4 flex-col sm:flex-row gap-4 sm:gap-6">
-          <div className="flex gap-2">
-            <button onClick={prevTestimonial} className="w-11 h-11 sm:w-12 sm:h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 hover:border-accent-blue/50 transition-colors text-white">
-               <ChevronLeft size={20} />
-            </button>
-            <button onClick={nextTestimonial} className="w-11 h-11 sm:w-12 sm:h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 hover:border-accent-blue/50 transition-colors text-white">
-               <ChevronRight size={20} />
-            </button>
+                <div>
+                  <h4 className="text-white font-semibold text-sm">{t.name}</h4>
+                  <p className="text-accent-blue text-xs">{t.role}</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <Link href="/work#testimonials" className="text-sm sm:text-base text-white font-semibold flex items-center gap-2 hover:text-accent-blue transition-colors group">
-            Explore All Case Studies & Testimonials
-            <span className="group-hover:translate-x-1 transition-transform duration-200 border-[1px] border-white/20 p-2 rounded-full group-hover:border-accent-blue text-xs">
-              <ChevronRight size={14} />
-            </span>
-          </Link>
-        </div>
-      </div>
+        ))}
+      </HorizontalCarousel>
+
+      {/* Preview Dialog */}
+      {selectedTestimonial && (
+        <PreviewDialog
+          open={previewOpen}
+          onClose={() => setPreviewOpen(false)}
+          title={selectedTestimonial.name}
+          description={selectedTestimonial.quote}
+          meta={[{ label: "Role", value: selectedTestimonial.role }]}
+        />
+      )}
     </section>
   );
 };

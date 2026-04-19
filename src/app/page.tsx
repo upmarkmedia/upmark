@@ -76,7 +76,7 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col gap-16 sm:gap-24 md:gap-32 pb-16 sm:pb-24 md:pb-32 relative">
-      <Hero videoUrl={settings?.heroVideoUrl} metrics={settings?.heroMetrics} />
+      <Hero videoUrl={settings?.heroVideoUrl} />
 
       {/* Philosophy / About Section */}
       <section id="about" className="container mx-auto px-4 sm:px-6 mt-8 sm:mt-16 md:mt-24 scroll-mt-32">
@@ -85,7 +85,7 @@ export default async function Home() {
            <div className="lg:w-7/12 flex flex-col items-start pr-0 lg:pr-10">
              <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-6 inline-flex items-center gap-4">
                <span className="w-8 h-[1px] bg-accent-blue"></span>
-               PHILOSOPHY
+                ABOUT US
              </span>
              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading text-white tracking-tight leading-tight mb-4">
                Most agencies only <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-indigo-400">create content</span> <br className="hidden md:block"/>or run ads.
@@ -101,10 +101,14 @@ export default async function Home() {
                   Founded on the belief that modern marketing must be fast, precise and measurable, Upmark brings together strategists, creatives, producers and performance marketers who operate as one integrated team.
                 </p>
              </div>
-             
-             <Link href="/services" className="group flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-white border border-white/20 hover:border-accent-blue hover:bg-accent-blue/5 transition-all w-full sm:w-auto">
-               Explore our services
-             </Link>
+                          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto">
+                <Link href="/services" className="group flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-white border border-white/20 hover:border-accent-blue hover:bg-accent-blue/5 transition-all w-full sm:w-auto">
+                  Explore our services
+                </Link>
+                <Link href="/#about" className="group flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-white bg-accent-blue/10 border border-accent-blue/30 hover:bg-accent-blue/20 hover:border-accent-blue/50 transition-all w-full sm:w-auto">
+                  Learn More
+                </Link>
+              </div>
            </div>
            
            {/* Right Side Visual */}
@@ -255,15 +259,6 @@ export default async function Home() {
            </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-12 border-t border-white/5 pt-10 sm:pt-20">
-           {advantages.map((adv) => (
-             <div key={adv.id}>
-                <div className="text-accent-blue font-black text-lg sm:text-xl mb-1 sm:mb-2">0{adv.id}</div>
-                <h4 className="text-base sm:text-xl font-bold text-white mb-2 sm:mb-3">{adv.title}</h4>
-                <p className="text-muted-text font-light text-xs sm:text-sm leading-relaxed">{adv.desc}</p>
-             </div>
-           ))}
-        </div>
       </section>
 
       {/* Testimonials Carousel */}

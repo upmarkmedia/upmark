@@ -18,6 +18,7 @@ import {
   RefreshCw,
   Search,
   Quote,
+  Star,
 } from "lucide-react";
 
 export default function TestimonialsPage() {
@@ -26,6 +27,7 @@ export default function TestimonialsPage() {
   const [showForm, setShowForm] = useState(false);
   const [editingTestimonial, setEditingTestimonial] = useState<Testimonial | undefined>();
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [togglingId, setTogglingId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
   const fetchData = useCallback(async () => {
@@ -43,6 +45,8 @@ export default function TestimonialsPage() {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  const featuredCount = testimonials.filter((t) => t.featured).length;
 
   async function handleCreate(
     data: Omit<Testimonial, "id" | "createdAt" | "updatedAt">
@@ -71,6 +75,27 @@ export default function TestimonialsPage() {
       console.error("Failed to delete:", err);
     } finally {
       setDeletingId(null);
+    }
+  }
+
+  async function handleToggleFeatured(testimonial: Testimonial) {
+    if (!testimonial.id) return;
+    const newFeatured = !testimonial.featured;
+    
+    // Prevent featuring more than 3
+    if (newFeatured && featuredCount >= 3) {
+      alert("You can only feature up to 3 testimonials. Unfeature one first.");
+      return;
+    }
+
+    setTogglingId(testimonial.id);
+    try {
+      await updateTestimonial(testimonial.id, { featured: newFeatured });
+      await fetchData();
+    } catch (err) {
+      console.error("Failed to toggle featured:", err);
+    } finally {
+      setTogglingId(null);
     }
   }
 
@@ -107,6 +132,12 @@ export default function TestimonialsPage() {
           </p>
         </div>
         <div className="flex items-center gap-3 self-start">
+          {/* Featured Counter */}
+          <div className="flex items-center gap-1.5 px-3 py-2 bg-[#F59E0B]/10 border border-[#F59E0B]/20 rounded-lg text-sm">
+            <Star size={14} className="text-[#F59E0B]" />
+            <span className="text-[#F59E0B] font-medium">{featuredCount}/3</span>
+            <span className="text-[#94A3B8] text-xs">featured</span>
+          </div>
           <button
             onClick={fetchData}
             className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 text-[#94A3B8] hover:text-white text-sm rounded-lg border border-white/5 transition-all"
@@ -182,11 +213,23 @@ export default function TestimonialsPage() {
               {filteredTestimonials.map((testimonial) => (
                 <div
                   key={testimonial.id}
-                  className="bg-[#1E293B] rounded-xl border border-white/5 p-6 hover:border-white/10 transition-all group"
+                  className={`bg-[#1E293B] rounded-xl border p-6 hover:border-white/10 transition-all group ${
+                    testimonial.featured
+                      ? "border-[#F59E0B]/30 bg-[#F59E0B]/[0.03]"
+                      : "border-white/5"
+                  }`}
                 >
                   <div className="flex items-start gap-4">
                     <Quote size={24} className="text-[#3B82F6]/30 mt-1 flex-shrink-0" />
                     <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-2">
+                        {testimonial.featured && (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#F59E0B]/15 border border-[#F59E0B]/30 rounded text-[10px] font-bold uppercase tracking-wider text-[#F59E0B]">
+                            <Star size={10} fill="currentColor" />
+                            Featured
+                          </span>
+                        )}
+                      </div>
                       <p className="text-sm text-[#F8FAFC] italic mb-4 line-clamp-3">
                         &quot;{testimonial.quote}&quot;
                       </p>
@@ -200,6 +243,19 @@ export default function TestimonialsPage() {
                           </p>
                         </div>
                         <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          {/* Featured Toggle */}
+                          <button
+                            onClick={() => handleToggleFeatured(testimonial)}
+                            disabled={togglingId === testimonial.id}
+                            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
+                              testimonial.featured
+                                ? "text-[#F59E0B] bg-[#F59E0B]/10 hover:bg-[#F59E0B]/20"
+                                : "text-[#94A3B8] bg-white/5 hover:bg-white/10"
+                            } disabled:opacity-50`}
+                          >
+                            <Star size={12} fill={testimonial.featured ? "currentColor" : "none"} />
+                            {testimonial.featured ? "Unfeature" : "Feature"}
+                          </button>
                           <button
                             onClick={() => openEdit(testimonial)}
                             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[#3B82F6] bg-[#3B82F6]/10 hover:bg-[#3B82F6]/20 rounded-lg transition-colors"
