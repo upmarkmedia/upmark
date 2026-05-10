@@ -197,10 +197,10 @@ export default async function Home() {
         <div className="mb-10 sm:mb-20 text-center flex flex-col items-center">
           <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-4 block inline-flex items-center gap-4">
              <span className="w-8 h-[1px] bg-accent-blue"></span>
-             PRODUCTION STUDIO
+             CONTENT THAT CONVERTS
              <span className="w-8 h-[1px] bg-accent-blue"></span>
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-6xl font-black font-heading text-white tracking-tight mb-4 sm:mb-6">Content that <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-blue-400">converts.</span></h2>
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-black font-heading text-white tracking-tight mb-4 sm:mb-6">Production <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-blue-400">Studio</span></h2>
           <p className="text-muted-text text-base sm:text-xl max-w-2xl font-light">Our production team creates across every format — from viral reels to cinematic brand films. All in-house. All on-brand.</p>
         </div>
         
