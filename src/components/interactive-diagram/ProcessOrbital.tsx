@@ -38,7 +38,7 @@ export function ProcessOrbital() {
           </h2>
         </div>
 
-        <div className="relative w-[340px] h-[340px] sm:w-[500px] sm:h-[500px] lg:w-[700px] lg:h-[700px] flex items-center justify-center mt-2 md:mt-6">
+        <div className="relative w-[280px] h-[280px] sm:w-[400px] sm:h-[400px] lg:w-[700px] lg:h-[700px] flex items-center justify-center mt-2 md:mt-6">
           
           {/* Orbital rings */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">

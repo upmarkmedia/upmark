@@ -32,10 +32,10 @@ export function CapabilityMap() {
 
   return (
     <div className="w-full">
-      <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16 max-w-6xl mx-auto px-4 sm:px-0">
+      <div className="flex flex-col lg:flex-row items-center gap-6 sm:gap-10 lg:gap-16 max-w-6xl mx-auto px-2 sm:px-0">
         
         {/* Orbital */}
-        <div className="relative w-[340px] h-[340px] sm:w-[420px] sm:h-[420px] lg:w-[500px] lg:h-[500px] flex-shrink-0">
+        <div className="relative w-[280px] h-[280px] sm:w-[420px] sm:h-[420px] lg:w-[500px] lg:h-[500px] flex-shrink-0 mx-auto">
           {/* Ambient glow */}
           <div className="absolute inset-0 rounded-full bg-accent-blue/5 blur-[90px] pointer-events-none" />
 
@@ -100,10 +100,10 @@ export function CapabilityMap() {
           </svg>
 
           {/* Center hub */}
-          <div className="absolute z-10 w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 rounded-full bg-[#080d17]/90 border border-white/10 backdrop-blur-sm flex items-center justify-center shadow-[0_0_40px_rgba(59,130,246,0.1)] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <div className="absolute z-10 w-16 h-16 sm:w-24 sm:h-24 lg:w-28 lg:h-28 rounded-full bg-[#080d17]/90 border border-white/10 backdrop-blur-sm flex items-center justify-center shadow-[0_0_40px_rgba(59,130,246,0.1)] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <div className="absolute inset-0 rounded-full border border-accent-blue/20 animate-[spin_14s_linear_infinite]"
               style={{ borderTopColor: "transparent", borderRightColor: "transparent" }} />
-            <span className="font-heading font-bold text-white text-[10px] lg:text-xs text-center leading-tight z-10">
+            <span className="font-heading font-bold text-white text-[8px] sm:text-[10px] lg:text-xs text-center leading-tight z-10">
               Upmark<br />Services
             </span>
           </div>
@@ -116,7 +116,7 @@ export function CapabilityMap() {
             return (
               <motion.button
                 key={svc.id}
-                className={`absolute z-20 w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full border flex flex-col items-center justify-center gap-0.5 transition-colors duration-300 cursor-pointer focus-visible:outline-none
+                className={`absolute z-20 w-10 h-10 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full border flex flex-col items-center justify-center gap-[1px] transition-colors duration-300 cursor-pointer focus-visible:outline-none
                   ${isActive
                     ? "bg-[#0d1525] border-accent-blue shadow-[0_0_28px_rgba(59,130,246,0.45)]"
                     : "bg-[#080d17] border-white/10 hover:border-white/30 hover:bg-white/5"
@@ -130,11 +130,11 @@ export function CapabilityMap() {
                 aria-pressed={isActive}
               >
                 <Icon
-                  size={14}
-                  className={`lg:w-4 lg:h-4 transition-colors duration-300 ${isActive ? "text-accent-blue" : "text-white/35"}`}
+                  size={12}
+                  className={`w-3 h-3 sm:w-3.5 sm:h-3.5 lg:w-4 lg:h-4 transition-colors duration-300 ${isActive ? "text-accent-blue" : "text-white/35"}`}
                 />
                 <span
-                  className={`text-[7px] lg:text-[9px] font-bold tracking-wider uppercase text-center leading-tight px-1 transition-colors duration-300 ${
+                  className={`text-[5.5px] sm:text-[7px] lg:text-[9px] font-bold tracking-wider uppercase text-center leading-tight px-0.5 sm:px-1 transition-colors duration-300 ${
                     isActive ? "text-white" : "text-white/35"
                   }`}
                 >
@@ -161,39 +161,39 @@ export function CapabilityMap() {
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               exit={{ opacity: 0, y: -16, filter: "blur(6px)" }}
               transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-              className="relative rounded-2xl lg:rounded-3xl border border-white/10 bg-secondary-surface/40 backdrop-blur-xl p-6 sm:p-8 lg:p-10 overflow-hidden shadow-2xl"
+              className="relative rounded-xl sm:rounded-2xl lg:rounded-3xl border border-white/10 bg-secondary-surface/40 backdrop-blur-xl p-4 sm:p-8 lg:p-10 overflow-hidden shadow-2xl"
             >
               {/* Glass sheen */}
               <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent pointer-events-none" />
               {/* Blue top accent */}
-              <div className="absolute top-0 left-6 right-6 lg:left-8 lg:right-8 h-[1px] bg-gradient-to-r from-transparent via-accent-blue/50 to-transparent" />
+              <div className="absolute top-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 h-[1px] bg-gradient-to-r from-transparent via-accent-blue/50 to-transparent" />
 
               {/* Decorative number */}
-              <span className="absolute top-2 right-4 text-[6rem] lg:text-[8rem] font-black text-accent-blue/[0.05] leading-none select-none pointer-events-none font-heading">
+              <span className="absolute top-2 right-4 text-[4.5rem] sm:text-[6rem] lg:text-[8rem] font-black text-accent-blue/[0.05] leading-none select-none pointer-events-none font-heading">
                 {active.number}
               </span>
 
               <div className="relative z-10">
-                <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-[10px] lg:text-xs border border-accent-blue/30 px-3 py-1 rounded-full bg-accent-blue/5 mb-4 lg:mb-5 inline-block">
+                <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-[9px] sm:text-[10px] lg:text-xs border border-accent-blue/30 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full bg-accent-blue/5 mb-3 sm:mb-4 lg:mb-5 inline-block">
                   {active.subtitle}
                 </span>
 
-                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white font-heading mb-4 lg:mb-5 leading-tight">
+                <h3 className="text-xl sm:text-3xl lg:text-4xl font-black text-white font-heading mb-2 sm:mb-4 lg:mb-5 leading-tight">
                   {active.title}
                 </h3>
 
-                <p className="text-muted-text font-light text-sm sm:text-base lg:text-[17px] leading-relaxed mb-6 lg:mb-7">
+                <p className="text-muted-text font-light text-xs sm:text-base lg:text-[17px] leading-relaxed mb-4 sm:mb-6 lg:mb-7">
                   {active.description}
                 </p>
 
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 text-xs lg:text-sm font-semibold text-white/65 hover:text-accent-blue transition-colors duration-200 group"
+                  className="inline-flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs lg:text-sm font-semibold text-white/65 hover:text-accent-blue transition-colors duration-200 group"
                 >
                   <span>Discuss this service</span>
                   <ArrowRight
-                    size={14}
-                    className="group-hover:translate-x-1 transition-transform duration-200"
+                    size={12}
+                    className="sm:w-3.5 sm:h-3.5 group-hover:translate-x-1 transition-transform duration-200"
                   />
                 </Link>
               </div>
@@ -201,7 +201,7 @@ export function CapabilityMap() {
           </AnimatePresence>
 
           {/* Service dots navigation */}
-          <div className="flex items-center justify-center lg:justify-start gap-2 mt-5 lg:pl-1">
+          <div className="flex items-center justify-center lg:justify-start gap-1.5 sm:gap-2 mt-4 sm:mt-5 lg:pl-1">
             {CAPABILITIES_DATA.map((svc) => (
               <button
                 key={svc.id}

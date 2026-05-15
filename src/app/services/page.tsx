@@ -10,9 +10,9 @@ export const metadata: Metadata = {
 
 export default function ServicesPage() {
   return (
-    <div className="pt-24 sm:pt-32 pb-16 sm:pb-32">
+    <div className="pt-20 sm:pt-32 pb-16 sm:pb-32">
       <section className="container mx-auto px-4 sm:px-6 relative z-10">
-        <div className="mb-12 sm:mb-20">
+        <div className="mb-6 sm:mb-20">
           <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-4 block flex items-center gap-4">
             <span className="w-8 h-[1px] bg-accent-blue"></span>
             WHAT WE DO
