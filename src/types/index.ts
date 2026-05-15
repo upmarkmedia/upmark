@@ -7,7 +7,7 @@ export interface CaseStudy {
   metrics: string[];
   description: string;
   category: "Studies" | "Success Stories" | "Stills & Motions";
-  mediaUrl: string;
+  mediaUrl?: string;
   // New fields for rich card layouts
   tag?: string;            // e.g. "Fashion & Lifestyle"
   stat1?: string;          // e.g. "+210%"
