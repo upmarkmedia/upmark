@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Plus } from "lucide-react";
 
@@ -74,17 +74,18 @@ const SERVICES: Service[] = [
 
 const INTERVAL = 6000;
 
-const contentVariants = {
+const contentVariants: Variants = {
   enter: { opacity: 0, y: 28, filter: "blur(4px)" },
-  visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.45, ease: [0.25, 0.1, 0.25, 1] as const } },
-  exit: { opacity: 0, y: -18, filter: "blur(4px)", transition: { duration: 0.25, ease: [0.25, 0.1, 0.25, 1] as const } },
+  visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.45, ease: [0.25, 0.1, 0.25, 1] } },
+  exit: { opacity: 0, y: -18, filter: "blur(4px)", transition: { duration: 0.25, ease: [0.25, 0.1, 0.25, 1] } },
 };
 
-const staggerVariants = {
+const staggerVariants: Variants = {
+  enter: {},
   visible: { transition: { staggerChildren: 0.08 } },
 };
 
-const lineVariant = {
+const lineVariant: Variants = {
   enter: { opacity: 0, x: -12 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.35, ease: "easeOut" } },
   exit: { opacity: 0 },
