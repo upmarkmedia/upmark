@@ -33,8 +33,6 @@ interface CaseStudyFormData {
   stat2label: string;
   gradient: string;
   imageUrl: string;
-  duration: string;
-  mediaType: "Stills" | "Motion";
   hiredFor: string;
   situation: string;
   keyExecutions: string;
@@ -80,8 +78,6 @@ export function CaseStudyForm({
       stat2label: initialData?.stat2label || "",
       gradient: initialData?.gradient || GRADIENT_OPTIONS[0].value,
       imageUrl: initialData?.imageUrl || "",
-      duration: initialData?.duration || "",
-      mediaType: initialData?.mediaType || "Stills",
       hiredFor: initialData?.hiredFor || "",
       situation: initialData?.situation || "",
       keyExecutions: initialData?.keyExecutions || "",
@@ -100,7 +96,6 @@ export function CaseStudyForm({
 
   const mediaUrl = watch("mediaUrl");
   const imageUrl = watch("imageUrl");
-  const category = watch("category");
 
   async function handleFormSubmit(data: CaseStudyFormData) {
     await onSubmit({
@@ -117,8 +112,6 @@ export function CaseStudyForm({
       stat2label: data.stat2label,
       gradient: data.gradient,
       imageUrl: data.imageUrl,
-      duration: data.duration,
-      mediaType: data.mediaType,
       hiredFor: data.hiredFor,
       situation: data.situation,
       keyExecutions: data.keyExecutions,
@@ -230,7 +223,7 @@ export function CaseStudyForm({
         </div>
       </div>
 
-      {/* Gradient & Duration (for Stills & Motions) */}
+      {/* Gradient */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium text-[#F8FAFC]">Card Gradient</label>
@@ -240,23 +233,7 @@ export function CaseStudyForm({
             ))}
           </select>
         </div>
-        {category === "Stills & Motions" && (
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-[#F8FAFC]">Media Type</label>
-            <select {...register("mediaType")} className={`${inputClass} appearance-none`}>
-              <option value="Stills">Stills</option>
-              <option value="Motion">Motion</option>
-            </select>
-          </div>
-        )}
       </div>
-
-      {category === "Stills & Motions" && (
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">Duration (for Motion)</label>
-          <input {...register("duration")} placeholder="e.g. 0:30" className={inputClass} />
-        </div>
-      )}
 
       {/* Description */}
       <div className="flex flex-col gap-2">

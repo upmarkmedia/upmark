@@ -156,5 +156,3 @@ export interface SiteSettings {
   seo?: Record<string, SeoPageConfig>;
   updatedAt?: Timestamp;
 }
-
-export type CaseStudyCategory = CaseStudy["category"];
