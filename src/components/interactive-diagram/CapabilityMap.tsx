@@ -161,10 +161,10 @@ export function CapabilityMap() {
           <AnimatePresence mode="wait">
             <motion.div
               key={activeId}
-              initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, y: -16, filter: "blur(6px)" }}
-              transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
               className="relative rounded-2xl lg:rounded-3xl border border-white/10 bg-secondary-surface/40 backdrop-blur-xl p-6 sm:p-8 lg:p-10 overflow-hidden shadow-2xl"
             >
               {/* Glass sheen */}
@@ -210,7 +210,7 @@ export function CapabilityMap() {
               <button
                 key={svc.id}
                 onClick={() => setActiveId(svc.id)}
-                className={`rounded-full transition-all duration-300 focus-visible:outline-none ${
+                className={`rounded-full transition-[width] duration-300 focus-visible:outline-none ${
                   svc.id === activeId
                     ? "w-6 h-2 bg-accent-blue"
                     : "w-2 h-2 bg-white/20 hover:bg-white/40"

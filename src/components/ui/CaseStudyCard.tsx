@@ -55,7 +55,7 @@ export const CaseStudyCard = ({ title, client, category, metric, imageUrl, link 
           <h3 className="text-2xl font-bold font-heading text-white group-hover/link:text-accent-blue transition-colors">
             {title}
           </h3>
-          <ArrowRight className="text-white/30 group-hover/link:text-accent-blue transition-all duration-300 transform group-hover/link:-rotate-45" size={24} />
+          <ArrowRight className="text-white/30 group-hover/link:text-accent-blue transition-[color,transform,opacity] duration-300 transform group-hover/link:-rotate-45" size={24} />
         </Link>
       </div>
     </motion.div>

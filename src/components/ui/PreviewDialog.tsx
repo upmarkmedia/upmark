@@ -57,8 +57,8 @@ export function PreviewDialog({
           className="fixed inset-0 z-[100] flex items-center justify-center sm:p-6"
           onClick={onClose}
         >
-          {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+          {/* Backdrop — minimal blur, stripped entirely on mobile via CSS */}
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm md:backdrop-blur-none" />
 
           {/* Dialog Card */}
           <motion.div

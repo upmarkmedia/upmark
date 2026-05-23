@@ -151,7 +151,7 @@ export const ProcessTimeline = ({ steps }: ProcessTimelineProps) => {
                     <button
                       key={i}
                       onClick={() => setActiveStep(i)}
-                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                      className={`h-1.5 rounded-full transition-[width] duration-300 ${
                         i === activeStep
                           ? "w-8 bg-accent-blue"
                           : i < activeStep

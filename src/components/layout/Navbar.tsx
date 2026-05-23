@@ -109,7 +109,7 @@ export const Navbar = () => {
 
                 {/* Desktop Dropdown Menu */}
                 {link.dropdownItems && (
-                  <div className="absolute top-[120%] left-1/2 -translate-x-1/2 min-w-[220px] bg-black/85 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.8)] opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:top-full transition-all duration-200 p-2.5 flex flex-col gap-1 z-50">
+                  <div className="absolute top-[120%] left-1/2 -translate-x-1/2 min-w-[220px] bg-black/85 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.8)] opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:top-full transition-[opacity,visibility,top] duration-200 p-2.5 flex flex-col gap-1 z-50">
                     <div className="absolute -top-4 left-0 right-0 h-6 bg-transparent" />
                     {link.dropdownItems.map((item) => (
                       <Link
@@ -118,7 +118,7 @@ export const Navbar = () => {
                         className="px-4 py-2.5 hover:bg-white/10 rounded-xl text-sm text-white/70 hover:text-white transition-colors duration-150 flex items-center justify-between group/item"
                       >
                         {item.name}
-                        <ChevronRight size={14} className="opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-150 text-blue-400" />
+                        <ChevronRight size={14} className="opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-[opacity,transform] duration-150 text-blue-400" />
                       </Link>
                     ))}
                   </div>

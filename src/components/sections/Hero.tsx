@@ -63,14 +63,14 @@ export const Hero = ({ videoUrl }: HeroProps) => {
       <div className="absolute bottom-24 sm:bottom-28 right-4 sm:right-8 z-50 flex flex-col items-center gap-3">
         <button
           onClick={togglePlay}
-          className="w-12 h-12 rounded-full bg-black/40 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white/80 hover:text-white hover:bg-black/60 transition-all duration-200 active:scale-90"
+          className="w-12 h-12 rounded-full bg-black/40 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white/80 hover:text-white hover:bg-black/60 transition-[background-color,color] duration-200 active:scale-90"
           aria-label={isPlaying ? "Pause video" : "Play video"}
         >
           {isPlaying ? <Pause size={20} /> : <Play size={20} className="ml-0.5" />}
         </button>
         <button
           onClick={toggleMute}
-          className="w-12 h-12 rounded-full bg-black/40 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white/80 hover:text-white hover:bg-black/60 transition-all duration-200 active:scale-90"
+          className="w-12 h-12 rounded-full bg-black/40 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white/80 hover:text-white hover:bg-black/60 transition-[background-color,color] duration-200 active:scale-90"
           aria-label={isMuted ? "Unmute video" : "Mute video"}
         >
           {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}

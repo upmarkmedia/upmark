@@ -75,9 +75,9 @@ const SERVICES: Service[] = [
 const INTERVAL = 6000;
 
 const contentVariants: Variants = {
-  enter: { opacity: 0, y: 28, filter: "blur(4px)" },
-  visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.45, ease: [0.25, 0.1, 0.25, 1] } },
-  exit: { opacity: 0, y: -18, filter: "blur(4px)", transition: { duration: 0.25, ease: [0.25, 0.1, 0.25, 1] } },
+  enter: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] } },
+  exit: { opacity: 0, y: -12, transition: { duration: 0.2, ease: [0.25, 0.1, 0.25, 1] } },
 };
 
 const staggerVariants: Variants = {
@@ -107,23 +107,41 @@ export function ServicesExplorer() {
     if (manual) setPaused(true);
   }, []);
 
-  // Auto-advance + progress ticker
+  // Auto-advance + progress ticker (rAF-based, stops when not visible)
   useEffect(() => {
-    const tick = setInterval(() => {
-      if (pausedRef.current) return;
+    let rafId: number;
+    let isVisible = true;
+
+    const onVisibility = () => {
+      isVisible = !document.hidden;
+      if (isVisible) {
+        startRef.current = Date.now();
+        setProgress(0);
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    const tick = () => {
+      if (pausedRef.current || !isVisible) {
+        rafId = requestAnimationFrame(tick);
+        return;
+      }
       const elapsed = Date.now() - startRef.current;
       const pct = Math.min((elapsed / INTERVAL) * 100, 100);
       setProgress(pct);
       if (elapsed >= INTERVAL) {
-        setActive((prev) => {
-          const next = (prev + 1) % SERVICES.length;
-          return next;
-        });
+        setActive((prev) => (prev + 1) % SERVICES.length);
         setProgress(0);
         startRef.current = Date.now();
       }
-    }, 40);
-    return () => clearInterval(tick);
+      rafId = requestAnimationFrame(tick);
+    };
+    rafId = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
   }, []);
 
   // Keyboard navigation
@@ -190,7 +208,7 @@ export function ServicesExplorer() {
                 </span>
 
                 <span
-                  className={`text-sm lg:text-base font-medium font-heading leading-snug transition-all duration-300 ${
+                  className={`text-sm lg:text-base font-medium font-heading leading-snug transition-colors duration-300 ${
                     isActive
                       ? "text-white"
                       : "text-white/40 group-hover:text-white/65"

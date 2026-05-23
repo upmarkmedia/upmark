@@ -40,15 +40,6 @@ const DEFAULT_STUDIO_CAPABILITIES = [
   "Platform-native formatting", "Raw footage delivery"
 ];
 
-const DEFAULT_ADVANTAGES = [
-  { title: "Integrated by design", desc: "Not a creative studio, not a media buyer, not a consultant. We combine all three into one system." },
-  { title: "Speed without compromise", desc: "We move at startup speed with agency-level production quality. Fast means first to market." },
-  { title: "Transparent reporting", desc: "Real-time dashboards and weekly performance reviews. You always know exactly what your marketing is doing." },
-  { title: "Embedded in your team", desc: "We work as an extension of your business — attending meetings, understanding culture and owning outcomes." },
-  { title: "Built for scale", desc: "Our systems are engineered to scale. As your business grows, your marketing infrastructure grows with it." },
-  { title: "Channel-agnostic thinking", desc: "We follow your audience, not trends. Whatever channel converts, we optimise there first." }
-];
-
 export default async function Home() {
   const [settings, testimonials] = await Promise.all([
     getSiteSettings(),
@@ -69,11 +60,6 @@ export default async function Home() {
     description: c.description,
   }));
   const studioCapabilities = settings?.studioCapabilities?.length ? settings.studioCapabilities : DEFAULT_STUDIO_CAPABILITIES;
-  const advantages = (settings?.advantages?.length ? settings.advantages : DEFAULT_ADVANTAGES).map((a, i) => ({
-    id: i + 1,
-    title: a.title,
-    desc: a.desc,
-  }));
 
   return (
     <div className="flex flex-col gap-12 sm:gap-16 md:gap-24 pb-16 sm:pb-24 md:pb-28 relative">
@@ -103,10 +89,10 @@ export default async function Home() {
                 </p>
              </div>
                           <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-                <Link href="/services" className="group flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-white border border-white/20 hover:border-accent-blue hover:bg-accent-blue/5 transition-all w-full sm:w-auto">
+                <Link href="/services" className="group flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-white border border-white/20 hover:border-accent-blue hover:bg-accent-blue/5 transition-[border-color,background-color] w-full sm:w-auto">
                   Explore our services
                 </Link>
-                <Link href="/#about" className="group flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-white bg-accent-blue/10 border border-accent-blue/30 hover:bg-accent-blue/20 hover:border-accent-blue/50 transition-all w-full sm:w-auto">
+                <Link href="/#about" className="group flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-white bg-accent-blue/10 border border-accent-blue/30 hover:bg-accent-blue/20 hover:border-accent-blue/50 transition-[border-color,background-color] w-full sm:w-auto">
                   Learn More
                 </Link>
               </div>
@@ -144,12 +130,12 @@ export default async function Home() {
       </section>
 
       {/* Process Section */}
-      <section className="container mx-auto px-4 sm:px-6 relative z-10">
+      <section className="container mx-auto px-4 sm:px-6 relative z-10 content-visibility-auto">
         <ProcessOrbital />
         
         {/* CTA Buttons */}
         <div className="mt-10 sm:mt-16 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-xl mx-auto">
-          <Link href="/services" className="group relative w-full sm:w-auto flex items-center justify-center gap-3 bg-accent-blue text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base overflow-hidden transition-all hover:scale-[1.02] active:scale-95 shadow-[0_0_30px_-10px_rgba(59,130,246,0.6)]">
+          <Link href="/services" className="group relative w-full sm:w-auto flex items-center justify-center gap-3 bg-accent-blue text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base overflow-hidden transition-[transform] hover:scale-[1.02] active:scale-95 shadow-[0_0_30px_-10px_rgba(59,130,246,0.6)]">
             <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-600 to-accent-blue opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <span className="relative z-10 flex items-center gap-2">Our Services </span>
           </Link>
@@ -161,7 +147,7 @@ export default async function Home() {
       </section>
 
       {/* Content Studio */}
-      <section className="container mx-auto px-4 sm:px-6 relative z-10">
+      <section className="container mx-auto px-4 sm:px-6 relative z-10 content-visibility-auto">
         <div className="mb-10 sm:mb-20 text-center flex flex-col items-center">
           <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-4 block inline-flex items-center gap-4">
              <span className="w-8 h-[1px] bg-accent-blue"></span>

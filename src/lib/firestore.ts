@@ -12,7 +12,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { db } from "./firebase";
-import type { CaseStudy, Service, Lead, SiteSettings, Testimonial } from "@/types";
+import type { CaseStudy, WorkItem, Service, Lead, SiteSettings, Testimonial } from "@/types";
 
 // ─── Settings ───────────────────────────────────────────────
 
@@ -81,6 +81,50 @@ export async function updateCaseStudy(
 
 export async function deleteCaseStudy(id: string): Promise<void> {
   const docRef = doc(db, "case_studies", id);
+  await deleteDoc(docRef);
+}
+
+// ─── Work Items ────────────────────────────────────────────
+
+const workRef = collection(db, "work");
+
+export async function getWorkItems(): Promise<WorkItem[]> {
+  const q = query(workRef, orderBy("createdAt", "desc"));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }) as WorkItem);
+}
+
+export async function getWorkItemById(id: string): Promise<WorkItem | null> {
+  const docRef = doc(db, "work", id);
+  const snapshot = await getDoc(docRef);
+  if (!snapshot.exists()) return null;
+  return { id: snapshot.id, ...snapshot.data() } as WorkItem;
+}
+
+export async function createWorkItem(
+  data: Omit<WorkItem, "id" | "createdAt" | "updatedAt">
+): Promise<string> {
+  const docRef = await addDoc(workRef, {
+    ...data,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  });
+  return docRef.id;
+}
+
+export async function updateWorkItem(
+  id: string,
+  data: Partial<Omit<WorkItem, "id" | "createdAt">>
+): Promise<void> {
+  const docRef = doc(db, "work", id);
+  await updateDoc(docRef, {
+    ...data,
+    updatedAt: serverTimestamp(),
+  });
+}
+
+export async function deleteWorkItem(id: string): Promise<void> {
+  const docRef = doc(db, "work", id);
   await deleteDoc(docRef);
 }
 

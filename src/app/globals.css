@@ -163,3 +163,19 @@ html {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
+
+/* ─── Content-visibility for below-fold sections ─── */
+/* Skips rendering (including animations/paints) when offscreen */
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 500px;
+}
+
+/* ─── Low-end device / battery saver: kill animations entirely ─── */
+@media (prefers-reduced-motion: reduce) {
+  .animate-\[spin_14s_linear_infinite\],
+  .animate-\[spin_60s_linear_infinite\],
+  .animate-\[marquee_30s_linear_infinite\] {
+    animation: none !important;
+  }
+}

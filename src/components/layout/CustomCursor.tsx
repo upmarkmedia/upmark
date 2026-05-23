@@ -28,19 +28,25 @@ export function CustomCursor() {
     let mouseY = -100;
     let circleX = -100;
     let circleY = -100;
-    let lastMouseX = -100;
-    let lastMouseY = -100;
     let idleFrames = 0;
+    let isPageVisible = true;
 
     const onMouseMove = (e: MouseEvent) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
-      idleFrames = 0; // Reset idle counter on movement
+      idleFrames = 0;
+    };
+
+    const onVisibilityChange = () => {
+      isPageVisible = !document.hidden;
+      if (isPageVisible) {
+        idleFrames = 0;
+      }
     };
 
     window.addEventListener("mousemove", onMouseMove, { passive: true });
+    document.addEventListener("visibilitychange", onVisibilityChange);
 
-    // Hide native cursor
     const style = document.createElement("style");
     style.innerHTML = `* { cursor: none !important; }`;
     document.head.appendChild(style);
@@ -48,17 +54,13 @@ export function CustomCursor() {
     let animationFrameId: number;
 
     const render = () => {
-      // If the cursor hasn't moved for 120 frames (~2s), reduce to idle polling
-      if (mouseX === lastMouseX && mouseY === lastMouseY) {
-        idleFrames++;
-      } else {
-        idleFrames = 0;
+      if (!isPageVisible) {
+        animationFrameId = requestAnimationFrame(render);
+        return;
       }
-      lastMouseX = mouseX;
-      lastMouseY = mouseY;
 
-      // Still request frames even when idle (so we catch movement),
-      // but skip the expensive DOM writes
+      idleFrames++;
+
       if (idleFrames < 120) {
         circleX += (mouseX - circleX) * 0.15;
         circleY += (mouseY - circleY) * 0.15;
@@ -97,6 +99,7 @@ export function CustomCursor() {
 
     return () => {
       window.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       document.removeEventListener("mouseover", onMouseOver);
       document.removeEventListener("mouseout", onMouseOut);
       cancelAnimationFrame(animationFrameId);

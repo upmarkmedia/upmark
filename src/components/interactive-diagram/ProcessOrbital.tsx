@@ -85,10 +85,10 @@ export function ProcessOrbital() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeNode}
-                initial={{ opacity: 0, scale: 0.9, filter: "blur(5px)" }}
-                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, scale: 1.1, filter: "blur(5px)" }}
-                transition={{ duration: 0.3 }}
+                initial={{ opacity: 0, scale: 0.92 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.05 }}
+                transition={{ duration: 0.2 }}
                 className="flex flex-col items-center justify-center w-full h-full"
               >
                 <span className="text-accent-gold font-black text-2xl sm:text-3xl lg:text-4xl mb-1 sm:mb-2 opacity-50 font-heading">
@@ -117,7 +117,7 @@ export function ProcessOrbital() {
                 onClick={() => setActiveNode(item.id)}
               >
                 <motion.button
-                  className={`w-10 h-10 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full border flex items-center justify-center transition-all duration-300 relative group
+                  className={`w-10 h-10 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full border flex items-center justify-center transition-colors duration-300 relative group
                     ${isActive 
                       ? "bg-accent-gold/10 border-accent-gold shadow-[0_0_30px_rgba(212,175,55,0.3)]" 
                       : "bg-[#0a0f1c] border-white/10 hover:border-white/30"}`}
@@ -129,7 +129,7 @@ export function ProcessOrbital() {
                   </span>
                   
                   {/* Floating Title (always visible, or visible on hover/active) */}
-                  <div className={`absolute top-full mt-2 sm:mt-4 whitespace-nowrap text-[9px] sm:text-xs lg:text-sm font-bold tracking-wider uppercase transition-all duration-300
+                  <div className={`absolute top-full mt-2 sm:mt-4 whitespace-nowrap text-[9px] sm:text-xs lg:text-sm font-bold tracking-wider uppercase transition-[opacity,transform] duration-300
                     ${isActive ? "text-white opacity-100 translate-y-0" : "text-white/30 opacity-50 group-hover:opacity-100 -translate-y-1"}`}>
                     {item.title}
                   </div>

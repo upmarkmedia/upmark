@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useInView, motion, useMotionValue, useTransform, animate } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { useInView } from "framer-motion";
 
 interface AnimatedCounterProps {
   target: number;
@@ -22,40 +22,56 @@ export const AnimatedCounter = ({
 }: AnimatedCounterProps) => {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
-  const count = useMotionValue(0);
-  const rounded = useTransform(count, (v) => {
-    if (decimals > 0) return v.toFixed(decimals);
-    return Math.round(v).toString();
-  });
-  const [displayValue, setDisplayValue] = useState("0");
+  const displayRef = useRef<HTMLSpanElement>(null);
+  const animatedRef = useRef(false);
 
   useEffect(() => {
-    if (!isInView) return;
+    if (!isInView || animatedRef.current) return;
+    animatedRef.current = true;
 
-    const controls = animate(count, target, {
-      duration,
-      ease: [0.25, 0.4, 0, 1],
-    });
+    const startTime = performance.now();
+    const startVal = 0;
+    const diff = target - startVal;
 
-    const unsubscribe = rounded.on("change", (v) => {
-      setDisplayValue(v);
-    });
-
-    return () => {
-      controls.stop();
-      unsubscribe();
+    const format = (v: number) => {
+      if (decimals > 0) return v.toFixed(decimals);
+      return Math.round(v).toString();
     };
-  }, [isInView, target, duration, count, rounded]);
+
+    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
+    let rafId: number;
+    const tick = (now: number) => {
+      const elapsed = (now - startTime) / 1000;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = easeOutCubic(progress);
+      const current = startVal + diff * eased;
+
+      if (displayRef.current) {
+        displayRef.current.textContent = `${prefix}${format(current)}${suffix}`;
+      }
+
+      if (progress < 1) {
+        rafId = requestAnimationFrame(tick);
+      } else if (displayRef.current) {
+        displayRef.current.textContent = `${prefix}${format(target)}${suffix}`;
+      }
+    };
+    rafId = requestAnimationFrame(tick);
+
+    return () => cancelAnimationFrame(rafId);
+  }, [isInView, target, duration, decimals, prefix, suffix]);
 
   return (
-    <motion.span
-      ref={ref}
+    <span
+      ref={(node) => {
+        ref.current = node;
+        displayRef.current = node;
+      }}
       className={className}
-      initial={{ opacity: 0, y: 10 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5 }}
+      style={{ opacity: isInView ? 1 : 0, transform: isInView ? "translateY(0)" : "translateY(10px)", transition: "opacity 0.5s, transform 0.5s" }}
     >
-      {prefix}{displayValue}{suffix}
-    </motion.span>
+      {prefix}0{suffix}
+    </span>
   );
 };

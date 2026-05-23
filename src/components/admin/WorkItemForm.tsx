@@ -1,13 +1,14 @@
 "use client";
 
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { CloudinaryUploadWidget } from "./CloudinaryUploadWidget";
-import { Plus, Trash2, Loader2 } from "lucide-react";
-import type { CaseStudy, CaseStudyCategory } from "@/types";
+import { Loader2 } from "lucide-react";
+import type { WorkItem, WorkItemCategory } from "@/types";
 
-const CATEGORIES: CaseStudyCategory[] = [
+const CATEGORIES: WorkItemCategory[] = [
   "Studies",
   "Success Stories",
+  "Stills & Motions",
 ];
 
 const GRADIENT_OPTIONS = [
@@ -19,13 +20,11 @@ const GRADIENT_OPTIONS = [
   { label: "Cyan / Blue", value: "from-cyan-900/30 to-blue-900/10" },
 ];
 
-interface CaseStudyFormData {
+interface WorkItemFormData {
   title: string;
   client: string;
   description: string;
-  category: CaseStudyCategory;
-  mediaUrl: string;
-  metrics: { value: string }[];
+  category: WorkItemCategory;
   tag: string;
   stat1: string;
   stat1label: string;
@@ -33,46 +32,36 @@ interface CaseStudyFormData {
   stat2label: string;
   gradient: string;
   imageUrl: string;
-  duration: string;
+  mediaUrl: string;
   mediaType: "Stills" | "Motion";
-  hiredFor: string;
-  situation: string;
-  keyExecutions: string;
-  timeframe: string;
-  websiteUrl: string;
-  linkedinUrl: string;
-  youtubeUrl: string;
+  duration: string;
+  metrics: { value: string }[];
   published: boolean;
 }
 
-interface CaseStudyFormProps {
-  initialData?: CaseStudy;
-  onSubmit: (data: Omit<CaseStudy, "id" | "createdAt" | "updatedAt">) => Promise<void>;
+interface WorkItemFormProps {
+  initialData?: WorkItem;
+  onSubmit: (data: Omit<WorkItem, "id" | "createdAt" | "updatedAt">) => Promise<void>;
   onCancel: () => void;
 }
 
-export function CaseStudyForm({
+export function WorkItemForm({
   initialData,
   onSubmit,
   onCancel,
-}: CaseStudyFormProps) {
+}: WorkItemFormProps) {
   const {
     register,
     handleSubmit,
-    control,
     setValue,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm<CaseStudyFormData>({
+  } = useForm<WorkItemFormData>({
     defaultValues: {
       title: initialData?.title || "",
       client: initialData?.client || "",
       description: initialData?.description || "",
       category: initialData?.category || "Studies",
-      mediaUrl: initialData?.mediaUrl || "",
-      metrics: initialData?.metrics?.map((v) => ({ value: v })) || [
-        { value: "" },
-      ],
       tag: initialData?.tag || "",
       stat1: initialData?.stat1 || "",
       stat1label: initialData?.stat1label || "",
@@ -80,36 +69,24 @@ export function CaseStudyForm({
       stat2label: initialData?.stat2label || "",
       gradient: initialData?.gradient || GRADIENT_OPTIONS[0].value,
       imageUrl: initialData?.imageUrl || "",
-      duration: initialData?.duration || "",
+      mediaUrl: initialData?.mediaUrl || "",
       mediaType: initialData?.mediaType || "Stills",
-      hiredFor: initialData?.hiredFor || "",
-      situation: initialData?.situation || "",
-      keyExecutions: initialData?.keyExecutions || "",
-      timeframe: initialData?.timeframe || "",
-      websiteUrl: initialData?.websiteUrl || "",
-      linkedinUrl: initialData?.linkedinUrl || "",
-      youtubeUrl: initialData?.youtubeUrl || "",
+      duration: initialData?.duration || "",
+      metrics: initialData?.metrics?.map((v) => ({ value: v })) || [{ value: "" }],
       published: initialData?.published ?? false,
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "metrics",
-  });
-
-  const mediaUrl = watch("mediaUrl");
   const imageUrl = watch("imageUrl");
+  const mediaUrl = watch("mediaUrl");
   const category = watch("category");
 
-  async function handleFormSubmit(data: CaseStudyFormData) {
+  async function handleFormSubmit(data: WorkItemFormData) {
     await onSubmit({
       title: data.title,
       client: data.client,
       description: data.description,
       category: data.category,
-      mediaUrl: data.mediaUrl,
-      metrics: data.metrics.map((m) => m.value).filter(Boolean),
       tag: data.tag,
       stat1: data.stat1,
       stat1label: data.stat1label,
@@ -117,15 +94,10 @@ export function CaseStudyForm({
       stat2label: data.stat2label,
       gradient: data.gradient,
       imageUrl: data.imageUrl,
-      duration: data.duration,
+      mediaUrl: data.mediaUrl,
       mediaType: data.mediaType,
-      hiredFor: data.hiredFor,
-      situation: data.situation,
-      keyExecutions: data.keyExecutions,
-      timeframe: data.timeframe,
-      websiteUrl: data.websiteUrl,
-      linkedinUrl: data.linkedinUrl,
-      youtubeUrl: data.youtubeUrl,
+      duration: data.duration,
+      metrics: data.metrics.map((m) => m.value).filter(Boolean),
       published: data.published,
     });
   }
@@ -139,7 +111,7 @@ export function CaseStudyForm({
       className="flex flex-col gap-6 bg-[#1E293B] p-6 lg:p-8 rounded-xl border border-white/5"
     >
       <h2 className="text-xl font-bold text-[#F8FAFC]">
-        {initialData ? "Edit Case Study" : "New Case Study"}
+        {initialData ? "Edit Work Item" : "New Work Item"}
       </h2>
 
       {/* Title & Client */}
@@ -148,7 +120,7 @@ export function CaseStudyForm({
           <label className="text-sm font-medium text-[#F8FAFC]">Title *</label>
           <input
             {...register("title", { required: "Title is required" })}
-            placeholder="Revenue Scale"
+            placeholder="Ingri — SS26 Campaign"
             className={inputClass}
           />
           {errors.title && (
@@ -156,12 +128,10 @@ export function CaseStudyForm({
           )}
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">
-            Client *
-          </label>
+          <label className="text-sm font-medium text-[#F8FAFC]">Client *</label>
           <input
             {...register("client", { required: "Client is required" })}
-            placeholder="Acme Corp"
+            placeholder="Ingri"
             className={inputClass}
           />
           {errors.client && (
@@ -173,24 +143,18 @@ export function CaseStudyForm({
       {/* Category & Tag */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">
-            Category *
-          </label>
+          <label className="text-sm font-medium text-[#F8FAFC]">Category *</label>
           <select
             {...register("category", { required: "Category is required" })}
             className={`${inputClass} appearance-none`}
           >
             {CATEGORIES.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
+              <option key={cat} value={cat}>{cat}</option>
             ))}
           </select>
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">
-            Tag / Industry
-          </label>
+          <label className="text-sm font-medium text-[#F8FAFC]">Tag / Industry</label>
           <input
             {...register("tag")}
             placeholder="e.g. Fashion & Lifestyle"
@@ -208,7 +172,7 @@ export function CaseStudyForm({
         <span className="text-sm text-[#F8FAFC]">Published</span>
       </div>
 
-      {/* Stats Row */}
+      {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium text-[#F8FAFC]">Stat 1 Value</label>
@@ -230,7 +194,7 @@ export function CaseStudyForm({
         </div>
       </div>
 
-      {/* Gradient & Duration (for Stills & Motions) */}
+      {/* Gradient & Production fields */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium text-[#F8FAFC]">Card Gradient</label>
@@ -260,15 +224,11 @@ export function CaseStudyForm({
 
       {/* Description */}
       <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium text-[#F8FAFC]">
-          Short Description *
-        </label>
+        <label className="text-sm font-medium text-[#F8FAFC]">Description *</label>
         <textarea
-          {...register("description", {
-            required: "Description is required",
-          })}
+          {...register("description", { required: "Description is required" })}
           rows={3}
-          placeholder="Brief summary for the card..."
+          placeholder="Brief summary..."
           className={`${inputClass} resize-none`}
         />
         {errors.description && (
@@ -276,109 +236,18 @@ export function CaseStudyForm({
         )}
       </div>
 
-      {/* Detailed Sections */}
-      <div className="flex flex-col gap-4 border-t border-white/10 pt-4">
-        <h3 className="text-lg font-semibold text-white">Detailed Content Sections</h3>
-        
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">What we were hired to do</label>
-          <textarea
-            {...register("hiredFor")}
-            rows={3}
-            placeholder="e.g. Starting from 2022, we worked with..."
-            className={`${inputClass} resize-none`}
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">The situation</label>
-          <textarea
-            {...register("situation")}
-            rows={3}
-            placeholder="e.g. While the brand was not new..."
-            className={`${inputClass} resize-none`}
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">Key executions</label>
-          <textarea
-            {...register("keyExecutions")}
-            rows={4}
-            placeholder="e.g. We handled a bunch of crisis management..."
-            className={`${inputClass} resize-none`}
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">Timeframe</label>
-          <input
-            {...register("timeframe")}
-            placeholder="e.g. Approximately 1 year"
-            className={inputClass}
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">Website URL</label>
-          <input
-            {...register("websiteUrl")}
-            placeholder="https://example.com"
-            className={inputClass}
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">LinkedIn URL</label>
-          <input
-            {...register("linkedinUrl")}
-            placeholder="https://linkedin.com/company/..."
-            className={inputClass}
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">YouTube URL</label>
-          <input
-            {...register("youtubeUrl")}
-            placeholder="https://youtube.com/@..."
-            className={inputClass}
-          />
-        </div>
-      </div>
-
       {/* Metrics */}
-      <div className="flex flex-col gap-3">
-        <label className="text-sm font-medium text-[#F8FAFC]">Metrics</label>
-        {fields.map((field, index) => (
-          <div key={field.id} className="flex items-center gap-2">
-            <input
-              {...register(`metrics.${index}.value`)}
-              placeholder={`e.g. +210% Revenue Growth`}
-              className={`${inputClass} flex-1`}
-            />
-            {fields.length > 1 && (
-              <button
-                type="button"
-                onClick={() => remove(index)}
-                className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
-              >
-                <Trash2 size={16} />
-              </button>
-            )}
-          </div>
-        ))}
-        <button
-          type="button"
-          onClick={() => append({ value: "" })}
-          className="flex items-center gap-2 text-sm text-[#3B82F6] hover:text-blue-400 transition-colors self-start"
-        >
-          <Plus size={16} />
-          Add Metric
-        </button>
+      <div className="flex flex-col gap-2">
+        <label className="text-sm font-medium text-[#F8FAFC]">Metrics (comma-separated)</label>
+        <input
+          defaultValue={initialData?.metrics?.join(", ") || ""}
+          onChange={(e) => setValue("metrics", e.target.value.split(",").map((s) => ({ value: s.trim() })).filter((m) => m.value))}
+          placeholder="+210% Revenue Growth, +380% Social Engagement"
+          className={inputClass}
+        />
       </div>
 
-      {/* Media Upload (Video) */}
+      {/* Media Uploads */}
       <CloudinaryUploadWidget
         onUpload={(url) => setValue("mediaUrl", url)}
         currentUrl={mediaUrl}
@@ -386,7 +255,6 @@ export function CaseStudyForm({
       />
       <input type="hidden" {...register("mediaUrl")} />
 
-      {/* Image Upload (Card thumbnail) */}
       <CloudinaryUploadWidget
         onUpload={(url) => setValue("imageUrl", url)}
         currentUrl={imageUrl}

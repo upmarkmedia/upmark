@@ -1,14 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getLeads, getCaseStudies, getServices, getTestimonials } from "@/lib/firestore";
-import { Users, FileText, Briefcase, TrendingUp, MessageSquareQuote, Globe } from "lucide-react";
+import { getLeads, getCaseStudies, getWorkItems, getServices, getTestimonials } from "@/lib/firestore";
+import { Users, FileText, Briefcase, TrendingUp, MessageSquareQuote, Globe, PenTool } from "lucide-react";
 import Link from "next/link";
 
 export default function AdminOverviewPage() {
   const [stats, setStats] = useState({
     leads: 0,
     caseStudies: 0,
+    workItems: 0,
     services: 0,
     testimonials: 0,
   });
@@ -17,15 +18,17 @@ export default function AdminOverviewPage() {
   useEffect(() => {
     async function fetchStats() {
       try {
-        const [leads, caseStudies, services, testimonials] = await Promise.all([
+        const [leads, caseStudies, workItems, services, testimonials] = await Promise.all([
           getLeads(),
           getCaseStudies(),
+          getWorkItems(),
           getServices(),
           getTestimonials(),
         ]);
         setStats({
           leads: leads.length,
           caseStudies: caseStudies.length,
+          workItems: workItems.length,
           services: services.length,
           testimonials: testimonials.length,
         });
@@ -47,17 +50,24 @@ export default function AdminOverviewPage() {
       color: "#3B82F6",
     },
     {
+      label: "Work Items",
+      value: stats.workItems,
+      icon: PenTool,
+      href: "/admin/pages/work",
+      color: "#F59E0B",
+    },
+    {
       label: "Case Studies",
       value: stats.caseStudies,
       icon: FileText,
-      href: "/admin/case-studies",
+      href: "/admin/pages/case-studies",
       color: "#22C55E",
     },
     {
       label: "Services",
       value: stats.services,
       icon: Briefcase,
-      href: "/admin/services",
+      href: "/admin/pages/services",
       color: "#F59E0B",
     },
     {
@@ -68,10 +78,10 @@ export default function AdminOverviewPage() {
       color: "#A855F7",
     },
     {
-      label: "SEO",
+      label: "Home Page",
       value: "—",
       icon: Globe,
-      href: "/admin/seo",
+      href: "/admin/pages/home",
       color: "#10B981",
     },
   ];
@@ -127,14 +137,21 @@ export default function AdminOverviewPage() {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Link
-            href="/admin/case-studies"
+            href="/admin/pages/case-studies"
             className="flex items-center gap-3 px-4 py-3 bg-[#0F172A] rounded-lg border border-white/5 hover:border-[#3B82F6]/30 transition-colors"
           >
             <FileText size={18} className="text-[#3B82F6]" />
             <span className="text-sm text-[#F8FAFC]">Add Case Study</span>
           </Link>
           <Link
-            href="/admin/services"
+            href="/admin/pages/work"
+            className="flex items-center gap-3 px-4 py-3 bg-[#0F172A] rounded-lg border border-white/5 hover:border-[#3B82F6]/30 transition-colors"
+          >
+            <PenTool size={18} className="text-[#F59E0B]" />
+            <span className="text-sm text-[#F8FAFC]">Manage Work Items</span>
+          </Link>
+          <Link
+            href="/admin/pages/services"
             className="flex items-center gap-3 px-4 py-3 bg-[#0F172A] rounded-lg border border-white/5 hover:border-[#3B82F6]/30 transition-colors"
           >
             <Briefcase size={18} className="text-[#22C55E]" />
@@ -155,11 +172,11 @@ export default function AdminOverviewPage() {
             <span className="text-sm text-[#F8FAFC]">Review Leads</span>
           </Link>
           <Link
-            href="/admin/seo"
+            href="/admin/pages/home"
             className="flex items-center gap-3 px-4 py-3 bg-[#0F172A] rounded-lg border border-white/5 hover:border-[#3B82F6]/30 transition-colors"
           >
             <Globe size={18} className="text-[#10B981]" />
-            <span className="text-sm text-[#F8FAFC]">Manage SEO</span>
+            <span className="text-sm text-[#F8FAFC]">Edit Home Page</span>
           </Link>
         </div>
       </div>

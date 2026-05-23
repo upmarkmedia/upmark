@@ -56,7 +56,7 @@ export const TestimonialsCarousel = ({ testimonials, maxItems = 3 }: Testimonial
             onClick={() => openPreview(t)}
             className="snap-start flex-shrink-0 w-[320px] sm:w-[400px] md:w-[450px] cursor-pointer group"
           >
-            <div className="relative z-10 bg-secondary-surface/60 border border-white/10 p-6 sm:p-8 rounded-2xl sm:rounded-3xl overflow-hidden h-full flex flex-col gap-6 hover:border-accent-blue/30 transition-all duration-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
+            <div className="relative z-10 bg-secondary-surface/60 border border-white/10 p-6 sm:p-8 rounded-2xl sm:rounded-3xl overflow-hidden h-full flex flex-col gap-6 hover:border-accent-blue/30 transition-[border-color,box-shadow] duration-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
               <Quote size={32} className="text-white/10 flex-shrink-0" />
               <p className="text-sm sm:text-base font-light text-white leading-relaxed italic flex-grow line-clamp-5">
                 &quot;{t.quote}&quot;

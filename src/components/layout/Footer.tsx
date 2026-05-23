@@ -98,7 +98,7 @@ export const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="https://instagram.com/upmark.media" target="_blank" rel="noopener noreferrer" className="group/social flex items-center gap-2 text-muted-text hover:text-accent-blue transition-colors text-sm duration-200">
+                <a href="https://www.instagram.com/upmarkmedia.in" target="_blank" rel="noopener noreferrer" className="group/social flex items-center gap-2 text-muted-text hover:text-accent-blue transition-colors text-sm duration-200">
                   <span className="p-1.5 rounded-lg bg-transparent group-hover/social:bg-accent-blue/10 transition-colors duration-200">
                     <InstagramIcon size={16} />
                   </span>
