@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
@@ -30,7 +31,6 @@ const pageNavItems = [
 
 const dataNavItems = [
   { href: "/admin/leads", label: "Leads", icon: Users, exact: false },
-  { href: "/admin/testimonials", label: "Testimonials", icon: MessageSquareQuote, exact: false },
 ];
 
 let _setSidebarOpen: (v: boolean) => void = () => {};
@@ -117,8 +117,8 @@ export function AdminLayout({ children }: { children: ReactNode }) {
       >
         {/* Logo */}
         <div className="flex items-center justify-between px-6 h-16 border-b border-white/5">
-          <Link href="/admin" className="text-xl font-bold text-[#F8FAFC]">
-            Up<span className="text-[#3B82F6]">mark</span>
+          <Link href="/admin">
+            <Image src="/upmark-wordmark.png" alt="Upmark" width={100} height={100} className="h-7 w-auto" />
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}
@@ -196,8 +196,8 @@ export function AdminLayout({ children }: { children: ReactNode }) {
           >
             <Menu size={24} />
           </button>
-          <span className="ml-4 text-lg font-bold text-[#F8FAFC]">
-            Up<span className="text-[#3B82F6]">mark</span>
+          <span className="ml-4">
+            <Image src="/upmark-wordmark.png" alt="Upmark" width={80} height={80} className="h-6 w-auto" />
           </span>
         </header>
 

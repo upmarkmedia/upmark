@@ -101,9 +101,7 @@ export function autoResponderTemplate(lead: LeadData): string {
           <!-- Header -->
           <tr>
             <td style="padding:40px 40px 24px; text-align:center;">
-              <h1 style="margin:0; font-size:28px; font-weight:800; color:#F8FAFC; letter-spacing:-0.5px;">
-                Up<span style="color:#3B82F6;">mark</span>
-              </h1>
+              <img src="https://upmark.co/upmark-wordmark.png" alt="Upmark" width="140" height="140" style="display:block; margin:0 auto;" />
             </td>
           </tr>
           <!-- Body -->
@@ -155,9 +153,7 @@ export function autoResponderTemplate(lead: LeadData): string {
           <!-- Footer -->
           <tr>
             <td style="padding:24px 40px; background-color:rgba(0,0,0,0.2); text-align:center; border-top:1px solid rgba(255,255,255,0.05);">
-              <p style="margin:0 0 4px; font-size:14px; font-weight:600; color:#F8FAFC;">
-                Up<span style="color:#3B82F6;">mark</span>
-              </p>
+              <img src="https://upmark.co/upmark-wordmark.png" alt="Upmark" width="100" height="100" style="display:block; margin:0 auto;" />
               <p style="margin:0; font-size:12px; color:#94A3B8;">Integrated Marketing That Moves Markets</p>
             </td>
           </tr>

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Quote } from "lucide-react";
 import { HorizontalCarousel } from "@/components/ui/HorizontalCarousel";
 import { PreviewDialog } from "@/components/ui/PreviewDialog";
-import type { Testimonial } from "@/types";
+import type { Testimonial, WorkSection } from "@/types";
 
 const DEFAULT_TESTIMONIALS: Testimonial[] = [
   {
@@ -30,9 +30,10 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = [
 interface TestimonialsCarouselProps {
   testimonials?: Testimonial[];
   maxItems?: number;
+  section?: WorkSection;
 }
 
-export const TestimonialsCarousel = ({ testimonials, maxItems = 3 }: TestimonialsCarouselProps) => {
+export const TestimonialsCarousel = ({ testimonials, maxItems = 3, section }: TestimonialsCarouselProps) => {
   const allTestimonials = testimonials && testimonials.length > 0 ? testimonials : DEFAULT_TESTIMONIALS;
   const displayTestimonials = allTestimonials.slice(0, maxItems);
   
@@ -47,8 +48,8 @@ export const TestimonialsCarousel = ({ testimonials, maxItems = 3 }: Testimonial
   return (
     <section className="container mx-auto px-4 sm:px-6 relative z-10">
       <HorizontalCarousel
-        label="CLIENT STORIES"
-        title={<>Don&apos;t just take <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-indigo-400">our word for it.</span></>}
+        label={section?.label || "CLIENT STORIES"}
+        title={section?.title || <>Don&apos;t just take <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-indigo-400">our word for it.</span></>}
       >
         {displayTestimonials.map((t) => (
           <div

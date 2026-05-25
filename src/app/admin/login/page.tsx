@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -60,9 +61,7 @@ function LoginForm() {
       <div className="w-full max-w-md relative">
         {/* Logo */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-[#F8FAFC]">
-            Up<span className="text-[#3B82F6]">mark</span>
-          </h1>
+          <Image src="/upmark-wordmark.png" alt="Upmark" width={160} height={160} className="h-9 sm:h-10 w-auto mx-auto" />
           <p className="text-[#94A3B8] text-sm mt-2">
             Admin Dashboard
           </p>

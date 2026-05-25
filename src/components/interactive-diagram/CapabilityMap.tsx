@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CAPABILITIES_DATA } from "./services-data";
@@ -103,9 +104,7 @@ export function CapabilityMap() {
           <div className="absolute z-10 w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 rounded-full bg-[#080d17]/90 border border-white/10 backdrop-blur-sm flex items-center justify-center shadow-[0_0_40px_rgba(59,130,246,0.1)] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <div className="absolute inset-0 rounded-full border border-accent-blue/20 animate-[spin_14s_linear_infinite]"
               style={{ borderTopColor: "transparent", borderRightColor: "transparent" }} />
-            <span className="font-heading font-bold text-white text-[10px] lg:text-xs text-center leading-tight z-10">
-              Upmark<br />Services
-            </span>
+            <Image src="/upmark-wordmark.png" alt="Upmark" width={60} height={60} className="w-10 lg:w-14 h-auto z-10" />
           </div>
 
           {/* Nodes */}

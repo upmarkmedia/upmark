@@ -38,6 +38,8 @@ const DEFAULT_PRODUCTION_SECTION: WorkSection = {
   label: "PRODUCTION",
   title: "Production showcase.",
   subtitle: "Cinematic quality stills and motion content produced entirely in-house.",
+  autoplayVideos: true,
+  detailFields: ["title", "client", "description"],
 };
 
 export default function WorkPage() {
@@ -45,6 +47,7 @@ export default function WorkPage() {
   const [portfolioItems, setPortfolioItems] = useState<WorkItem[]>(FALLBACK_PORTFOLIO);
   const [portfolioSection, setPortfolioSection] = useState<WorkSection>(DEFAULT_PORTFOLIO_SECTION);
   const [productionSection, setProductionSection] = useState<WorkSection>(DEFAULT_PRODUCTION_SECTION);
+  const [testimonialsSection, setTestimonialsSection] = useState<WorkSection | undefined>();
   const [csPreviewOpen, setCsPreviewOpen] = useState(false);
   const [selectedCs, setSelectedCs] = useState<WorkItem | null>(null);
   const [pfPreviewOpen, setPfPreviewOpen] = useState(false);
@@ -64,6 +67,7 @@ export default function WorkPage() {
         if (portfolio.length > 0) setPortfolioItems(portfolio);
         if (settings?.portfolioSection) setPortfolioSection(settings.portfolioSection);
         if (settings?.productionSection) setProductionSection(settings.productionSection);
+        if (settings?.testimonialsSection) setTestimonialsSection(settings.testimonialsSection);
       } catch (err) {
         console.error("Failed to fetch data:", err);
       }
@@ -158,24 +162,34 @@ export default function WorkPage() {
               className="snap-start flex-shrink-0 w-[260px] sm:w-[300px] md:w-[340px] cursor-pointer group"
             >
               <div className="relative rounded-2xl overflow-hidden bg-secondary-surface/40 border border-white/5 hover:border-accent-blue/30 transition-[border-color]">
-                <div className="aspect-[4/5] relative overflow-hidden">
+                <div className="h-[420px] relative overflow-hidden">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors z-10"></div>
-                  <Image
-                    src={item.imageUrl || "/images/placeholder.png"}
-                    alt={`${item.title} — production by Upmark`}
-                    fill
-                    className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
-                    sizes="340px"
-                  />
 
-                  {/* Play icon for motions */}
-                  {item.mediaType === "Motion" && (
+                  {item.mediaType === "Motion" && (productionSection.autoplayVideos ?? true) && item.mediaUrl ? (
+                    <video
+                      src={item.mediaUrl}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <Image
+                      src={item.imageUrl || "/images/placeholder.png"}
+                      alt={`${item.title} — production by Upmark`}
+                      fill
+                      className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                      sizes="340px"
+                    />
+                  )}
+
+                  {(item.mediaType === "Motion" && (!(productionSection.autoplayVideos ?? true) || !item.mediaUrl)) && (
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 text-white/70 group-hover:text-white transition-colors group-hover:scale-110 duration-300">
                       <PlayCircle size={48} strokeWidth={1} />
                     </div>
                   )}
 
-                  {/* Text Overlay */}
                   <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-20 translate-y-1 group-hover:translate-y-0 transition-transform">
                     <div className="flex items-center gap-2 mb-2">
                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${item.mediaType === 'Motion' ? 'bg-accent-blue/20 text-accent-blue' : 'bg-accent-gold/20 text-accent-gold'}`}>
@@ -194,7 +208,7 @@ export default function WorkPage() {
 
       {/* ─── Testimonials Section ─────────────────────────── */}
       <div id="testimonials" className="scroll-mt-32">
-        <TestimonialsCarousel maxItems={3} />
+        <TestimonialsCarousel maxItems={3} section={testimonialsSection} />
       </div>
 
       {/* ─── Case Study Preview Dialog ───────────────────── */}
@@ -220,12 +234,26 @@ export default function WorkPage() {
           onClose={() => setPfPreviewOpen(false)}
           title={selectedPf.title}
           description={selectedPf.description}
-          imageUrl={selectedPf.imageUrl}
-          meta={[
-            { label: "Client", value: selectedPf.client || "" },
-            { label: "Type", value: selectedPf.mediaType || "" },
-            ...(selectedPf.duration ? [{ label: "Duration", value: selectedPf.duration }] : []),
-          ]}
+          imageUrl={selectedPf.mediaType !== "Motion" ? selectedPf.imageUrl : undefined}
+          mediaUrl={selectedPf.mediaType === "Motion" ? selectedPf.mediaUrl : undefined}
+          detailFields={(productionSection.detailFields || [])
+            .filter((field) => {
+              const val = selectedPf[field as keyof WorkItem];
+              return val !== undefined && val !== "";
+            })
+            .map((field) => {
+              const labels: Record<string, string> = {
+                title: "Title",
+                client: "Client",
+                description: "Description",
+                tag: "Industry",
+                mediaType: "Type",
+                duration: "Duration",
+                details: "Details",
+              };
+              return { label: labels[field] || field, value: String(selectedPf[field as keyof WorkItem] ?? "") };
+            })}
+          autoHide
         />
       )}
     </div>

@@ -35,6 +35,7 @@ interface WorkItemFormData {
   mediaUrl: string;
   mediaType: "Stills" | "Motion";
   duration: string;
+  details: string;
   metrics: { value: string }[];
   published: boolean;
 }
@@ -72,6 +73,7 @@ export function WorkItemForm({
       mediaUrl: initialData?.mediaUrl || "",
       mediaType: initialData?.mediaType || "Stills",
       duration: initialData?.duration || "",
+      details: initialData?.details || "",
       metrics: initialData?.metrics?.map((v) => ({ value: v })) || [{ value: "" }],
       published: initialData?.published ?? false,
     },
@@ -97,6 +99,7 @@ export function WorkItemForm({
       mediaUrl: data.mediaUrl,
       mediaType: data.mediaType,
       duration: data.duration,
+      details: data.details,
       metrics: data.metrics.map((m) => m.value).filter(Boolean),
       published: data.published,
     });
@@ -111,7 +114,7 @@ export function WorkItemForm({
       className="flex flex-col gap-6 bg-[#1E293B] p-6 lg:p-8 rounded-xl border border-white/5"
     >
       <h2 className="text-xl font-bold text-[#F8FAFC]">
-        {initialData ? "Edit Work Item" : "New Work Item"}
+        {initialData?.id ? "Edit Work Item" : "New Work Item"}
       </h2>
 
       {/* Title & Client */}
@@ -222,6 +225,18 @@ export function WorkItemForm({
         </div>
       )}
 
+      {category === "Stills & Motions" && (
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium text-[#F8FAFC]">Overlay Details</label>
+          <textarea
+            {...register("details")}
+            rows={3}
+            placeholder="Custom details shown in the preview overlay..."
+            className={`${inputClass} resize-none`}
+          />
+        </div>
+      )}
+
       {/* Description */}
       <div className="flex flex-col gap-2">
         <label className="text-sm font-medium text-[#F8FAFC]">Description *</label>
@@ -277,7 +292,7 @@ export function WorkItemForm({
           className="px-5 py-2.5 text-sm font-medium text-white bg-[#3B82F6] hover:bg-blue-600 rounded-lg transition-all flex items-center gap-2 disabled:opacity-60"
         >
           {isSubmitting && <Loader2 size={16} className="animate-spin" />}
-          {initialData ? "Update" : "Create"}
+          {initialData?.id ? "Update" : "Create"}
         </button>
       </div>
     </form>

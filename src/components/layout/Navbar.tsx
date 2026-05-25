@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -63,8 +64,8 @@ export const Navbar = () => {
         }`}
       >
         {/* Logo - Left Side */}
-        <Link href="/" className="text-xl sm:text-2xl font-bold tracking-tight text-white group flex items-center shrink-0">
-          Upmark<span className="text-blue-500 transition-transform duration-200 group-hover:scale-125 inline-block">.</span>
+        <Link href="/" className="flex items-center shrink-0">
+          <Image src="/upmark-wordmark.png" alt="Upmark" width={100} height={100} className="h-7 sm:h-8 w-auto" priority />
         </Link>
 
         {/* Desktop Nav - Right Side */}

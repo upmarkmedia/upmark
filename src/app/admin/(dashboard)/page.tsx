@@ -71,13 +71,6 @@ export default function AdminOverviewPage() {
       color: "#F59E0B",
     },
     {
-      label: "Testimonials",
-      value: stats.testimonials,
-      icon: MessageSquareQuote,
-      href: "/admin/testimonials",
-      color: "#A855F7",
-    },
-    {
       label: "Home Page",
       value: "—",
       icon: Globe,
@@ -158,7 +151,7 @@ export default function AdminOverviewPage() {
             <span className="text-sm text-[#F8FAFC]">Manage Services</span>
           </Link>
           <Link
-            href="/admin/testimonials"
+            href="/admin/pages/work"
             className="flex items-center gap-3 px-4 py-3 bg-[#0F172A] rounded-lg border border-white/5 hover:border-[#3B82F6]/30 transition-colors"
           >
             <MessageSquareQuote size={18} className="text-[#A855F7]" />

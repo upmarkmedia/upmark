@@ -20,6 +20,7 @@ export interface WorkItem {
   mediaType?: "Stills" | "Motion";
   duration?: string;
   mediaUrl?: string;
+  details?: string;
   // Legacy
   metrics: string[];
   // Status
@@ -134,6 +135,8 @@ export interface WorkSection {
   label: string;
   title: string;
   subtitle: string;
+  autoplayVideos?: boolean;
+  detailFields?: string[];
 }
 
 export interface SiteSettings {
@@ -152,6 +155,7 @@ export interface SiteSettings {
   // Work page sections
   portfolioSection?: WorkSection;
   productionSection?: WorkSection;
+  testimonialsSection?: WorkSection;
   // SEO configuration
   seo?: Record<string, SeoPageConfig>;
   updatedAt?: Timestamp;

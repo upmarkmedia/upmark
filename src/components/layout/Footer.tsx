@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUp } from "lucide-react";
 
@@ -48,8 +49,8 @@ export const Footer = () => {
       <div className="container mx-auto px-4 sm:px-6 pt-10 sm:pt-16 pb-6 sm:pb-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-10 sm:mb-16">
           <div className="lg:col-span-1">
-            <Link href="/" className="text-xl sm:text-2xl font-heading font-bold tracking-tight text-white mb-4 sm:mb-6 inline-block">
-              Upmark<span className="text-accent-blue">.</span>
+            <Link href="/" className="mb-4 sm:mb-6 inline-block">
+              <Image src="/upmark-wordmark.png" alt="Upmark" width={120} height={120} className="h-7 sm:h-8 w-auto" />
             </Link>
             <p className="text-muted-text/80 text-xs sm:text-sm leading-relaxed max-w-xs">
               Integrated marketing that moves markets.
