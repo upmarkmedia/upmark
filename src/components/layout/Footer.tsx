@@ -107,8 +107,8 @@ export const Footer = () => {
                 </a>
               </li>
               <li className="pt-2 mt-2 border-t border-white/5">
-                <a href="mailto:hello@upmark.co" className="text-muted-text hover:text-accent-blue transition-colors text-sm font-medium">
-                  hello@upmark.co
+                <a href="mailto:connect@upmarkmedia.in" className="text-muted-text hover:text-accent-blue transition-colors text-sm font-medium">
+                  connect@upmarkmedia.in
                 </a>
               </li>
             </ul>
