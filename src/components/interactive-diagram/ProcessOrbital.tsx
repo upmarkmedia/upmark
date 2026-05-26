@@ -1,13 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { PROCESS_DATA } from "./services-data";
 
-export function ProcessOrbital() {
-  const [activeNode, setActiveNode] = useState(PROCESS_DATA[0].id);
+interface ProcessOrbitalItem {
+  title: string;
+  description: string;
+}
 
-  const activeData = PROCESS_DATA.find((p) => p.id === activeNode) || PROCESS_DATA[0];
+export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
+  const processData = useMemo(() => {
+    if (!items?.length) {
+      const { PROCESS_DATA } = require("./services-data");
+      return PROCESS_DATA;
+    }
+    return items.map((item, i) => ({
+      id: `step-${i + 1}`,
+      num: String(i + 1).padStart(2, "0"),
+      title: item.title,
+      description: item.description,
+    }));
+  }, [items]);
+
+  const [activeNode, setActiveNode] = useState(processData[0].id);
+
+  const activeData = processData.find((p) => p.id === activeNode) || processData[0];
 
   const getPositionStyles = (index: number, total: number) => {
     // Start from top (-90 degrees)
@@ -48,8 +65,8 @@ export function ProcessOrbital() {
 
           {/* SVG Connection Paths (Center to Nodes) */}
           <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100">
-            {PROCESS_DATA.map((item, i) => {
-              const angle = (i * (360 / PROCESS_DATA.length) - 90) * (Math.PI / 180);
+            {processData.map((item, i) => {
+              const angle = (i * (360 / processData.length) - 90) * (Math.PI / 180);
               const xPct = Math.cos(angle) * 32;
               const yPct = Math.sin(angle) * 32;
               const isActive = activeNode === item.id;
@@ -105,14 +122,14 @@ export function ProcessOrbital() {
           </div>
 
           {/* Process Nodes */}
-          {PROCESS_DATA.map((item, i) => {
+          {processData.map((item, i) => {
             const isActive = activeNode === item.id;
 
             return (
               <div
                 key={item.id}
                 className="absolute z-20"
-                style={getPositionStyles(i, PROCESS_DATA.length)}
+                style={getPositionStyles(i, processData.length)}
                 onMouseEnter={() => setActiveNode(item.id)}
                 onClick={() => setActiveNode(item.id)}
               >

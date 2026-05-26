@@ -131,7 +131,7 @@ export default async function Home() {
 
       {/* Process Section */}
       <section className="container mx-auto px-4 sm:px-6 relative z-10 content-visibility-auto">
-        <ProcessOrbital />
+        <ProcessOrbital items={processItems} />
         
         {/* CTA Buttons */}
         <div className="mt-10 sm:mt-16 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-xl mx-auto">
