@@ -1,12 +1,17 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import { getSiteSettings } from "@/lib/firestore";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Upmark",
   description: "Learn how Upmark Media collects, uses and protects your personal data.",
 };
 
-export default function PrivacyPolicyPage() {
+export default async function PrivacyPolicyPage() {
+  const settings = await getSiteSettings();
+  const email = settings?.contactEmail || "hello@upmark.co";
+  const phone = settings?.contactPhone || "+91 98765 43210";
+  const address = settings?.contactAddress || "WeWork, BKC, Mumbai 400051, India";
   return (
     <div className="pt-24 sm:pt-32 pb-16 sm:pb-32">
       <section className="container mx-auto px-4 sm:px-6 max-w-4xl relative z-10">
@@ -115,8 +120,9 @@ export default function PrivacyPolicyPage() {
             </p>
             <div className="bg-secondary-surface/30 border border-white/5 rounded-2xl p-6 space-y-2">
               <p className="text-white font-medium">Upmark Media</p>
-              <p className="text-muted-text text-sm">Email: <a href="mailto:hello@upmark.co" className="text-accent-blue hover:underline">hello@upmark.co</a></p>
-              <p className="text-muted-text text-sm">Address: WeWork, BKC, Mumbai 400051, India</p>
+              <p className="text-muted-text text-sm">Email: <a href={`mailto:${email}`} className="text-accent-blue hover:underline">{email}</a></p>
+              {phone && <p className="text-muted-text text-sm">Phone: {phone}</p>}
+              <p className="text-muted-text text-sm">Address: {address}</p>
             </div>
           </div>
         </div>
