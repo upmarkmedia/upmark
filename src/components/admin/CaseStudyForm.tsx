@@ -6,8 +6,8 @@ import { Plus, Trash2, Loader2 } from "lucide-react";
 import type { CaseStudy, CaseStudyCategory } from "@/types";
 
 const CATEGORIES: CaseStudyCategory[] = [
-  "Studies",
-  "Success Stories",
+  "Portfolio",
+  "Client Testimonials",
 ];
 
 const GRADIENT_OPTIONS = [
@@ -66,7 +66,9 @@ export function CaseStudyForm({
       title: initialData?.title || "",
       client: initialData?.client || "",
       description: initialData?.description || "",
-      category: initialData?.category || "Studies",
+      category: initialData?.category === "Studies" ? "Portfolio" 
+               : initialData?.category === "Success Stories" ? "Client Testimonials"
+               : initialData?.category || "Portfolio",
       mediaUrl: initialData?.mediaUrl || "",
       metrics: initialData?.metrics?.map((v) => ({ value: v })) || [
         { value: "" },

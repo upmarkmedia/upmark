@@ -3,7 +3,7 @@ import { ContentGrid } from "@/components/sections/ContentGrid";
 import { PlaySquare, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { getSiteSettings, getTestimonials } from "@/lib/firestore";
+import { getSiteSettings, getFeaturedTestimonials } from "@/lib/firestore";
 import { TestimonialsCarousel } from "@/components/sections/TestimonialsCarousel";
 import { ProcessOrbital } from "@/components/interactive-diagram";
 
@@ -43,7 +43,7 @@ const DEFAULT_STUDIO_CAPABILITIES = [
 export default async function Home() {
   const [settings, testimonials] = await Promise.all([
     getSiteSettings(),
-    getTestimonials(),
+    getFeaturedTestimonials(),
   ]);
 
   // Use admin-configured content or fall back to defaults

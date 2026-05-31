@@ -7,8 +7,8 @@ import { HorizontalCarousel } from "@/components/ui/HorizontalCarousel";
 import { PreviewDialog } from "@/components/ui/PreviewDialog";
 import { TestimonialsCarousel } from "@/components/sections/TestimonialsCarousel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { getWorkItems, getSiteSettings } from "@/lib/firestore";
-import type { WorkItem, WorkSection } from "@/types";
+import { getWorkItems, getSiteSettings, getTestimonials } from "@/lib/firestore";
+import type { WorkItem, WorkSection, Testimonial } from "@/types";
 
 const FALLBACK_WORK_ITEMS: WorkItem[] = [
   { title: "Ingri", client: "Ingri", tag: "Fashion & Lifestyle", stat1: "+210%", stat1label: "Revenue Growth", stat2: "+380%", stat2label: "Social Engagement", description: "Ingri was a premium fashion brand struggling to differentiate in a saturated market. Organic reach had declined 60% and paid ROI was stagnating. We rebuilt their positioning from scratch and engineered a multi-channel content engine that drove consistent growth.", imageUrl: "/images/casestudy-ingri.png", gradient: "from-purple-900/30 to-indigo-900/10", category: "Studies", metrics: [], published: true },
@@ -20,12 +20,12 @@ const FALLBACK_WORK_ITEMS: WorkItem[] = [
 ];
 
 const FALLBACK_PORTFOLIO: WorkItem[] = [
-  { id: "p-1", title: "Ingri — SS26 Campaign Film", client: "Ingri", mediaType: "Motion", duration: "1:45", description: "Cinematic campaign film for Ingri's Spring/Summer collection. Shot on location in Milan and London.", imageUrl: "/images/casestudy-ingri.png", category: "Stills & Motions", metrics: [], published: true },
-  { id: "p-2", title: "Luxe Stays — Brand Story", client: "Luxe Stays", mediaType: "Motion", duration: "2:30", description: "Brand documentary capturing the essence of Luxe Stays hospitality. A narrative piece driving direct bookings.", imageUrl: "/images/casestudy-luxestays.png", category: "Stills & Motions", metrics: [], published: true },
-  { id: "p-3", title: "Bloom Retail — Product Lookbook", client: "Bloom Retail", mediaType: "Stills", description: "Editorial product photography for Bloom's seasonal lookbook. Styled for eCommerce and social platforms.", imageUrl: "/images/casestudy-bloom.png", category: "Stills & Motions", metrics: [], published: true },
-  { id: "p-4", title: "The Grove Kitchen — Menu Editorial", client: "The Grove Kitchen", mediaType: "Stills", description: "Moody food photography for The Grove Kitchen's signature menu, shot on location in the restaurant.", imageUrl: "/images/casestudy-grove.png", category: "Stills & Motions", metrics: [], published: true },
-  { id: "p-5", title: "Motorworks — Service Showcase", client: "Motorworks", mediaType: "Motion", duration: "0:45", description: "Cinematic workshop showcase highlighting premium automotive service and attention to detail.", imageUrl: "/images/casestudy-motorworks.png", category: "Stills & Motions", metrics: [], published: true },
-  { id: "p-6", title: "Vertex Corp — Product Demo", client: "Vertex Corp", mediaType: "Motion", duration: "1:15", description: "A technical product demonstration video that simplified complex B2B messaging into engaging visuals.", imageUrl: "/images/casestudy-vertex.png", category: "Stills & Motions", metrics: [], published: true },
+  { id: "p-1", title: "Ingri — SS26 Campaign Film", client: "Ingri", defaultGalleryMode: "grid", galleryUrls: [], duration: "1:45", description: "Cinematic campaign film for Ingri's Spring/Summer collection. Shot on location in Milan and London.", imageUrl: "/images/casestudy-ingri.png", category: "Production", metrics: [], published: true },
+  { id: "p-2", title: "Luxe Stays — Brand Story", client: "Luxe Stays", defaultGalleryMode: "grid", galleryUrls: [], duration: "2:30", description: "Brand documentary capturing the essence of Luxe Stays hospitality. A narrative piece driving direct bookings.", imageUrl: "/images/casestudy-luxestays.png", category: "Production", metrics: [], published: true },
+  { id: "p-3", title: "Bloom Retail — Product Lookbook", client: "Bloom Retail", defaultGalleryMode: "carousel", galleryUrls: [], description: "Editorial product photography for Bloom's seasonal lookbook. Styled for eCommerce and social platforms.", imageUrl: "/images/casestudy-bloom.png", category: "Production", metrics: [], published: true },
+  { id: "p-4", title: "The Grove Kitchen — Menu Editorial", client: "The Grove Kitchen", defaultGalleryMode: "grid", galleryUrls: [], description: "Moody food photography for The Grove Kitchen's signature menu, shot on location in the restaurant.", imageUrl: "/images/casestudy-grove.png", category: "Production", metrics: [], published: true },
+  { id: "p-5", title: "Motorworks — Service Showcase", client: "Motorworks", defaultGalleryMode: "carousel", galleryUrls: [], duration: "0:45", description: "Cinematic workshop showcase highlighting premium automotive service and attention to detail.", imageUrl: "/images/casestudy-motorworks.png", category: "Production", metrics: [], published: true },
+  { id: "p-6", title: "Vertex Corp — Product Demo", client: "Vertex Corp", defaultGalleryMode: "grid", galleryUrls: [], duration: "1:15", description: "A technical product demonstration video that simplified complex B2B messaging into engaging visuals.", imageUrl: "/images/casestudy-vertex.png", category: "Production", metrics: [], published: true },
 ];
 
 const DEFAULT_PORTFOLIO_SECTION: WorkSection = {
@@ -48,32 +48,78 @@ export default function WorkPage() {
   const [portfolioSection, setPortfolioSection] = useState<WorkSection>(DEFAULT_PORTFOLIO_SECTION);
   const [productionSection, setProductionSection] = useState<WorkSection>(DEFAULT_PRODUCTION_SECTION);
   const [testimonialsSection, setTestimonialsSection] = useState<WorkSection | undefined>();
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [csPreviewOpen, setCsPreviewOpen] = useState(false);
   const [selectedCs, setSelectedCs] = useState<WorkItem | null>(null);
   const [pfPreviewOpen, setPfPreviewOpen] = useState(false);
   const [selectedPf, setSelectedPf] = useState<WorkItem | null>(null);
+  const [initialLoad, setInitialLoad] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setInitialLoad(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const [all, settings] = await Promise.all([
+        const [all, settings, allTestimonials] = await Promise.all([
           getWorkItems(),
           getSiteSettings(),
+          getTestimonials(),
         ]);
         const published = all.filter(w => w.published);
-        const studies = published.filter(w => w.category === "Studies" || w.category === "Success Stories");
-        const portfolio = published.filter(w => w.category === "Stills & Motions");
+        const studies = published.filter(w => ["Studies", "Portfolio", "Success Stories", "Client Testimonials"].includes(w.category));
+        const portfolio = published.filter(w => ["Stills & Motions", "Production"].includes(w.category));
         if (studies.length > 0) setCaseStudies(studies);
         if (portfolio.length > 0) setPortfolioItems(portfolio);
+        if (allTestimonials.length > 0) setTestimonials(allTestimonials);
         if (settings?.portfolioSection) setPortfolioSection(settings.portfolioSection);
         if (settings?.productionSection) setProductionSection(settings.productionSection);
         if (settings?.testimonialsSection) setTestimonialsSection(settings.testimonialsSection);
       } catch (err) {
         console.error("Failed to fetch data:", err);
       }
-    }
+    };
     fetchData();
   }, []);
+
+  // Sequentially preload the first portfolio item's gallery
+  useEffect(() => {
+    if (portfolioItems && portfolioItems.length > 0) {
+      const firstItemUrls = portfolioItems[0].galleryUrls;
+      if (firstItemUrls && firstItemUrls.length > 0) {
+        let isCancelled = false;
+        const preload = async () => {
+          for (const url of firstItemUrls) {
+            if (isCancelled) break;
+            try {
+              if (url.match(/\.(mp4|webm|ogg|mov)$/i)) {
+                await new Promise((resolve) => {
+                  const video = document.createElement("video");
+                  video.preload = "metadata";
+                  video.src = url;
+                  video.onloadedmetadata = () => resolve(true);
+                  video.onerror = () => resolve(false);
+                });
+              } else {
+                await new Promise((resolve) => {
+                  const img = new window.Image();
+                  img.src = url;
+                  img.onload = () => resolve(true);
+                  img.onerror = () => resolve(false);
+                });
+              }
+            } catch (e) {}
+          }
+        };
+        preload();
+        return () => {
+          isCancelled = true;
+        };
+      }
+    }
+  }, [portfolioItems]);
 
   return (
     <div className="pt-24 sm:pt-32 pb-16 sm:pb-32">
@@ -101,44 +147,36 @@ export default function WorkPage() {
           title={portfolioSection.title}
           subtitle={portfolioSection.subtitle}
         >
-          {caseStudies.map((cs) => (
+          {caseStudies.map((cs, index) => (
             <div
               key={cs.id || cs.title}
               onClick={() => { setSelectedCs(cs); setCsPreviewOpen(true); }}
-              className="snap-start flex-shrink-0 w-[320px] sm:w-[380px] md:w-[420px] cursor-pointer group"
+              className="snap-start flex-shrink-0 cursor-pointer group"
             >
-              <div className="rounded-2xl sm:rounded-3xl bg-secondary-surface/40 border border-white/5 hover:border-accent-blue/30 transition-[border-color,box-shadow] duration-200 overflow-hidden h-full hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
-                {/* Image */}
-                <div className="relative w-full aspect-[16/10] overflow-hidden">
-                  <Image
-                    src={cs.imageUrl || "/images/placeholder.png"}
-                    alt={`${cs.title} — ${cs.tag} case study by Upmark`}
-                    fill
-                    className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
-                    sizes="420px"
-                  />
-                  <div className={`absolute inset-0 bg-gradient-to-br ${cs.gradient || "from-blue-900/30 to-slate-900/10"} opacity-60`}></div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-transparent to-transparent"></div>
-                  <div className="absolute top-3 left-3 px-3 py-1 bg-black/60 rounded-full text-[10px] text-white uppercase tracking-widest font-semibold border border-white/10">
-                    {cs.tag || cs.category}
-                  </div>
+              <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-secondary-surface/40 border border-white/5 hover:border-accent-blue/30 transition-[border-color,box-shadow] duration-200 h-[300px] sm:h-[420px] w-auto flex hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={cs.imageUrl || "/images/placeholder.png"}
+                  alt={`${cs.title} — ${cs.tag} case study by Upmark`}
+                  className="h-full w-auto object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                />
+                
+                <div className={`absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-20 pointer-events-none transition-opacity duration-500 group-hover:animate-none ${initialLoad ? "opacity-100" : "opacity-0 group-hover:!opacity-100"} ${!initialLoad ? "animate-[staggeredPopup_20s_infinite]" : ""}`} style={{ animationDelay: `${index * 3}s` }}></div>
+
+                <div className={`absolute top-3 left-3 z-30 transition-opacity duration-500 group-hover:animate-none ${initialLoad ? "opacity-100" : "opacity-0 group-hover:!opacity-100"} ${!initialLoad ? "animate-[staggeredPopup_20s_infinite]" : ""}`} style={{ animationDelay: `${index * 3}s` }}>
+                   <div className="px-3 py-1 bg-black/60 rounded-full text-[10px] text-white uppercase tracking-widest font-semibold border border-white/10">
+                     {cs.tag || cs.category}
+                   </div>
                 </div>
 
-                {/* Content */}
-                <div className="p-5 sm:p-6">
-                  <h3 className="text-xl sm:text-2xl font-black text-white mb-3">{cs.title}</h3>
-                  <div className="flex items-center gap-6 mb-3 pb-3 border-b border-white/10">
-                    <div>
-                      <div className="text-lg sm:text-xl font-black text-white">{cs.stat1 || "—"}</div>
-                      <div className="text-muted-text text-[10px] uppercase tracking-wider">{cs.stat1label || "Stat"}</div>
-                    </div>
-                    <div>
-                      <div className="text-lg sm:text-xl font-black text-white">{cs.stat2 || "—"}</div>
-                      <div className="text-muted-text text-[10px] uppercase tracking-wider">{cs.stat2label || "Stat"}</div>
-                    </div>
-                  </div>
-                  <p className="text-muted-text/90 font-light text-sm line-clamp-2 mb-3">{cs.description}</p>
-                  <div className="inline-flex items-center gap-2 text-accent-blue font-semibold text-sm group-hover:gap-3 transition-[gap]">
+                {/* Content Overlay */}
+                <div className={`absolute bottom-0 left-0 right-0 p-5 z-30 transition-all duration-500 group-hover:animate-none ${initialLoad ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0 group-hover:!translate-y-0 group-hover:!opacity-100"} ${!initialLoad ? "animate-[staggeredPopup_20s_infinite]" : ""}`} style={{ animationDelay: `${index * 3}s` }}>
+                  <h3 className="text-xl sm:text-2xl font-black text-white">{cs.title}</h3>
+                  {cs.client && (
+                    <div className="text-sm font-semibold text-accent-blue pb-3 border-b border-white/10 uppercase tracking-wider">{cs.client}</div>
+                  )}
+                  <p className="text-white/90 font-light text-sm line-clamp-2 mt-1 whitespace-pre-wrap">{cs.description}</p>
+                  <div className="inline-flex items-center gap-2 text-accent-blue font-semibold text-sm group-hover:gap-3 transition-[gap] mt-3">
                     View Details <ArrowUpRight size={16} />
                   </div>
                 </div>
@@ -155,45 +193,29 @@ export default function WorkPage() {
           title={productionSection.title}
           subtitle={productionSection.subtitle}
         >
-          {portfolioItems.map((item) => (
+          {portfolioItems.map((item, index) => (
             <div
               key={item.id || item.title}
               onClick={() => { setSelectedPf(item); setPfPreviewOpen(true); }}
-              className="snap-start flex-shrink-0 w-[260px] sm:w-[300px] md:w-[340px] cursor-pointer group"
+              className="snap-start flex-shrink-0 cursor-pointer group"
             >
               <div className="relative rounded-2xl overflow-hidden bg-secondary-surface/40 border border-white/5 hover:border-accent-blue/30 transition-[border-color]">
-                <div className="h-[420px] relative overflow-hidden">
+                <div className="h-[300px] sm:h-[420px] w-auto relative overflow-hidden flex">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors z-10"></div>
 
-                  {item.mediaType === "Motion" && (productionSection.autoplayVideos ?? true) && item.mediaUrl ? (
-                    <video
-                      src={item.mediaUrl}
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <Image
-                      src={item.imageUrl || "/images/placeholder.png"}
-                      alt={`${item.title} — production by Upmark`}
-                      fill
-                      className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
-                      sizes="340px"
-                    />
-                  )}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={item.imageUrl || "/images/placeholder.png"}
+                    alt={`${item.title} — production by Upmark`}
+                    className="h-full w-auto object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                  />
 
-                  {(item.mediaType === "Motion" && (!(productionSection.autoplayVideos ?? true) || !item.mediaUrl)) && (
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 text-white/70 group-hover:text-white transition-colors group-hover:scale-110 duration-300">
-                      <PlayCircle size={48} strokeWidth={1} />
-                    </div>
-                  )}
+                  <div className={`absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-20 pointer-events-none transition-opacity duration-500 group-hover:animate-none ${initialLoad ? "opacity-100" : "opacity-0 group-hover:!opacity-100"} ${!initialLoad ? "animate-[staggeredPopup_20s_infinite]" : ""}`} style={{ animationDelay: `${index * 3}s` }}></div>
 
-                  <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-20 translate-y-1 group-hover:translate-y-0 transition-transform">
+                  <div className={`absolute bottom-0 left-0 right-0 p-5 z-30 transition-all duration-500 group-hover:animate-none ${initialLoad ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0 group-hover:!translate-y-0 group-hover:!opacity-100"} ${!initialLoad ? "animate-[staggeredPopup_20s_infinite]" : ""}`} style={{ animationDelay: `${index * 3}s` }}>
                     <div className="flex items-center gap-2 mb-2">
-                       <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${item.mediaType === 'Motion' ? 'bg-accent-blue/20 text-accent-blue' : 'bg-accent-gold/20 text-accent-gold'}`}>
-                         {item.mediaType || "Stills"}
+                       <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-white/10 text-white/90">
+                         Gallery
                        </span>
                        {item.duration && <span className="text-[10px] text-white/70 font-mono tracking-widest">{item.duration}</span>}
                     </div>
@@ -208,7 +230,7 @@ export default function WorkPage() {
 
       {/* ─── Testimonials Section ─────────────────────────── */}
       <div id="testimonials" className="scroll-mt-32">
-        <TestimonialsCarousel maxItems={3} section={testimonialsSection} />
+        <TestimonialsCarousel testimonials={testimonials} maxItems={testimonials.length || 3} section={testimonialsSection} />
       </div>
 
       {/* ─── Case Study Preview Dialog ───────────────────── */}
@@ -219,11 +241,10 @@ export default function WorkPage() {
           title={selectedCs.title}
           description={selectedCs.description}
           imageUrl={selectedCs.imageUrl}
-          stats={[
-            { label: selectedCs.stat1label || "Stat", value: selectedCs.stat1 || "—" },
-            { label: selectedCs.stat2label || "Stat", value: selectedCs.stat2 || "—" },
+          meta={[
+            { label: "Client", value: selectedCs.client || "—" },
+            { label: "Industry", value: selectedCs.tag || "" }
           ]}
-          meta={[{ label: "Industry", value: selectedCs.tag || "" }]}
         />
       )}
 
@@ -234,8 +255,9 @@ export default function WorkPage() {
           onClose={() => setPfPreviewOpen(false)}
           title={selectedPf.title}
           description={selectedPf.description}
-          imageUrl={selectedPf.mediaType !== "Motion" ? selectedPf.imageUrl : undefined}
-          mediaUrl={selectedPf.mediaType === "Motion" ? selectedPf.mediaUrl : undefined}
+          imageUrl={selectedPf.imageUrl}
+          galleryUrls={selectedPf.galleryUrls}
+          defaultGalleryMode={selectedPf.defaultGalleryMode}
           detailFields={(productionSection.detailFields || [])
             .filter((field) => {
               const val = selectedPf[field as keyof WorkItem];
@@ -247,7 +269,6 @@ export default function WorkPage() {
                 client: "Client",
                 description: "Description",
                 tag: "Industry",
-                mediaType: "Type",
                 duration: "Duration",
                 details: "Details",
               };

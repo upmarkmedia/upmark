@@ -6,9 +6,9 @@ import { Loader2 } from "lucide-react";
 import type { WorkItem, WorkItemCategory } from "@/types";
 
 const CATEGORIES: WorkItemCategory[] = [
-  "Studies",
-  "Success Stories",
-  "Stills & Motions",
+  "Portfolio",
+  "Production",
+  "Client Testimonials",
 ];
 
 const GRADIENT_OPTIONS = [
@@ -33,7 +33,8 @@ interface WorkItemFormData {
   gradient: string;
   imageUrl: string;
   mediaUrl: string;
-  mediaType: "Stills" | "Motion";
+  galleryUrls: string[];
+  defaultGalleryMode: "grid" | "carousel";
   duration: string;
   details: string;
   metrics: { value: string }[];
@@ -62,7 +63,10 @@ export function WorkItemForm({
       title: initialData?.title || "",
       client: initialData?.client || "",
       description: initialData?.description || "",
-      category: initialData?.category || "Studies",
+      category: initialData?.category === "Studies" ? "Portfolio"
+               : initialData?.category === "Success Stories" ? "Client Testimonials"
+               : initialData?.category === "Stills & Motions" ? "Production"
+               : initialData?.category || "Portfolio",
       tag: initialData?.tag || "",
       stat1: initialData?.stat1 || "",
       stat1label: initialData?.stat1label || "",
@@ -71,7 +75,8 @@ export function WorkItemForm({
       gradient: initialData?.gradient || GRADIENT_OPTIONS[0].value,
       imageUrl: initialData?.imageUrl || "",
       mediaUrl: initialData?.mediaUrl || "",
-      mediaType: initialData?.mediaType || "Stills",
+      galleryUrls: initialData?.galleryUrls || [],
+      defaultGalleryMode: initialData?.defaultGalleryMode || "carousel",
       duration: initialData?.duration || "",
       details: initialData?.details || "",
       metrics: initialData?.metrics?.map((v) => ({ value: v })) || [{ value: "" }],
@@ -81,6 +86,7 @@ export function WorkItemForm({
 
   const imageUrl = watch("imageUrl");
   const mediaUrl = watch("mediaUrl");
+  const galleryUrls = watch("galleryUrls") || [];
   const category = watch("category");
 
   async function handleFormSubmit(data: WorkItemFormData) {
@@ -97,7 +103,8 @@ export function WorkItemForm({
       gradient: data.gradient,
       imageUrl: data.imageUrl,
       mediaUrl: data.mediaUrl,
-      mediaType: data.mediaType,
+      galleryUrls: data.galleryUrls,
+      defaultGalleryMode: data.defaultGalleryMode,
       duration: data.duration,
       details: data.details,
       metrics: data.metrics.map((m) => m.value).filter(Boolean),
@@ -207,25 +214,25 @@ export function WorkItemForm({
             ))}
           </select>
         </div>
-        {category === "Stills & Motions" && (
+        {category === "Production" && (
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-[#F8FAFC]">Media Type</label>
-            <select {...register("mediaType")} className={`${inputClass} appearance-none`}>
-              <option value="Stills">Stills</option>
-              <option value="Motion">Motion</option>
+            <label className="text-sm font-medium text-[#F8FAFC]">Default Gallery Mode</label>
+            <select {...register("defaultGalleryMode")} className={`${inputClass} appearance-none`}>
+              <option value="carousel">Carousel</option>
+              <option value="grid">Grid</option>
             </select>
           </div>
         )}
       </div>
 
-      {category === "Stills & Motions" && (
+      {category === "Production" && (
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium text-[#F8FAFC]">Duration (for Motion)</label>
           <input {...register("duration")} placeholder="e.g. 0:30" className={inputClass} />
         </div>
       )}
 
-      {category === "Stills & Motions" && (
+      {category === "Production" && (
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium text-[#F8FAFC]">Overlay Details</label>
           <textarea
@@ -264,18 +271,54 @@ export function WorkItemForm({
 
       {/* Media Uploads */}
       <CloudinaryUploadWidget
-        onUpload={(url) => setValue("mediaUrl", url)}
-        currentUrl={mediaUrl}
-        label="Media Upload (Video)"
-      />
-      <input type="hidden" {...register("mediaUrl")} />
-
-      <CloudinaryUploadWidget
         onUpload={(url) => setValue("imageUrl", url)}
         currentUrl={imageUrl}
-        label="Card Image / Thumbnail"
+        label="Card Image / Thumbnail *"
       />
-      <input type="hidden" {...register("imageUrl")} />
+      <input type="hidden" {...register("imageUrl", { required: "Thumbnail is required" })} />
+
+      {category !== "Production" && (
+        <>
+          <CloudinaryUploadWidget
+            onUpload={(url) => setValue("mediaUrl", url)}
+            currentUrl={mediaUrl}
+            label="Media Upload (Video)"
+          />
+          <input type="hidden" {...register("mediaUrl")} />
+        </>
+      )}
+
+      {category === "Production" && (
+        <div className="flex flex-col gap-3 pt-4 border-t border-white/5">
+          <label className="text-sm font-medium text-[#F8FAFC]">Project Gallery</label>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {galleryUrls.map((url, i) => (
+              <div key={i} className="relative group rounded-lg overflow-hidden border border-white/10 bg-[#0F172A] aspect-video">
+                {url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+                  <video src={url} className="w-full h-full object-cover" />
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={url} alt="" className="w-full h-full object-cover" />
+                )}
+                <button
+                  type="button"
+                  onClick={() => setValue("galleryUrls", galleryUrls.filter((_, idx) => idx !== i))}
+                  className="absolute top-1 right-1 p-1 bg-red-500/80 hover:bg-red-500 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+              </div>
+            ))}
+            <div className="aspect-video">
+              <CloudinaryUploadWidget
+                onUpload={(url) => setValue("galleryUrls", [...galleryUrls, url])}
+                label="Add Media"
+                multiple={true}
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Actions */}
       <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/5">

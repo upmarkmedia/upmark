@@ -26,8 +26,11 @@ const TABS: { key: Tab; label: string; icon: React.ElementType }[] = [
 
 const categoryBadgeColor: Record<string, string> = {
   Studies: "bg-blue-500/10 text-blue-400 border-blue-500/20",
-  "Success Stories": "bg-green-500/10 text-green-400 border-green-500/20",
+  "Success Stories": "bg-purple-500/10 text-purple-400 border-purple-500/20",
   "Stills & Motions": "bg-amber-500/10 text-amber-400 border-amber-500/20",
+  "Portfolio": "bg-blue-500/10 text-blue-400 border-blue-500/20",
+  "Client Testimonials": "bg-purple-500/10 text-purple-400 border-purple-500/20",
+  "Production": "bg-amber-500/10 text-amber-400 border-amber-500/20",
 };
 
 const WORK_SEO_DEFAULTS: SeoPageConfig = {
@@ -45,7 +48,7 @@ export default function WorkPageSettings() {
   // ─── Work Items CRUD ─────────────────────────
   const [showWorkForm, setShowWorkForm] = useState(false);
   const [editingWorkItem, setEditingWorkItem] = useState<WorkItem | undefined>();
-  const [workItemDefaultCategory, setWorkItemDefaultCategory] = useState<WorkItemCategory>("Studies");
+  const [workItemDefaultCategory, setWorkItemDefaultCategory] = useState<WorkItemCategory>("Portfolio");
 
   const fetchItems = useCallback(() => getWorkItems(), []);
   const coll = useCollection<WorkItem, Omit<WorkItem, "id" | "createdAt" | "updatedAt">>(
@@ -58,7 +61,7 @@ export default function WorkPageSettings() {
 
   const portfolioItems = coll.items.filter(
     (item) =>
-      (item.category === "Studies" || item.category === "Success Stories") &&
+      (["Studies", "Portfolio", "Success Stories", "Client Testimonials"].includes(item.category)) &&
       (!portfolioSearch ||
         [item.title, item.client, item.category].some((v) =>
           v?.toLowerCase().includes(portfolioSearch.toLowerCase())
@@ -66,7 +69,7 @@ export default function WorkPageSettings() {
   );
   const productionItems = coll.items.filter(
     (item) =>
-      item.category === "Stills & Motions" &&
+      ["Stills & Motions", "Production"].includes(item.category) &&
       (!productionSearch ||
         [item.title, item.client, item.category].some((v) =>
           v?.toLowerCase().includes(productionSearch.toLowerCase())
@@ -490,7 +493,7 @@ export default function WorkPageSettings() {
               />
             </div>
             <button
-              onClick={() => openCreateWorkItem("Stills & Motions")}
+              onClick={() => openCreateWorkItem("Production")}
               className="flex items-center gap-2 px-4 py-2 bg-[#3B82F6] hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-all flex-shrink-0"
             >
               <Plus size={16} /> Add New
@@ -503,13 +506,13 @@ export default function WorkPageSettings() {
             <EmptyState
               icon={Film}
               message={productionSearch ? "No production items match your search." : 'No production items yet. Click "Add New" to create one.'}
-              action={productionSearch ? undefined : { label: "Add New", onClick: () => openCreateWorkItem("Stills & Motions") }}
+              action={productionSearch ? undefined : { label: "Add New", onClick: () => openCreateWorkItem("Production") }}
             />
           ) : (
             <div className="bg-[#1E293B] rounded-xl border border-white/5 overflow-hidden">
               <div className="hidden md:grid md:grid-cols-[1fr_100px_80px_80px] gap-4 px-6 py-3 border-b border-white/5 bg-white/[0.02]">
                 <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider">Title / Client</span>
-                <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider">Type</span>
+                <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider">Folder</span>
                 <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider">Status</span>
                 <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider text-right">Actions</span>
               </div>
@@ -524,7 +527,7 @@ export default function WorkPageSettings() {
                   </div>
                   <div>
                     <span className="inline-block px-2.5 py-1 text-xs font-medium rounded-full border bg-amber-500/10 text-amber-400 border-amber-500/20">
-                      {item.mediaType || "Stills"}
+                      {item.galleryUrls?.length ? `${item.galleryUrls.length} Media` : "Empty"}
                     </span>
                   </div>
                   <div>

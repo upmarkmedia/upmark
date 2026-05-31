@@ -2,7 +2,7 @@
 
 import { useEffect, useCallback, useRef, useState, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, LayoutGrid, GalleryHorizontalEnd } from "lucide-react";
 import Image from "next/image";
 
 interface PreviewDialogProps {
@@ -12,6 +12,8 @@ interface PreviewDialogProps {
   description?: string;
   imageUrl?: string;
   mediaUrl?: string;
+  galleryUrls?: string[];
+  defaultGalleryMode?: "grid" | "carousel";
   children?: ReactNode;
   stats?: { label: string; value: string }[];
   meta?: { label: string; value: string }[];
@@ -26,6 +28,8 @@ export function PreviewDialog({
   description,
   imageUrl,
   mediaUrl,
+  galleryUrls,
+  defaultGalleryMode,
   children,
   stats,
   meta,
@@ -33,26 +37,54 @@ export function PreviewDialog({
   autoHide,
 }: PreviewDialogProps) {
   const [detailsVisible, setDetailsVisible] = useState(true);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const [galleryMode, setGalleryMode] = useState<"grid" | "carousel">(defaultGalleryMode || "grid");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const timerRef = useRef<NodeJS.Timeout | undefined>(undefined);
+  const hasGallery = galleryUrls && galleryUrls.length > 0;
 
+  // Sequentially preload the gallery urls when dialog opens
   useEffect(() => {
-    if (!autoHide) return;
-    timerRef.current = setTimeout(() => setDetailsVisible(false), 5000);
-    const showDetails = () => {
-      setDetailsVisible(true);
-      clearTimeout(timerRef.current);
-      timerRef.current = setTimeout(() => setDetailsVisible(false), 5000);
+    if (!open || !hasGallery || !galleryUrls || galleryUrls.length === 0) return;
+
+    let isCancelled = false;
+    const preload = async () => {
+      for (const url of galleryUrls) {
+        if (isCancelled) break;
+        try {
+          if (url.match(/\.(mp4|webm|ogg|mov)$/i)) {
+            await new Promise((resolve) => {
+              const video = document.createElement("video");
+              video.preload = "metadata";
+              video.src = url;
+              video.onloadedmetadata = () => resolve(true);
+              video.onerror = () => resolve(false);
+            });
+          } else {
+            await new Promise((resolve) => {
+              const img = new window.Image();
+              img.src = url;
+              img.onload = () => resolve(true);
+              img.onerror = () => resolve(false);
+            });
+          }
+        } catch (e) { }
+      }
     };
-    document.addEventListener("mousemove", showDetails);
-    document.addEventListener("keydown", showDetails);
-    document.addEventListener("touchstart", showDetails);
+    preload();
     return () => {
-      clearTimeout(timerRef.current);
-      document.removeEventListener("mousemove", showDetails);
-      document.removeEventListener("keydown", showDetails);
-      document.removeEventListener("touchstart", showDetails);
+      isCancelled = true;
     };
-  }, [autoHide]);
+  }, [open, hasGallery, galleryUrls]);
+
+  // Reset states when opened with new content
+  useEffect(() => {
+    if (open) {
+      setGalleryMode(defaultGalleryMode || "grid");
+      setCurrentIndex(0);
+    }
+  }, [open, defaultGalleryMode]);
+
+
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -83,15 +115,15 @@ export function PreviewDialog({
           className="fixed inset-0 z-[100] flex items-center justify-center sm:p-6"
           onClick={onClose}
         >
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm md:backdrop-blur-none" />
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ duration: 0.25, ease: [0.25, 0.4, 0, 1] }}
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            className="relative w-auto max-w-[95vw] md:max-w-[90vw] max-h-[95vh] bg-[#0F172A] rounded-2xl sm:rounded-3xl border border-white/10 overflow-hidden shadow-2xl flex flex-col"
             onClick={(e) => e.stopPropagation()}
-            className="relative z-10 bg-[#1E293B] sm:border border-white/10 sm:rounded-2xl md:rounded-3xl overflow-hidden max-w-3xl w-screen h-[100dvh] sm:w-full sm:h-auto sm:max-h-[90vh] flex flex-col shadow-2xl"
           >
             <button
               onClick={onClose}
@@ -102,97 +134,162 @@ export function PreviewDialog({
             </button>
 
             <div className="overflow-y-auto flex-1">
-              {(imageUrl || mediaUrl) && (
-                <div className="relative w-full aspect-video bg-black/30 overflow-hidden">
+              {hasGallery ? (
+                galleryMode === "carousel" ? (
+                  <div className="relative w-full overflow-hidden group flex items-center justify-center bg-[#1E293B]">
+                    {galleryUrls[currentIndex].match(/\.(mp4|webm|ogg|mov)$/i) ? (
+                      <video
+                        key={galleryUrls[currentIndex]}
+                        src={galleryUrls[currentIndex]}
+                        controls
+                        autoPlay
+                        playsInline
+                        className="w-auto h-auto max-w-full max-h-[65vh] object-contain"
+                      />
+                    ) : (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img
+                        src={galleryUrls[currentIndex]}
+                        alt={`${title} - Gallery Image ${currentIndex + 1}`}
+                        className="w-auto h-auto max-w-full max-h-[65vh] object-contain"
+                      />
+                    )}
+                    {galleryUrls.length > 1 && (
+                      <>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setCurrentIndex((prev) => (prev > 0 ? prev - 1 : galleryUrls.length - 1)); }}
+                          className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 border border-white/10 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 hover:bg-black/70"
+                        >
+                          <ChevronLeft size={24} />
+                        </button>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setCurrentIndex((prev) => (prev < galleryUrls.length - 1 ? prev + 1 : 0)); }}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 border border-white/10 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 hover:bg-black/70"
+                        >
+                          <ChevronRight size={24} />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                ) : (
+                  <div className="w-[100vw] sm:w-[800px] max-w-full p-6 sm:p-8 md:p-10 pb-0">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {galleryUrls.map((url, idx) => (
+                        <div key={idx} className="relative aspect-video bg-black/30 rounded-lg overflow-hidden border border-white/10">
+                          {url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+                            <video src={url} controls playsInline className="w-full h-full object-contain bg-black" />
+                          ) : (
+                            /* eslint-disable-next-line @next/next/no-img-element */
+                            <img src={url} alt={`${title} ${idx + 1}`} loading="lazy" className="w-full h-full object-contain bg-black" />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )
+              ) : (imageUrl || mediaUrl) ? (
+                <div className="relative w-full overflow-hidden flex items-center justify-center bg-[#1E293B]">
                   {mediaUrl ? (
                     <video
                       src={mediaUrl}
                       controls
                       autoPlay
                       playsInline
-                      className="w-full h-full object-cover"
+                      className="w-auto h-auto max-w-full max-h-[65vh] object-contain"
                     />
                   ) : imageUrl ? (
-                    <Image
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
                       src={imageUrl}
                       alt={title}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 720px"
+                      className="w-auto h-auto max-w-full max-h-[65vh] object-contain"
                     />
                   ) : null}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1E293B] via-transparent to-transparent pointer-events-none" />
                 </div>
-              )}
+              ) : null}
 
-              <motion.div
-                animate={{
-                  opacity: detailsVisible ? 1 : 0,
-                  y: detailsVisible ? 0 : 20,
-                }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-                className={`p-6 sm:p-8 md:p-10 ${detailsVisible ? "" : "pointer-events-none"}`}
-              >
-                <h2 className="text-3xl sm:text-4xl font-black text-white mb-4 pr-12">
-                  {title}
-                </h2>
+              <div className="w-full bg-[#0F172A] p-6 sm:p-8 md:p-10 shrink-0 border-t border-white/5">
+                <div className="max-h-[30vh] overflow-y-auto hide-scrollbar">
+                  <h2 className="text-2xl sm:text-3xl font-black text-white mb-4 pr-12">
+                    {title}
+                  </h2>
 
-                {stats && stats.length > 0 && (
-                  <div className="flex flex-wrap gap-6 sm:gap-10 mb-6 pb-6 border-b border-white/10">
-                    {stats.map((s) => (
-                      <div key={s.label}>
-                        <div className="text-2xl sm:text-3xl font-black text-white">
-                          {s.value}
+                  {stats && stats.length > 0 && (
+                    <div className="flex flex-wrap gap-6 sm:gap-10 mb-6 pb-6 border-b border-white/10">
+                      {stats.map((s) => (
+                        <div key={s.label}>
+                          <div className="text-2xl sm:text-3xl font-black text-white">
+                            {s.value}
+                          </div>
+                          <div className="text-xs text-muted-text uppercase tracking-wider">
+                            {s.label}
+                          </div>
                         </div>
-                        <div className="text-xs text-muted-text uppercase tracking-wider">
-                          {s.label}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                      ))}
+                    </div>
+                  )}
 
-                {description && (
-                  <p className="text-muted-text font-light text-base sm:text-lg leading-relaxed mb-6">
-                    {description}
-                  </p>
-                )}
+                  {description && (
+                    <p className="text-muted-text font-light text-base sm:text-lg leading-relaxed mb-6 whitespace-pre-wrap">
+                      {description}
+                    </p>
+                  )}
 
-                {detailFields && detailFields.length > 0 && (
-                  <div className="flex flex-wrap gap-3 mb-6">
-                    {detailFields.map((f) => (
-                      <span
-                        key={f.label}
-                        className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-xs text-white/70"
-                      >
-                        <span className="text-accent-blue font-medium">
-                          {f.label}:
-                        </span>{" "}
-                        {f.value}
-                      </span>
-                    ))}
-                  </div>
-                )}
+                  {detailFields && detailFields.length > 0 && (
+                    <div className="flex flex-wrap gap-3 mb-6">
+                      {detailFields.map((f) => (
+                        <span
+                          key={f.label}
+                          className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-xs text-white/70"
+                        >
+                          <span className="text-accent-blue font-medium">
+                            {f.label}:
+                          </span>{" "}
+                          {f.value}
+                        </span>
+                      ))}
+                    </div>
+                  )}
 
-                {meta && meta.length > 0 && (
-                  <div className="flex flex-wrap gap-3">
-                    {meta.map((m) => (
-                      <span
-                        key={m.label}
-                        className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-xs text-white/70"
-                      >
-                        <span className="text-accent-blue font-medium">
-                          {m.label}:
-                        </span>{" "}
-                        {m.value}
-                      </span>
-                    ))}
-                  </div>
-                )}
+                  {meta && meta.length > 0 && (
+                    <div className="flex flex-wrap gap-3">
+                      {meta.map((m) => (
+                        <span
+                          key={m.label}
+                          className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-xs text-white/70"
+                        >
+                          <span className="text-accent-blue font-medium">
+                            {m.label}:
+                          </span>{" "}
+                          {m.value}
+                        </span>
+                      ))}
+                    </div>
+                  )}
 
-                {children}
-              </motion.div>
+                  {children}
+                </div>
+              </div>
             </div>
+
+            {hasGallery && (
+              <div className="absolute bottom-6 right-6 z-30 flex items-center bg-black/60 backdrop-blur-md rounded-full border border-white/10 p-1 shadow-xl">
+                <button
+                  onClick={(e) => { e.stopPropagation(); setGalleryMode("carousel"); }}
+                  className={`p-2 rounded-full transition-colors ${galleryMode === "carousel" ? "bg-white/20 text-white" : "text-white/50 hover:text-white"}`}
+                  title="Carousel View"
+                >
+                  <GalleryHorizontalEnd size={18} />
+                </button>
+                <button
+                  onClick={(e) => { e.stopPropagation(); setGalleryMode("grid"); }}
+                  className={`p-2 rounded-full transition-colors ${galleryMode === "grid" ? "bg-white/20 text-white" : "text-white/50 hover:text-white"}`}
+                  title="Grid View"
+                >
+                  <LayoutGrid size={18} />
+                </button>
+              </div>
+            )}
           </motion.div>
         </motion.div>
       )}

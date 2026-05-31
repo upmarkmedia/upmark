@@ -157,6 +157,12 @@ html {
   }
 }
 
+/* Staggered popup animation for portfolio cards */
+@keyframes staggeredPopup {
+  0%, 85%, 100% { opacity: 0; transform: translateY(8px); }
+  90%, 95% { opacity: 1; transform: translateY(0); }
+}
+
 /* ─── GPU compositing hints for critical layers ─── */
 .will-change-transform {
   will-change: transform;

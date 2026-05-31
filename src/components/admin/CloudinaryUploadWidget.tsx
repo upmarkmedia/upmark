@@ -18,12 +18,14 @@ interface CloudinaryUploadWidgetProps {
   onUpload: (url: string) => void;
   currentUrl?: string;
   label?: string;
+  multiple?: boolean;
 }
 
 export function CloudinaryUploadWidget({
   onUpload,
   currentUrl,
   label = "Upload Media",
+  multiple = false,
 }: CloudinaryUploadWidgetProps) {
   const widgetRef = useRef<{ open: () => void; destroy: () => void } | null>(null);
   const [scriptLoaded, setScriptLoaded] = useState(false);
@@ -64,7 +66,7 @@ export function CloudinaryUploadWidget({
         cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
         uploadPreset: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET,
         sources: ["local", "url", "camera"],
-        multiple: false,
+        multiple: multiple,
         maxFileSize: 50000000, // 50MB
         resourceType: "auto",
         styles: {
@@ -99,7 +101,7 @@ export function CloudinaryUploadWidget({
         }
         if (result.event === "success") {
           const url = result.info.secure_url;
-          setPreview(url);
+          if (!multiple) setPreview(url);
           onUpload(url);
         }
       }
@@ -118,7 +120,25 @@ export function CloudinaryUploadWidget({
     <div className="flex flex-col gap-3">
       <label className="text-sm font-medium text-[#F8FAFC]">{label}</label>
 
-      {preview ? (
+      {multiple ? (
+        <button
+          type="button"
+          onClick={openWidget}
+          disabled={!scriptLoaded}
+          className="flex flex-col items-center justify-center gap-2 h-24 border-2 border-dashed border-white/10 rounded-lg bg-[#0F172A] hover:border-[#3B82F6]/50 hover:bg-[#3B82F6]/5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <div className="w-10 h-10 rounded-full bg-[#3B82F6]/10 flex items-center justify-center">
+            {scriptLoaded ? (
+              <Upload size={16} className="text-[#3B82F6]" />
+            ) : (
+              <ImageIcon size={16} className="text-[#94A3B8]" />
+            )}
+          </div>
+          <span className="text-xs font-medium text-[#94A3B8]">
+            {scriptLoaded ? "Click to add media" : "Loading widget..."}
+          </span>
+        </button>
+      ) : preview ? (
         <div className="relative group rounded-lg overflow-hidden border border-white/10 bg-[#0F172A]">
           {preview.match(/\.(mp4|webm|ogg|mov)$/i) ? (
             <video

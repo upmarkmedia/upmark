@@ -6,7 +6,7 @@ export interface WorkItem {
   title: string;
   client: string;
   description: string;
-  category: "Studies" | "Success Stories" | "Stills & Motions";
+  category: "Portfolio" | "Client Testimonials" | "Production" | "Studies" | "Success Stories" | "Stills & Motions";
   tag?: string;
   // Stats
   stat1?: string;
@@ -17,7 +17,8 @@ export interface WorkItem {
   gradient?: string;
   imageUrl?: string;
   // Production (Stills & Motions)
-  mediaType?: "Stills" | "Motion";
+  galleryUrls?: string[];
+  defaultGalleryMode?: "grid" | "carousel";
   duration?: string;
   mediaUrl?: string;
   details?: string;
@@ -38,7 +39,7 @@ export interface CaseStudy {
   title: string;
   client: string;
   description: string;
-  category: "Studies" | "Success Stories";
+  category: "Portfolio" | "Client Testimonials" | "Studies" | "Success Stories";
   tag?: string;
   // Stats
   stat1?: string;
@@ -99,6 +100,7 @@ export interface Testimonial {
   role: string;
   featured?: boolean;
   order?: number;
+  imageUrl?: string;
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }

@@ -17,6 +17,14 @@ const nextConfig: NextConfig = {
       { source: "/admin/case-studies", destination: "/admin/pages/case-studies", permanent: true },
     ];
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

@@ -63,9 +63,16 @@ export const TestimonialsCarousel = ({ testimonials, maxItems = 3, section }: Te
                 &quot;{t.quote}&quot;
               </p>
               <div className="flex items-center gap-3 mt-auto pt-4 border-t border-white/10">
-                <div className="w-10 h-10 rounded-full bg-accent-blue/20 flex items-center justify-center text-accent-blue font-bold text-sm uppercase flex-shrink-0">
-                  {t.name.charAt(0)}
-                </div>
+                {t.imageUrl ? (
+                  <div className="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden bg-accent-blue/20">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={t.imageUrl} alt={t.name} className="w-full h-full object-cover" />
+                  </div>
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-accent-blue/20 flex items-center justify-center text-accent-blue font-bold text-sm uppercase flex-shrink-0">
+                    {t.name.charAt(0)}
+                  </div>
+                )}
                 <div>
                   <h4 className="text-white font-semibold text-sm">{t.name}</h4>
                   <p className="text-accent-blue text-xs">{t.role}</p>

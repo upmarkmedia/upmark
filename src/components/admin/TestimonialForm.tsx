@@ -1,6 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
+import { CloudinaryUploadWidget } from "./CloudinaryUploadWidget";
 import { Loader2, Star } from "lucide-react";
 import type { Testimonial } from "@/types";
 
@@ -10,6 +11,7 @@ interface TestimonialFormData {
   role: string;
   order: number;
   featured: boolean;
+  imageUrl: string;
 }
 
 interface TestimonialFormProps {
@@ -26,6 +28,7 @@ export function TestimonialForm({
   const {
     register,
     handleSubmit,
+    setValue,
     watch,
     formState: { errors, isSubmitting },
   } = useForm<TestimonialFormData>({
@@ -35,10 +38,12 @@ export function TestimonialForm({
       role: initialData?.role || "",
       order: initialData?.order ?? 0,
       featured: initialData?.featured ?? false,
+      imageUrl: initialData?.imageUrl || "",
     },
   });
 
   const isFeatured = watch("featured");
+  const imageUrl = watch("imageUrl");
 
   async function handleFormSubmit(data: TestimonialFormData) {
     await onSubmit({
@@ -47,6 +52,7 @@ export function TestimonialForm({
       role: data.role,
       order: data.order,
       featured: data.featured,
+      imageUrl: data.imageUrl,
     });
   }
 
@@ -140,6 +146,14 @@ export function TestimonialForm({
           <p className="text-xs text-[#94A3B8]">Mark as featured to display in the homepage carousel (max 3).</p>
         </div>
       </div>
+
+      {/* Image Upload */}
+      <CloudinaryUploadWidget
+        onUpload={(url) => setValue("imageUrl", url)}
+        currentUrl={imageUrl}
+        label="Author Image"
+      />
+      <input type="hidden" {...register("imageUrl")} />
 
       {/* Actions */}
       <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/5">

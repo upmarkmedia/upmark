@@ -28,6 +28,8 @@ const CATEGORY_TABS: { label: string; value: CaseStudyCategory | "all" }[] = [
 const categoryBadgeColor: Record<string, string> = {
   Studies: "bg-blue-500/10 text-blue-400 border-blue-500/20",
   "Success Stories": "bg-green-500/10 text-green-400 border-green-500/20",
+  "Portfolio": "bg-blue-500/10 text-blue-400 border-blue-500/20",
+  "Client Testimonials": "bg-purple-500/10 text-purple-400 border-purple-500/20",
 };
 
 const CASE_STUDIES_SEO_DEFAULTS: SeoPageConfig = {
