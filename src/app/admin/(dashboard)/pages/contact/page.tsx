@@ -7,7 +7,7 @@ import { revalidatePathAction } from "@/app/actions";
 import {
   Save, Loader2, Mail, Phone, MapPin, Mail as MailIcon,
 } from "lucide-react";
-import type { SeoPageConfig } from "@/types";
+import type { SeoPageConfig, PageVisibility } from "@/types";
 
 const inputClass = "w-full bg-[#0F172A] border border-white/10 rounded-lg px-4 py-3 text-[#F8FAFC] placeholder-white/30 focus:outline-none focus:border-[#3B82F6] transition-colors text-sm";
 
@@ -26,6 +26,7 @@ export default function ContactPageSettings() {
   const [contactPhone, setContactPhone] = useState("+91 98765 43210");
   const [contactAddress, setContactAddress] = useState("WeWork, BKC, Mumbai 400051, India");
   const [seo, setSeo] = useState<SeoPageConfig>(CONTACT_SEO_DEFAULTS);
+  const [visibility, setVisibility] = useState<PageVisibility>({});
 
   useEffect(() => {
     async function load() {
@@ -36,6 +37,7 @@ export default function ContactPageSettings() {
           if (data.contactPhone) setContactPhone(data.contactPhone);
           if (data.contactAddress) setContactAddress(data.contactAddress);
           if (data.seo?.contact) setSeo({ ...CONTACT_SEO_DEFAULTS, ...data.seo.contact });
+          if (data.visibility) setVisibility(data.visibility);
         }
       } catch (error) {
         console.error("Failed to load settings:", error);
@@ -58,6 +60,7 @@ export default function ContactPageSettings() {
         contactEmail,
         contactPhone,
         contactAddress,
+        visibility,
         seo: { contact: seo },
       });
       await Promise.all([
@@ -117,6 +120,33 @@ export default function ContactPageSettings() {
             <label className="text-sm font-medium text-[#F8FAFC] flex items-center gap-2"><MapPin size={14} className="text-[#3B82F6]" /> Address</label>
             <input value={contactAddress} onChange={(e) => setContactAddress(e.target.value)} placeholder="London, United Kingdom" className={inputClass} />
           </div>
+        </div>
+      </div>
+
+      {/* ─── Page & Section Visibility ────────────── */}
+      <div className="bg-[#1E293B] border border-white/10 rounded-2xl p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-2 h-2 rounded-full bg-[#3B82F6]" />
+          <h2 className="text-lg font-semibold text-white">Visibility</h2>
+        </div>
+        <p className="text-sm text-[#94A3B8] mb-4">Toggle sections on/off on the public contact page.</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {[
+            { key: "contact", label: "Page (entire contact page)" },
+            { key: "contactInfo", label: "Contact Info" },
+            { key: "contactForm", label: "Contact Form" },
+          ].map(({ key, label }) => (
+            <label key={key} className="flex items-center gap-3 p-3 rounded-lg bg-[#0F172A] border border-white/5 cursor-pointer hover:border-white/10 transition-colors">
+              <input
+                type="checkbox"
+                checked={visibility[key as keyof PageVisibility] ?? true}
+                onChange={(e) => setVisibility((prev) => ({ ...prev, [key]: e.target.checked }))}
+                className="sr-only peer"
+              />
+              <div className="w-9 h-5 bg-white/10 rounded-full peer-checked:bg-[#3B82F6] peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all relative flex-shrink-0"></div>
+              <span className="text-sm text-[#F8FAFC]">{label}</span>
+            </label>
+          ))}
         </div>
       </div>
 

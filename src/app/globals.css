@@ -1,25 +1,45 @@
 @import "tailwindcss";
 
+:root {
+  --color-primary-bg-var: #0F172A;
+  --color-secondary-surface-var: #1E293B;
+  --color-accent-blue-var: #3B82F6;
+  --color-accent-gold-var: #F59E0B;
+  --color-primary-text-var: #F8FAFC;
+  --color-muted-text-var: #94A3B8;
+}
+
+.theme-editorial {
+  --color-primary-bg-var: #F5F3EF;
+  --color-secondary-surface-var: #E7E2DA;
+  --color-accent-blue-var: #4F46E5;
+  --color-accent-gold-var: #B08968;
+  --color-primary-text-var: #2F343A;
+  --color-muted-text-var: #4C545E;
+}
+
 @theme inline {
-  --color-primary-bg: #0F172A;
-  --color-secondary-surface: #1E293B;
-  --color-accent-blue: #3B82F6;
-  --color-accent-gold: #F59E0B;
-  --color-primary-text: #F8FAFC;
-  --color-muted-text: #94A3B8;
+  --color-primary-bg: var(--color-primary-bg-var);
+  --color-secondary-surface: var(--color-secondary-surface-var);
+  --color-accent-blue: var(--color-accent-blue-var);
+  --color-accent-gold: var(--color-accent-gold-var);
+  --color-primary-text: var(--color-primary-text-var);
+  --color-muted-text: var(--color-muted-text-var);
 
   --font-heading: var(--font-poppins), sans-serif;
   --font-body: var(--font-inter), sans-serif;
 }
 
 @layer base {
+
+
   html, body {
     @apply overflow-x-hidden w-full;
     max-width: 100vw;
   }
   
   body {
-    @apply bg-primary-bg text-primary-text font-body antialiased selection:bg-accent-blue/30 selection:text-white;
+    @apply bg-primary-bg text-primary-text font-body antialiased selection:bg-accent-blue/30 selection:text-primary-text;
   }
   
   h1, h2, h3, h4, h5, h6 {

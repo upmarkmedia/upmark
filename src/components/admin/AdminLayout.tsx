@@ -19,11 +19,13 @@ import {
   PenTool,
   Mail,
   Globe,
+  Info,
 } from "lucide-react";
 import { useState, useEffect, type ReactNode } from "react";
 
 const pageNavItems = [
   { href: "/admin/pages/home", label: "Home", icon: Home },
+  { href: "/admin/pages/about", label: "About", icon: Info },
   { href: "/admin/pages/work", label: "Work", icon: PenTool },
   { href: "/admin/pages/services", label: "Services", icon: Briefcase },
   { href: "/admin/pages/case-studies", label: "Case Studies", icon: FileText },
@@ -49,8 +51,8 @@ function PagesNavGroup() {
         onClick={() => setOpen(!open)}
         className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-[background-color,color,border-color] duration-200 border ${
           isOnPages
-            ? "bg-[#3B82F6]/10 text-[#3B82F6] border-[#3B82F6]/20"
-            : "text-[#94A3B8] hover:bg-white/5 hover:text-white border-transparent"
+            ? "bg-accent-blue/10 text-accent-blue border-accent-blue/20"
+            : "text-muted-text hover:bg-primary-text/5 hover:text-primary-text border-transparent"
         }`}
       >
         <Globe size={18} />
@@ -61,7 +63,7 @@ function PagesNavGroup() {
         />
       </button>
       {open && (
-        <div className="ml-3 mt-1 space-y-0.5 border-l border-white/10 pl-2">
+        <div className="ml-3 mt-1 space-y-0.5 border-l border-primary-text/10 pl-2">
           {pageNavItems.map((page) => {
             const pageSlug = page.href.split("/").pop();
             const active = isOnPages && currentPage === pageSlug;
@@ -72,8 +74,8 @@ function PagesNavGroup() {
                 onClick={() => _setSidebarOpen(false)}
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-[background-color,color,border-color] duration-200 border ${
                   active
-                    ? "bg-[#3B82F6]/10 text-[#3B82F6] border-[#3B82F6]/20"
-                    : "text-[#94A3B8] hover:bg-white/5 hover:text-white border-transparent"
+                    ? "bg-accent-blue/10 text-accent-blue border-accent-blue/20"
+                    : "text-muted-text hover:bg-primary-text/5 hover:text-primary-text border-transparent"
                 }`}
               >
                 <page.icon size={15} />
@@ -97,7 +99,15 @@ export function AdminLayout({ children }: { children: ReactNode }) {
   useEffect(() => {
     getSiteSettings()
       .then(settings => {
-        if (settings?.globalLogoUrl) setLogoUrl(settings.globalLogoUrl);
+        if (settings?.theme === "editorial") {
+          document.documentElement.classList.remove("dark");
+          document.documentElement.classList.add("theme-editorial");
+          if (settings?.editorialLogoUrl) setLogoUrl(settings.editorialLogoUrl);
+        } else {
+          document.documentElement.classList.remove("theme-editorial");
+          document.documentElement.classList.add("dark");
+          if (settings?.globalLogoUrl) setLogoUrl(settings.globalLogoUrl);
+        }
       })
       .catch(console.error);
   }, []);
@@ -108,7 +118,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#0F172A] flex">
+    <div className="min-h-screen bg-primary-bg flex">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -120,20 +130,20 @@ export function AdminLayout({ children }: { children: ReactNode }) {
       {/* Sidebar */}
       <aside
         className={`
-          fixed inset-y-0 left-0 z-40 w-64 bg-[#1E293B] border-r border-white/5
+          fixed inset-y-0 left-0 z-40 w-64 bg-secondary-surface border-r border-primary-text/5
           flex flex-col transition-transform duration-300 ease-in-out
           lg:translate-x-0 lg:static lg:z-auto
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
         `}
       >
         {/* Logo */}
-        <div className="flex items-center justify-between px-6 h-16 border-b border-white/5">
+        <div className="flex items-center justify-between px-6 h-16 border-b border-primary-text/5">
           <Link href="/admin">
             <Image src={logoUrl} alt="Upmark" width={160} height={160} className="h-11 w-auto object-contain" />
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden text-[#94A3B8] hover:text-white transition-colors"
+            className="lg:hidden text-muted-text hover:text-primary-text transition-colors"
           >
             <X size={20} />
           </button>
@@ -146,8 +156,8 @@ export function AdminLayout({ children }: { children: ReactNode }) {
             onClick={() => setSidebarOpen(false)}
             className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-[background-color,color,border-color] duration-200 border ${
               pathname === "/admin"
-                ? "bg-[#3B82F6]/10 text-[#3B82F6] border-[#3B82F6]/20"
-                : "text-[#94A3B8] hover:bg-white/5 hover:text-white border-transparent"
+                ? "bg-accent-blue/10 text-accent-blue border-accent-blue/20"
+                : "text-muted-text hover:bg-primary-text/5 hover:text-primary-text border-transparent"
             }`}
           >
             <LayoutDashboard size={18} />
@@ -159,7 +169,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
 
           {/* Section divider */}
           <div className="pt-4 pb-1 px-4">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-[#94A3B8]/50">Data</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-text/50">Data</p>
           </div>
 
           {dataNavItems.map((item) => {
@@ -171,8 +181,8 @@ export function AdminLayout({ children }: { children: ReactNode }) {
                 onClick={() => setSidebarOpen(false)}
                 className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-[background-color,color,border-color] duration-200 border ${
                   active
-                    ? "bg-[#3B82F6]/10 text-[#3B82F6] border-[#3B82F6]/20"
-                    : "text-[#94A3B8] hover:bg-white/5 hover:text-white border-transparent"
+                    ? "bg-accent-blue/10 text-accent-blue border-accent-blue/20"
+                    : "text-muted-text hover:bg-primary-text/5 hover:text-primary-text border-transparent"
                 }`}
               >
                 <item.icon size={18} />
@@ -183,9 +193,9 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         </nav>
 
         {/* User / Logout */}
-        <div className="px-3 py-4 border-t border-white/5">
+        <div className="px-3 py-4 border-t border-primary-text/5">
           <div className="px-4 py-2 mb-2">
-            <p className="text-xs text-[#94A3B8] truncate">{user?.email}</p>
+            <p className="text-xs text-muted-text truncate">{user?.email}</p>
           </div>
           <button
             onClick={logout}
@@ -200,10 +210,10 @@ export function AdminLayout({ children }: { children: ReactNode }) {
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top bar (mobile) */}
-        <header className="lg:hidden flex items-center h-16 px-4 bg-[#1E293B] border-b border-white/5 sticky top-0 z-20">
+        <header className="lg:hidden flex items-center h-16 px-4 bg-secondary-surface border-b border-primary-text/5 sticky top-0 z-20">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="text-[#94A3B8] hover:text-white transition-colors"
+            className="text-muted-text hover:text-primary-text transition-colors"
           >
             <Menu size={24} />
           </button>

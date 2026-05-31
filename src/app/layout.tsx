@@ -4,6 +4,8 @@ import "./globals.css";
 import { LayoutShell } from "@/components/layout/LayoutShell";
 import { getSiteSettings } from "@/lib/firestore";
 
+export const dynamic = "force-dynamic";
+
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
@@ -63,13 +65,16 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getSiteSettings();
+  const themeClass = settings?.theme === "editorial" ? "theme-editorial" : "dark";
+
   return (
-    <html lang="en" className="dark overflow-x-hidden">
+    <html lang="en" className={`${themeClass} overflow-x-hidden`}>
       <body className={`${poppins.variable} ${inter.variable} min-h-screen flex flex-col overflow-x-hidden`}>
         <LayoutShell>{children}</LayoutShell>
       </body>

@@ -46,6 +46,9 @@ export default async function Home() {
     getFeaturedTestimonials(),
   ]);
 
+  const vis = settings?.visibility ?? {};
+  const show = (key: string) => vis[key as keyof typeof vis] ?? true;
+
   // Use admin-configured content or fall back to defaults
   const philosophyPointers = settings?.philosophyPointers?.length ? settings.philosophyPointers : DEFAULT_PHILOSOPHY_POINTERS;
   const processItems = (settings?.processSteps?.length ? settings.processSteps : DEFAULT_PROCESS_ITEMS).map((p, i) => ({
@@ -63,20 +66,32 @@ export default async function Home() {
   const studioCapabilities = settings?.studioCapabilities?.length ? settings.studioCapabilities : DEFAULT_STUDIO_CAPABILITIES;
   const aboutImageUrl = settings?.homeAboutImageUrl || "/images/philosophy.png";
 
+  const pageVisible = show("home");
+  const heroVisible = show("homeHero");
+  const aboutVisible = show("homeAbout");
+  const philosophyVisible = show("homePhilosophy") && philosophyPointers.length > 0;
+  const processVisible = show("homeProcess") && processItems.length > 0;
+  const contentStudioVisible = show("homeContentStudio") && contentItems.length > 0;
+  const studioCapVisible = show("homeStudioCapabilities") && studioCapabilities.length > 0;
+  const testimonialsVisible = show("homeTestimonials") && testimonials.length > 0;
+
+  if (!pageVisible) return null;
+
   return (
     <div className="flex flex-col gap-12 sm:gap-16 md:gap-24 pb-16 sm:pb-24 md:pb-28 relative">
-      <Hero videoUrl={settings?.heroVideoUrl} mobileVideoUrl={settings?.heroMobileVideoUrl} />
+      {heroVisible && <Hero videoUrl={settings?.heroVideoUrl} mobileVideoUrl={settings?.heroMobileVideoUrl} />}
 
       {/* Philosophy / About Section */}
+      {(aboutVisible || philosophyVisible) && (
       <section id="about" className="container mx-auto px-4 sm:px-6 scroll-mt-32">
-        <div className="flex flex-col lg:flex-row gap-10 sm:gap-12 lg:gap-16 mb-12 sm:mb-20 text-white items-center">
+        <div className="flex flex-col lg:flex-row gap-10 sm:gap-12 lg:gap-16 mb-12 sm:mb-20 text-primary-text items-center">
           {/* Left Side */}
           <div className="lg:w-7/12 flex flex-col items-start pr-0 lg:pr-10">
             <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-6 inline-flex items-center gap-4">
               <span className="w-8 h-[1px] bg-accent-blue"></span>
               ABOUT US
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading text-white tracking-tight leading-tight mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading text-primary-text tracking-tight leading-tight mb-4">
               Most agencies only <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-indigo-400">create content</span> <br className="hidden md:block" />or run ads.
             </h2>
             <h3 className="text-xl sm:text-2xl md:text-3xl mt-4 mb-6 sm:mb-8 font-semibold">
@@ -91,10 +106,12 @@ export default async function Home() {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-              <Link href="/services" className="group flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-white border border-white/20 hover:border-accent-blue hover:bg-accent-blue/5 transition-[border-color,background-color] w-full sm:w-auto">
-                Explore our services
-              </Link>
-              <Link href="/#about" className="group flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-white bg-accent-blue/10 border border-accent-blue/30 hover:bg-accent-blue/20 hover:border-accent-blue/50 transition-[border-color,background-color] w-full sm:w-auto">
+              {show("services") && (
+                <Link href="/services" className="group flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-primary-text border border-primary-text/20 hover:border-accent-blue hover:bg-accent-blue/5 transition-[border-color,background-color] w-full sm:w-auto">
+                  Explore our services
+                </Link>
+              )}
+              <Link href="/#about" className="group flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-primary-text bg-accent-blue/10 border border-accent-blue/30 hover:bg-accent-blue/20 hover:border-accent-blue/50 transition-[border-color,background-color] w-full sm:w-auto">
                 Learn More
               </Link>
             </div>
@@ -103,7 +120,7 @@ export default async function Home() {
           {/* Right Side Visual */}
           <div className="lg:w-5/12 w-full flex justify-center items-center relative min-h-[280px] sm:min-h-[400px]">
             <div className="absolute inset-0 bg-gradient-to-tr from-accent-blue/10 to-accent-gold/5 rounded-full blur-[40px] sm:blur-[60px] pointer-events-none"></div>
-            <div className="relative w-full aspect-square max-w-[320px] sm:max-w-[450px] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+            <div className="relative w-full aspect-square max-w-[320px] sm:max-w-[450px] rounded-3xl overflow-hidden border border-primary-text/10 shadow-2xl">
               <Image
                 src={aboutImageUrl}
                 alt="Upmark strategy session — marketing team brainstorming around data-driven insights"
@@ -118,25 +135,31 @@ export default async function Home() {
         </div>
 
         {/* Philosophy Pointers */}
+        {philosophyVisible && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
           {philosophyPointers.map((p, i) => (
-            <div key={i} className="group p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-secondary-surface/40 border border-white/5 hover:border-accent-blue/30 transition-colors duration-300 relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-3 sm:p-6 text-4xl sm:text-6xl font-black text-white/5 group-hover:text-white/10 transition-colors pointer-events-none">
+            <div key={i} className="group p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-secondary-surface/40 border border-primary-text/5 hover:border-accent-blue/30 transition-colors duration-300 relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-3 sm:p-6 text-4xl sm:text-6xl font-black text-primary-text/5 group-hover:text-primary-text/10 transition-colors pointer-events-none">
                 0{i + 1}
               </div>
-              <h3 className="text-base sm:text-xl font-bold font-heading text-white mb-2 sm:mb-3 relative z-10">{p.title}</h3>
+              <h3 className="text-base sm:text-xl font-bold font-heading text-primary-text mb-2 sm:mb-3 relative z-10">{p.title}</h3>
               <p className="text-muted-text/90 text-base font-light leading-relaxed relative z-10">{p.desc}</p>
             </div>
           ))}
         </div>
+        )}
       </section>
+      )}
 
       {/* Process Section */}
+      {processVisible && (
       <section className="w-full">
         <ProcessOrbital items={processItems} />
       </section>
+      )}
 
       {/* Content Studio */}
+      {(contentStudioVisible || studioCapVisible) && (
       <section className="container mx-auto px-4 sm:px-6 relative z-10 content-visibility-auto">
         <div className="mb-10 sm:mb-20 text-center flex flex-col items-center">
           <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-4 block inline-flex items-center gap-4">
@@ -144,43 +167,44 @@ export default async function Home() {
             CONTENT THAT CONVERTS
             <span className="w-8 h-[1px] bg-accent-blue"></span>
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-6xl font-black font-heading text-white tracking-tight mb-4 sm:mb-6">Production <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-blue-400">Studio</span></h2>
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-black font-heading text-primary-text tracking-tight mb-4 sm:mb-6">Production <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-blue-400">Studio</span></h2>
           <p className="text-muted-text text-base sm:text-xl max-w-2xl font-light">Our production team creates across every format — from viral reels to cinematic brand films. All in-house. All on-brand.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
           <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
-            {contentItems.map((item) => (
-              <div key={item.id} className="p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-secondary-surface/40 border border-white/5">
+            {contentStudioVisible && contentItems.map((item) => (
+              <div key={item.id} className="p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-secondary-surface/40 border border-primary-text/5">
                 <div className="text-accent-blue font-bold text-xs uppercase tracking-widest mb-3">{item.subtitle}</div>
-                <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3">{item.title}</h3>
+                <h3 className="text-xl sm:text-2xl font-bold text-primary-text mb-2 sm:mb-3">{item.title}</h3>
                 <p className="text-muted-text font-light text-base">{item.description}</p>
               </div>
             ))}
           </div>
 
           {/* Studio Capabilities feature block */}
+          {studioCapVisible && (
           <div className="lg:col-span-1 p-6 sm:p-10 rounded-2xl sm:rounded-3xl bg-accent-blue/5 border border-accent-blue/20 flex flex-col justify-center">
             <div className="w-12 h-12 rounded-xl bg-accent-blue/20 text-accent-blue flex items-center justify-center mb-6"><PlaySquare size={24} /></div>
-            <h3 className="text-xl sm:text-2xl font-black text-white mb-4 sm:mb-6">Studio Capabilities</h3>
+            <h3 className="text-xl sm:text-2xl font-black text-primary-text mb-4 sm:mb-6">Studio Capabilities</h3>
             <p className="text-muted-text mb-6 sm:mb-8 text-base">Professional production infrastructure available to every Upmark client.</p>
 
             <ul className="flex flex-col gap-4">
               {studioCapabilities.map((cap, i) => (
-                <li key={i} className="flex items-center gap-3 text-white/90 text-base font-medium">
+                <li key={i} className="flex items-center gap-3 text-primary-text/90 text-base font-medium">
                   <CheckCircle2 size={16} className="text-accent-blue flex-shrink-0" />
                   {cap}
                 </li>
               ))}
             </ul>
           </div>
+          )}
         </div>
       </section>
-
-
+      )}
 
       {/* Testimonials Carousel */}
-      <TestimonialsCarousel testimonials={testimonials} />
+      {testimonialsVisible && <TestimonialsCarousel testimonials={testimonials} />}
 
     </div>
   );

@@ -17,7 +17,7 @@ import { revalidatePathAction } from "@/app/actions";
 import {
   Plus, Pencil, Trash2, X, Briefcase, RefreshCw, Save, Loader2,
 } from "lucide-react";
-import type { Service, SeoPageConfig } from "@/types";
+import type { Service, SeoPageConfig, PageVisibility } from "@/types";
 
 const SERVICES_SEO_DEFAULTS: SeoPageConfig = {
   title: "Services | Upmark — Full-Stack Marketing",
@@ -41,12 +41,16 @@ export default function ServicesPage() {
   const [seoSaving, setSeoSaving] = useState(false);
   const [seoSuccess, setSeoSuccess] = useState("");
   const [seo, setSeo] = useState<SeoPageConfig>(SERVICES_SEO_DEFAULTS);
+  const [visibility, setVisibility] = useState<PageVisibility>({});
+  const [visSaving, setVisSaving] = useState(false);
+  const [visSuccess, setVisSuccess] = useState("");
 
   useEffect(() => {
     getSiteSettings().then((data) => {
       if (data?.seo?.services) {
         setSeo({ ...SERVICES_SEO_DEFAULTS, ...data.seo.services });
       }
+      if (data?.visibility) setVisibility(data.visibility);
     }).catch(() => {});
   }, []);
 
@@ -66,6 +70,21 @@ export default function ServicesPage() {
       alert("Failed to save SEO.");
     } finally {
       setSeoSaving(false);
+    }
+  };
+
+  const handleVisSave = async () => {
+    setVisSaving(true);
+    setVisSuccess("");
+    try {
+      await updateSiteSettings({ visibility });
+      await revalidatePathAction("/services");
+      setVisSuccess("Visibility saved.");
+      setTimeout(() => setVisSuccess(""), 3000);
+    } catch {
+      alert("Failed to save visibility.");
+    } finally {
+      setVisSaving(false);
     }
   };
 
@@ -176,6 +195,41 @@ export default function ServicesPage() {
           {coll.filteredItems.length} service{coll.filteredItems.length === 1 ? "" : "s"}
         </p>
       )}
+
+      {/* ─── Page & Section Visibility ────────────── */}
+      <div className="bg-[#1E293B] border border-white/10 rounded-2xl p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-2 h-2 rounded-full bg-[#3B82F6]" />
+          <h2 className="text-lg font-semibold text-white">Visibility</h2>
+        </div>
+        <p className="text-sm text-[#94A3B8] mb-4">Toggle sections on/off on the public services page.</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-4">
+          {[
+            { key: "services", label: "Page (entire services page)" },
+            { key: "servicesHeader", label: "Page Header" },
+            { key: "servicesCapabilityMap", label: "Capability Map" },
+            { key: "servicesCTA", label: "Bottom CTA" },
+          ].map(({ key, label }) => (
+            <label key={key} className="flex items-center gap-3 p-3 rounded-lg bg-[#0F172A] border border-white/5 cursor-pointer hover:border-white/10 transition-colors">
+              <input
+                type="checkbox"
+                checked={visibility[key as keyof PageVisibility] ?? true}
+                onChange={(e) => setVisibility((prev) => ({ ...prev, [key]: e.target.checked }))}
+                className="sr-only peer"
+              />
+              <div className="w-9 h-5 bg-white/10 rounded-full peer-checked:bg-[#3B82F6] peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all relative flex-shrink-0"></div>
+              <span className="text-sm text-[#F8FAFC]">{label}</span>
+            </label>
+          ))}
+        </div>
+        <div className="flex items-center justify-end gap-3">
+          {visSuccess && <span className="text-emerald-400 text-sm">{visSuccess}</span>}
+          <button onClick={handleVisSave} disabled={visSaving} className="flex items-center gap-2 bg-[#3B82F6] hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
+            {visSaving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
+            Save Visibility
+          </button>
+        </div>
+      </div>
 
       <SeoSection config={seo} onChange={handleSeoChange} path="/services" />
       <div className="flex items-center justify-end gap-3">

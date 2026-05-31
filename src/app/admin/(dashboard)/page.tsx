@@ -83,8 +83,8 @@ export default function AdminOverviewPage() {
     <div className="flex flex-col gap-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-[#F8FAFC]">Dashboard</h1>
-        <p className="text-[#94A3B8] mt-1">
+        <h1 className="text-3xl font-bold text-primary-text">Dashboard</h1>
+        <p className="text-muted-text mt-1">
           Overview of your Upmark data.
         </p>
       </div>
@@ -95,15 +95,15 @@ export default function AdminOverviewPage() {
           <Link
             key={card.label}
             href={card.href}
-            className="group bg-[#1E293B] rounded-xl border border-white/5 p-6 hover:border-white/10 transition-all duration-300"
+            className="group bg-secondary-surface rounded-xl border border-primary-text/5 p-6 hover:border-primary-text/10 transition-all duration-300"
           >
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-[#94A3B8] mb-1">{card.label}</p>
+                <p className="text-sm text-muted-text mb-1">{card.label}</p>
                 {loading ? (
                   <div className="h-9 w-16 bg-white/5 rounded animate-pulse" />
                 ) : (
-                  <p className="text-4xl font-bold text-[#F8FAFC]">
+                  <p className="text-4xl font-bold text-primary-text">
                     {card.value}
                   </p>
                 )}
@@ -115,7 +115,7 @@ export default function AdminOverviewPage() {
                 <card.icon size={22} style={{ color: card.color }} />
               </div>
             </div>
-            <div className="mt-4 flex items-center gap-1 text-sm text-[#94A3B8] group-hover:text-[#3B82F6] transition-colors">
+            <div className="mt-4 flex items-center gap-1 text-sm text-muted-text group-hover:text-accent-blue transition-colors">
               <TrendingUp size={14} />
               View all →
             </div>
@@ -124,52 +124,52 @@ export default function AdminOverviewPage() {
       </div>
 
       {/* Quick Info */}
-      <div className="bg-[#1E293B] rounded-xl border border-white/5 p-6">
-        <h2 className="text-lg font-semibold text-[#F8FAFC] mb-4">
+      <div className="bg-secondary-surface rounded-xl border border-primary-text/5 p-6">
+        <h2 className="text-lg font-semibold text-primary-text mb-4">
           Quick Actions
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Link
             href="/admin/pages/case-studies"
-            className="flex items-center gap-3 px-4 py-3 bg-[#0F172A] rounded-lg border border-white/5 hover:border-[#3B82F6]/30 transition-colors"
+            className="flex items-center gap-3 px-4 py-3 bg-primary-bg rounded-lg border border-primary-text/5 hover:border-accent-blue/30 transition-colors"
           >
-            <FileText size={18} className="text-[#3B82F6]" />
-            <span className="text-sm text-[#F8FAFC]">Add Case Study</span>
+            <FileText size={18} className="text-accent-blue" />
+            <span className="text-sm text-primary-text">Add Case Study</span>
           </Link>
           <Link
             href="/admin/pages/work"
-            className="flex items-center gap-3 px-4 py-3 bg-[#0F172A] rounded-lg border border-white/5 hover:border-[#3B82F6]/30 transition-colors"
+            className="flex items-center gap-3 px-4 py-3 bg-primary-bg rounded-lg border border-primary-text/5 hover:border-accent-blue/30 transition-colors"
           >
             <PenTool size={18} className="text-[#F59E0B]" />
-            <span className="text-sm text-[#F8FAFC]">Manage Work Items</span>
+            <span className="text-sm text-primary-text">Manage Work Items</span>
           </Link>
           <Link
             href="/admin/pages/services"
-            className="flex items-center gap-3 px-4 py-3 bg-[#0F172A] rounded-lg border border-white/5 hover:border-[#3B82F6]/30 transition-colors"
+            className="flex items-center gap-3 px-4 py-3 bg-primary-bg rounded-lg border border-primary-text/5 hover:border-accent-blue/30 transition-colors"
           >
             <Briefcase size={18} className="text-[#22C55E]" />
-            <span className="text-sm text-[#F8FAFC]">Manage Services</span>
+            <span className="text-sm text-primary-text">Manage Services</span>
           </Link>
           <Link
             href="/admin/pages/work"
-            className="flex items-center gap-3 px-4 py-3 bg-[#0F172A] rounded-lg border border-white/5 hover:border-[#3B82F6]/30 transition-colors"
+            className="flex items-center gap-3 px-4 py-3 bg-primary-bg rounded-lg border border-primary-text/5 hover:border-accent-blue/30 transition-colors"
           >
             <MessageSquareQuote size={18} className="text-[#A855F7]" />
-            <span className="text-sm text-[#F8FAFC]">Manage Testimonials</span>
+            <span className="text-sm text-primary-text">Manage Testimonials</span>
           </Link>
           <Link
             href="/admin/leads"
-            className="flex items-center gap-3 px-4 py-3 bg-[#0F172A] rounded-lg border border-white/5 hover:border-[#3B82F6]/30 transition-colors"
+            className="flex items-center gap-3 px-4 py-3 bg-primary-bg rounded-lg border border-primary-text/5 hover:border-accent-blue/30 transition-colors"
           >
             <Users size={18} className="text-[#F59E0B]" />
-            <span className="text-sm text-[#F8FAFC]">Review Leads</span>
+            <span className="text-sm text-primary-text">Review Leads</span>
           </Link>
           <Link
             href="/admin/pages/home"
-            className="flex items-center gap-3 px-4 py-3 bg-[#0F172A] rounded-lg border border-white/5 hover:border-[#3B82F6]/30 transition-colors"
+            className="flex items-center gap-3 px-4 py-3 bg-primary-bg rounded-lg border border-primary-text/5 hover:border-accent-blue/30 transition-colors"
           >
             <Globe size={18} className="text-[#10B981]" />
-            <span className="text-sm text-[#F8FAFC]">Edit Home Page</span>
+            <span className="text-sm text-primary-text">Edit Home Page</span>
           </Link>
         </div>
       </div>

@@ -10,9 +10,18 @@ export const metadata: Metadata = {
 export default async function ContactPage() {
    const settings = await getSiteSettings();
 
+   const vis = settings?.visibility ?? {};
+   const show = (key: string) => vis[key as keyof typeof vis] ?? true;
+
    const email = settings?.contactEmail || "hello@upmark.co";
    const phone = settings?.contactPhone || "+91 98765 43210";
    const address = settings?.contactAddress || "WeWork, BKC, Mumbai 400051, India";
+
+   const pageVisible = show("contact");
+   const infoVisible = show("contactInfo");
+   const formVisible = show("contactForm");
+
+   if (!pageVisible) return null;
 
    return (
       // Added flex, flex-col, and justify-center to vertically center the content. 
@@ -21,6 +30,7 @@ export default async function ContactPage() {
          <section className="container mx-auto px-4 sm:px-6 relative z-10 w-full max-w-5xl overflow-hidden md:overflow-visible">
             <div className="absolute top-0 right-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-accent-blue/8 blur-[60px] md:blur-[80px] pointer-events-none rounded-full"></div>
 
+            {(infoVisible || formVisible) && (
             <div className="text-center mb-6 sm:mb-8 relative z-10">
                <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-2 block inline-flex items-center gap-4">
                   <span className="w-8 h-[1px] bg-accent-blue"></span>
@@ -34,9 +44,11 @@ export default async function ContactPage() {
                   Tell us about your project and we&apos;ll get back to you within 24 hours.
                </p>
             </div>
+            )}
 
             <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-12 relative z-10 items-stretch">
                {/* Info Column */}
+               {infoVisible && (
                <div className="lg:w-1/3 flex flex-col gap-4 sm:gap-6">
                   <div className="grid grid-cols-3 lg:grid-cols-1 gap-3 sm:gap-4">
                      <div className="p-3 sm:p-4 rounded-xl bg-white/5 border border-white/5">
@@ -75,11 +87,14 @@ export default async function ContactPage() {
                      </ul>
                   </div>
                </div>
+               )}
 
                {/* Form Column */}
+               {formVisible && (
                <div className="lg:w-2/3 h-full">
                   <ContactForm />
                </div>
+               )}
             </div>
          </section>
       </div>

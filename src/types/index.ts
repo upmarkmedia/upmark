@@ -144,9 +144,58 @@ export interface WorkSection {
   detailFields?: string[];
 }
 
+export interface TeamMember {
+  name: string;
+  specialty: string;
+  description: string;
+  imageUrl?: string;
+}
+
+export interface Investor {
+  name: string;
+  specialty: string;
+  description: string;
+  imageUrl?: string;
+}
+
+export interface PageVisibility {
+  // Page-level
+  home?: boolean;
+  work?: boolean;
+  services?: boolean;
+  contact?: boolean;
+  caseStudies?: boolean;
+  // Home sections
+  homeHero?: boolean;
+  homeAbout?: boolean;
+  homePhilosophy?: boolean;
+  homeProcess?: boolean;
+  homeContentStudio?: boolean;
+  homeStudioCapabilities?: boolean;
+  homeTestimonials?: boolean;
+  // Work sections
+  workHeader?: boolean;
+  workPortfolio?: boolean;
+  workProduction?: boolean;
+  workTestimonials?: boolean;
+  // Services sections
+  servicesHeader?: boolean;
+  servicesCapabilityMap?: boolean;
+  servicesCTA?: boolean;
+  // Contact sections
+  contactInfo?: boolean;
+  contactForm?: boolean;
+  // About sections
+  about?: boolean;
+  aboutTeam?: boolean;
+  aboutInvestors?: boolean;
+}
+
 export interface SiteSettings {
   // Global Assets
+  theme?: "default" | "editorial";
   globalLogoUrl?: string;
+  editorialLogoUrl?: string;
   globalOgImageUrl?: string;
   // Home Page Assets
   homeAboutImageUrl?: string;
@@ -170,6 +219,11 @@ export interface SiteSettings {
   portfolioSection?: WorkSection;
   productionSection?: WorkSection;
   testimonialsSection?: WorkSection;
+  // Page/Section visibility
+  visibility?: PageVisibility;
+  // About page
+  teamMembers?: TeamMember[];
+  investors?: Investor[];
   // SEO configuration
   seo?: Record<string, SeoPageConfig>;
   updatedAt?: Timestamp;

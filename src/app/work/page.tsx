@@ -8,7 +8,7 @@ import { PreviewDialog } from "@/components/ui/PreviewDialog";
 import { TestimonialsCarousel } from "@/components/sections/TestimonialsCarousel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { getWorkItems, getSiteSettings, getTestimonials } from "@/lib/firestore";
-import type { WorkItem, WorkSection, Testimonial } from "@/types";
+import type { WorkItem, WorkSection, Testimonial, PageVisibility } from "@/types";
 
 const FALLBACK_WORK_ITEMS: WorkItem[] = [
   { title: "Ingri", client: "Ingri", tag: "Fashion & Lifestyle", stat1: "+210%", stat1label: "Revenue Growth", stat2: "+380%", stat2label: "Social Engagement", description: "Ingri was a premium fashion brand struggling to differentiate in a saturated market. Organic reach had declined 60% and paid ROI was stagnating. We rebuilt their positioning from scratch and engineered a multi-channel content engine that drove consistent growth.", imageUrl: "/images/casestudy-ingri.png", gradient: "from-purple-900/30 to-indigo-900/10", category: "Studies", metrics: [], published: true },
@@ -49,6 +49,7 @@ export default function WorkPage() {
   const [productionSection, setProductionSection] = useState<WorkSection>(DEFAULT_PRODUCTION_SECTION);
   const [testimonialsSection, setTestimonialsSection] = useState<WorkSection | undefined>();
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [visibility, setVisibility] = useState<PageVisibility>({});
   const [csPreviewOpen, setCsPreviewOpen] = useState(false);
   const [selectedCs, setSelectedCs] = useState<WorkItem | null>(null);
   const [pfPreviewOpen, setPfPreviewOpen] = useState(false);
@@ -77,6 +78,7 @@ export default function WorkPage() {
         if (settings?.portfolioSection) setPortfolioSection(settings.portfolioSection);
         if (settings?.productionSection) setProductionSection(settings.productionSection);
         if (settings?.testimonialsSection) setTestimonialsSection(settings.testimonialsSection);
+        if (settings?.visibility) setVisibility(settings.visibility);
       } catch (err) {
         console.error("Failed to fetch data:", err);
       }
@@ -121,9 +123,19 @@ export default function WorkPage() {
     }
   }, [portfolioItems]);
 
+  const show = (key: keyof PageVisibility) => visibility[key] ?? true;
+  const pageVisible = show("work");
+  const headerVisible = show("workHeader");
+  const portfolioVisible = show("workPortfolio") && caseStudies.length > 0;
+  const productionVisible = show("workProduction") && portfolioItems.length > 0;
+  const testimonialsVisible = show("workTestimonials") && testimonials.length > 0;
+
+  if (!pageVisible) return null;
+
   return (
     <div className="pt-24 sm:pt-32 pb-16 sm:pb-32">
       {/* Page Header */}
+      {headerVisible && (
       <section className="container mx-auto px-4 sm:px-6 relative z-10 mb-16 sm:mb-20">
         <ScrollReveal className="text-center flex flex-col items-center">
           <span className="text-accent-gold font-bold tracking-[0.2em] uppercase text-xs mb-4 block inline-flex items-center gap-4">
@@ -131,7 +143,7 @@ export default function WorkPage() {
              OUR WORK
              <span className="w-8 h-[1px] bg-accent-gold"></span>
           </span>
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-black font-heading text-white tracking-tight mb-4 sm:mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-black font-heading text-primary-text tracking-tight mb-4 sm:mb-6">
              Results that speak <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-gold to-yellow-400">for themselves.</span>
           </h1>
           <p className="text-muted-text text-base sm:text-xl max-w-2xl font-light">
@@ -139,8 +151,10 @@ export default function WorkPage() {
           </p>
         </ScrollReveal>
       </section>
+      )}
 
       {/* ─── Portfolio Section ─────────────────────────── */}
+      {portfolioVisible && (
       <section className="container mx-auto px-4 sm:px-6 relative z-10 mb-20 sm:mb-32 content-visibility-auto">
         <HorizontalCarousel
           label={portfolioSection.label}
@@ -164,18 +178,18 @@ export default function WorkPage() {
                 <div className={`absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-20 pointer-events-none transition-opacity duration-500 group-hover:animate-none ${initialLoad ? "opacity-100" : "opacity-0 group-hover:!opacity-100"} ${!initialLoad ? "animate-[staggeredPopup_20s_infinite]" : ""}`} style={{ animationDelay: `${index * 3}s` }}></div>
 
                 <div className={`absolute top-3 left-3 z-30 transition-opacity duration-500 group-hover:animate-none ${initialLoad ? "opacity-100" : "opacity-0 group-hover:!opacity-100"} ${!initialLoad ? "animate-[staggeredPopup_20s_infinite]" : ""}`} style={{ animationDelay: `${index * 3}s` }}>
-                   <div className="px-3 py-1 bg-black/60 rounded-full text-[10px] text-white uppercase tracking-widest font-semibold border border-white/10">
+                   <div className="px-3 py-1 bg-black/60 rounded-full text-[10px] text-primary-text uppercase tracking-widest font-semibold border border-primary-text/10">
                      {cs.tag || cs.category}
                    </div>
                 </div>
 
                 {/* Content Overlay */}
                 <div className={`absolute bottom-0 left-0 right-0 p-5 z-30 transition-all duration-500 group-hover:animate-none ${initialLoad ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0 group-hover:!translate-y-0 group-hover:!opacity-100"} ${!initialLoad ? "animate-[staggeredPopup_20s_infinite]" : ""}`} style={{ animationDelay: `${index * 3}s` }}>
-                  <h3 className="text-xl sm:text-2xl font-black text-white">{cs.title}</h3>
+                  <h3 className="text-xl sm:text-2xl font-black text-primary-text">{cs.title}</h3>
                   {cs.client && (
-                    <div className="text-sm font-semibold text-accent-blue pb-3 border-b border-white/10 uppercase tracking-wider">{cs.client}</div>
+                    <div className="text-sm font-semibold text-accent-blue pb-3 border-b border-primary-text/10 uppercase tracking-wider">{cs.client}</div>
                   )}
-                  <p className="text-white/90 font-light text-sm line-clamp-2 mt-1 whitespace-pre-wrap">{cs.description}</p>
+                  <p className="text-primary-text/90 font-light text-sm line-clamp-2 mt-1 whitespace-pre-wrap">{cs.description}</p>
                   <div className="inline-flex items-center gap-2 text-accent-blue font-semibold text-sm group-hover:gap-3 transition-[gap] mt-3">
                     View Details <ArrowUpRight size={16} />
                   </div>
@@ -185,8 +199,10 @@ export default function WorkPage() {
           ))}
         </HorizontalCarousel>
       </section>
+      )}
 
       {/* ─── Production Section ────────────────────────────── */}
+      {productionVisible && (
       <section className="container mx-auto px-4 sm:px-6 relative z-10 mb-20 sm:mb-32 content-visibility-auto">
         <HorizontalCarousel
           label={productionSection.label}
@@ -214,12 +230,12 @@ export default function WorkPage() {
 
                   <div className={`absolute bottom-0 left-0 right-0 p-5 z-30 transition-all duration-500 group-hover:animate-none ${initialLoad ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0 group-hover:!translate-y-0 group-hover:!opacity-100"} ${!initialLoad ? "animate-[staggeredPopup_20s_infinite]" : ""}`} style={{ animationDelay: `${index * 3}s` }}>
                     <div className="flex items-center gap-2 mb-2">
-                       <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-white/10 text-white/90">
+                       <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-primary-text/10 text-primary-text/90">
                          Gallery
                        </span>
-                       {item.duration && <span className="text-[10px] text-white/70 font-mono tracking-widest">{item.duration}</span>}
+                       {item.duration && <span className="text-[10px] text-primary-text/70 font-mono tracking-widest">{item.duration}</span>}
                     </div>
-                    <h3 className="text-base sm:text-lg font-bold text-white">{item.title}</h3>
+                    <h3 className="text-base sm:text-lg font-bold text-primary-text">{item.title}</h3>
                   </div>
                 </div>
               </div>
@@ -227,11 +243,14 @@ export default function WorkPage() {
           ))}
         </HorizontalCarousel>
       </section>
+      )}
 
       {/* ─── Testimonials Section ─────────────────────────── */}
+      {testimonialsVisible && (
       <div id="testimonials" className="scroll-mt-32">
         <TestimonialsCarousel testimonials={testimonials} maxItems={testimonials.length || 3} section={testimonialsSection} />
       </div>
+      )}
 
       {/* ─── Case Study Preview Dialog ───────────────────── */}
       {selectedCs && (

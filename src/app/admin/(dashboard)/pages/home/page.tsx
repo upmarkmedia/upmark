@@ -9,7 +9,7 @@ import {
   Save, Loader2, PlaySquare, ChevronDown, Plus, Trash2, Lightbulb,
   ListOrdered, Film, Award, Home, Image as ImageIcon,
 } from "lucide-react";
-import type { SiteSettings, HeroMetric, PhilosophyPointer, ProcessStep, ContentItem, SeoPageConfig } from "@/types";
+import type { HeroMetric, PhilosophyPointer, ProcessStep, ContentItem, SeoPageConfig, PageVisibility } from "@/types";
 
 function Section({ title, icon: Icon, children, defaultOpen = false }: { title: string; icon: React.ElementType; children: React.ReactNode; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -84,6 +84,7 @@ export default function HomePageSettings() {
   const [contentItems, setContentItems] = useState<ContentItem[]>(DEFAULT_CONTENT_ITEMS);
   const [studioCapabilities, setStudioCapabilities] = useState<string[]>(DEFAULT_STUDIO_CAPABILITIES);
   const [seo, setSeo] = useState<SeoPageConfig>(HOME_SEO_DEFAULTS);
+  const [visibility, setVisibility] = useState<PageVisibility>({});
 
   useEffect(() => {
     async function load() {
@@ -99,6 +100,7 @@ export default function HomePageSettings() {
           if (data.contentItems?.length) setContentItems(data.contentItems);
           if (data.studioCapabilities?.length) setStudioCapabilities(data.studioCapabilities);
           if (data.seo?.home) setSeo({ ...HOME_SEO_DEFAULTS, ...data.seo.home });
+          if (data.visibility) setVisibility(data.visibility);
         }
       } catch (error) {
         console.error("Failed to load settings:", error);
@@ -126,6 +128,7 @@ export default function HomePageSettings() {
         processSteps,
         contentItems,
         studioCapabilities,
+        visibility,
         seo: { home: seo },
       });
       await revalidatePathAction("/");
@@ -273,6 +276,38 @@ export default function HomePageSettings() {
           <button type="button" onClick={() => setStudioCapabilities([...studioCapabilities, ""])} className="flex items-center gap-2 text-sm text-[#3B82F6] hover:text-blue-400 self-start"><Plus size={16} /> Add Capability</button>
         </div>
       </Section>
+
+      {/* ─── Page & Section Visibility ────────────── */}
+      <div className="bg-[#1E293B] border border-white/10 rounded-2xl p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-2 h-2 rounded-full bg-[#3B82F6]" />
+          <h2 className="text-lg font-semibold text-white">Visibility</h2>
+        </div>
+        <p className="text-sm text-[#94A3B8] mb-4">Toggle sections on/off on the public homepage.</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {[
+            { key: "home", label: "Page (entire home page)" },
+            { key: "homeHero", label: "Hero" },
+            { key: "homeAbout", label: "About Us" },
+            { key: "homePhilosophy", label: "Philosophy Pointers" },
+            { key: "homeProcess", label: "Process" },
+            { key: "homeContentStudio", label: "Content Studio" },
+            { key: "homeStudioCapabilities", label: "Studio Capabilities" },
+            { key: "homeTestimonials", label: "Testimonials" },
+          ].map(({ key, label }) => (
+            <label key={key} className="flex items-center gap-3 p-3 rounded-lg bg-[#0F172A] border border-white/5 cursor-pointer hover:border-white/10 transition-colors">
+              <input
+                type="checkbox"
+                checked={visibility[key as keyof PageVisibility] ?? true}
+                onChange={(e) => setVisibility((prev) => ({ ...prev, [key]: e.target.checked }))}
+                className="sr-only peer"
+              />
+              <div className="w-9 h-5 bg-white/10 rounded-full peer-checked:bg-[#3B82F6] peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all relative flex-shrink-0"></div>
+              <span className="text-sm text-[#F8FAFC]">{label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
 
       <SeoSection config={seo} onChange={handleSeoChange} path="/" />
 

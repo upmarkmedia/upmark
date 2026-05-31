@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Lightbulb, Target, PenTool, Rocket, Settings, TrendingUp } from "lucide-react";
 import { PROCESS_DATA } from "./services-data";
+import { getSiteSettings } from "@/lib/firestore";
 
 const DEFAULT_ICONS = [Lightbulb, Target, PenTool, Rocket, Settings, TrendingUp];
 
@@ -45,6 +46,17 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
     { id: processData[0].id, key: 0 }
   ]);
   const [lastInteractionTime, setLastInteractionTime] = useState(Date.now());
+  const [showServices, setShowServices] = useState(true);
+  const [showWork, setShowWork] = useState(true);
+
+  useEffect(() => {
+    getSiteSettings().then(data => {
+      if (data?.visibility) {
+        if (data.visibility.services !== undefined) setShowServices(data.visibility.services);
+        if (data.visibility.work !== undefined) setShowWork(data.visibility.work);
+      }
+    }).catch(console.error);
+  }, []);
 
   useEffect(() => {
     let idleTimeout: NodeJS.Timeout;
@@ -300,14 +312,18 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full">
-            <Link href="/services" className="group relative w-full sm:w-auto flex items-center justify-center gap-3 bg-accent-blue text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base overflow-hidden transition-[transform] hover:scale-[1.02] active:scale-95 shadow-[0_0_30px_-10px_rgba(59,130,246,0.6)]">
-              <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-600 to-accent-blue opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <span className="relative z-10 flex items-center gap-2">Our Services </span>
-            </Link>
+            {showServices && (
+              <Link href="/services" className="group relative w-full sm:w-auto flex items-center justify-center gap-3 bg-accent-blue text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base overflow-hidden transition-[transform] hover:scale-[1.02] active:scale-95 shadow-[0_0_30px_-10px_rgba(59,130,246,0.6)]">
+                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-600 to-accent-blue opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <span className="relative z-10 flex items-center gap-2">Our Services </span>
+              </Link>
+            )}
 
-            <Link href="/work" className="group w-full sm:w-auto flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-white bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-colors duration-200">
-              View our work
-            </Link>
+            {showWork && (
+              <Link href="/work" className="group w-full sm:w-auto flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-white bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-colors duration-200">
+                View our work
+              </Link>
+            )}
           </div>
         </div>
 

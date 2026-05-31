@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { CapabilityMap } from "@/components/interactive-diagram";
-import { getServices } from "@/lib/firestore";
+import { getServices, getSiteSettings } from "@/lib/firestore";
 
 export const metadata: Metadata = {
   title: "Services | Upmark — Full-Stack Marketing Services",
@@ -10,7 +10,14 @@ export const metadata: Metadata = {
 };
 
 export default async function ServicesPage() {
-  const rawServices = await getServices();
+  const [rawServices, settings] = await Promise.all([
+    getServices(),
+    getSiteSettings(),
+  ]);
+
+  const vis = settings?.visibility ?? {};
+  const show = (key: string) => vis[key as keyof typeof vis] ?? true;
+
   // Serialize timestamps for Client Component
   const services = rawServices
     .sort((a, b) => (a.order || 0) - (b.order || 0))
@@ -20,9 +27,17 @@ export default async function ServicesPage() {
       updatedAt: undefined
     }));
 
+  const pageVisible = show("services");
+  const headerVisible = show("servicesHeader");
+  const mapVisible = show("servicesCapabilityMap") && services.length > 0;
+  const ctaVisible = show("servicesCTA");
+
+  if (!pageVisible) return null;
+
   return (
     <div className="pt-24 sm:pt-32 pb-16 sm:pb-32">
       <section className="container mx-auto px-4 sm:px-6 relative z-10">
+        {headerVisible && (
         <div className="mb-12 sm:mb-20">
           <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-4 block flex items-center gap-4">
             <span className="w-8 h-[1px] bg-accent-blue"></span>
@@ -35,10 +50,12 @@ export default async function ServicesPage() {
             From strategy to production to distribution, we cover the full marketing spectrum so you never need another vendor.
           </p>
         </div>
+        )}
 
-        <CapabilityMap services={services} />
+        {mapVisible && <CapabilityMap services={services} />}
 
         {/* Global CTA at the bottom */}
+        {ctaVisible && (
         <div className="mt-16 sm:mt-24 text-center relative max-w-4xl mx-auto">
           <div className="absolute inset-0 bg-accent-blue/15 blur-[40px] sm:blur-[60px] rounded-full -z-10"></div>
           <h2 className="text-3xl sm:text-4xl md:text-6xl font-black font-heading text-white tracking-tight mb-6 sm:mb-8">
@@ -62,6 +79,7 @@ export default async function ServicesPage() {
             </Link>
           </div>
         </div>
+        )}
       </section>
     </div>
   );

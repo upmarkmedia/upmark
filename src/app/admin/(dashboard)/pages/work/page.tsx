@@ -14,7 +14,7 @@ import { revalidatePathAction } from "@/app/actions";
 import {
   Plus, Pencil, Trash2, X, FileText, RefreshCw, Save, Loader2, Film, MessageSquareQuote, Star, Quote, Search,
 } from "lucide-react";
-import type { WorkItem, WorkItemCategory, WorkSection, SeoPageConfig, Testimonial } from "@/types";
+import type { WorkItem, WorkItemCategory, WorkSection, SeoPageConfig, Testimonial, PageVisibility } from "@/types";
 
 type Tab = "portfolio" | "production" | "testimonials";
 
@@ -129,6 +129,7 @@ export default function WorkPageSettings() {
     subtitle: "",
   });
   const [seo, setSeo] = useState<SeoPageConfig>(WORK_SEO_DEFAULTS);
+  const [visibility, setVisibility] = useState<PageVisibility>({});
 
   useEffect(() => {
     async function load() {
@@ -139,6 +140,7 @@ export default function WorkPageSettings() {
           if (data.productionSection) setProductionSection(data.productionSection);
           if (data.testimonialsSection) setTestimonialsSection(data.testimonialsSection);
           if (data.seo?.work) setSeo({ ...WORK_SEO_DEFAULTS, ...data.seo.work });
+          if (data.visibility) setVisibility(data.visibility);
         }
       } catch (error) {
         console.error("Failed to load settings:", error);
@@ -163,6 +165,7 @@ export default function WorkPageSettings() {
         portfolioSection,
         productionSection,
         testimonialsSection,
+        visibility,
         seo: { work: seo },
       });
       await revalidatePathAction("/work");
@@ -704,6 +707,35 @@ export default function WorkPageSettings() {
           )}
         </div>
       )}
+
+      {/* ─── Page & Section Visibility ────────────── */}
+      <div className="bg-[#1E293B] border border-white/10 rounded-2xl p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-2 h-2 rounded-full bg-[#3B82F6]" />
+          <h2 className="text-lg font-semibold text-white">Visibility</h2>
+        </div>
+        <p className="text-sm text-[#94A3B8] mb-4">Toggle sections on/off on the public work page.</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {[
+            { key: "work", label: "Page (entire work page)" },
+            { key: "workHeader", label: "Page Header" },
+            { key: "workPortfolio", label: "Portfolio" },
+            { key: "workProduction", label: "Production" },
+            { key: "workTestimonials", label: "Testimonials" },
+          ].map(({ key, label }) => (
+            <label key={key} className="flex items-center gap-3 p-3 rounded-lg bg-[#0F172A] border border-white/5 cursor-pointer hover:border-white/10 transition-colors">
+              <input
+                type="checkbox"
+                checked={visibility[key as keyof PageVisibility] ?? true}
+                onChange={(e) => setVisibility((prev) => ({ ...prev, [key]: e.target.checked }))}
+                className="sr-only peer"
+              />
+              <div className="w-9 h-5 bg-white/10 rounded-full peer-checked:bg-[#3B82F6] peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all relative flex-shrink-0"></div>
+              <span className="text-sm text-[#F8FAFC]">{label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
 
       {/* ─── SEO & Save ──────────────────────────── */}
       <SeoSection config={seo} onChange={handleSeoChange} path="/work" />

@@ -4,14 +4,25 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Rocket } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
+import { getSiteSettings } from "@/lib/firestore";
 import { useIdle } from "@/contexts/IdleContext";
 
 export const FloatingCTA = () => {
   const pathname = usePathname();
   const { isIdle, isHeroVisible } = useIdle();
+  const [showContact, setShowContact] = useState(true);
+
+  useEffect(() => {
+    getSiteSettings().then(data => {
+      if (data?.visibility && data.visibility.contact !== undefined) {
+        setShowContact(data.visibility.contact);
+      }
+    }).catch(console.error);
+  }, []);
   
-  // Don't show CTA on contact page since they are already there
-  if (pathname === "/contact") return null;
+  // Don't show CTA on contact page since they are already there, or if contact page is hidden
+  if (pathname === "/contact" || !showContact) return null;
 
   return (
     <motion.div
