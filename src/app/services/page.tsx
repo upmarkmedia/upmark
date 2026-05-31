@@ -2,13 +2,24 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { CapabilityMap } from "@/components/interactive-diagram";
+import { getServices } from "@/lib/firestore";
 
 export const metadata: Metadata = {
   title: "Services | Upmark — Full-Stack Marketing Services",
   description: "From strategy to execution — Upmark offers integrated marketing services including brand strategy, performance marketing, content production, social media management, and SEO.",
 };
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const rawServices = await getServices();
+  // Serialize timestamps for Client Component
+  const services = rawServices
+    .sort((a, b) => (a.order || 0) - (b.order || 0))
+    .map(s => ({
+      ...s,
+      createdAt: undefined,
+      updatedAt: undefined
+    }));
+
   return (
     <div className="pt-24 sm:pt-32 pb-16 sm:pb-32">
       <section className="container mx-auto px-4 sm:px-6 relative z-10">
@@ -25,7 +36,7 @@ export default function ServicesPage() {
           </p>
         </div>
 
-        <CapabilityMap />
+        <CapabilityMap services={services} />
 
         {/* Global CTA at the bottom */}
         <div className="mt-16 sm:mt-24 text-center relative max-w-4xl mx-auto">

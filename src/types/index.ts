@@ -73,7 +73,9 @@ export interface Service {
   id?: string;
   title: string;
   description: string;
-  icon_url: string;
+  icon_url?: string;
+  icon_name?: string;      // e.g. "PlaySquare"
+  label?: string;          // e.g. "Content"
   subtitle?: string;      // e.g. "Foundation", "Paid Media"
   order?: number;          // For custom sort order
   createdAt?: Timestamp;
@@ -116,6 +118,7 @@ export interface PhilosophyPointer {
 export interface ProcessStep {
   title: string;
   description: string;
+  imageUrl?: string;
 }
 
 export interface ContentItem {
@@ -140,14 +143,22 @@ export interface WorkSection {
 }
 
 export interface SiteSettings {
+  // Global Assets
+  globalLogoUrl?: string;
+  globalOgImageUrl?: string;
+  // Home Page Assets
+  homeAboutImageUrl?: string;
   heroVideoUrl?: string;
   heroMobileVideoUrl?: string;
   // Hero metrics
   heroMetrics?: HeroMetric[];
-  // Contact info
+  // Contact & Socials
   contactEmail?: string;
   contactPhone?: string;
   contactAddress?: string;
+  socialTwitter?: string;
+  socialLinkedin?: string;
+  socialInstagram?: string;
   // Homepage section content
   philosophyPointers?: PhilosophyPointer[];
   processSteps?: ProcessStep[];

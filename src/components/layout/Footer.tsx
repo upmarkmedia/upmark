@@ -3,7 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUp } from "lucide-react";
-
+import { useEffect, useState } from "react";
+import { getServices, getSiteSettings } from "@/lib/firestore";
+import type { Service, SiteSettings } from "@/types";
 const TwitterIcon = ({ size }: { size: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
@@ -29,6 +31,21 @@ const InstagramIcon = ({ size }: { size: number }) => (
 const marqueeText = "Strategy · Production · Distribution · Unified · ";
 
 export const Footer = () => {
+  const [services, setServices] = useState<Service[]>([]);
+  const [settings, setSettings] = useState<SiteSettings | null>(null);
+
+  useEffect(() => {
+    Promise.all([
+      getServices(),
+      getSiteSettings(),
+    ])
+      .then(([servicesData, settingsData]) => {
+        setServices(servicesData.sort((a, b) => (a.order || 0) - (b.order || 0)));
+        setSettings(settingsData);
+      })
+      .catch(console.error);
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -50,7 +67,7 @@ export const Footer = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-10 sm:mb-16">
           <div className="lg:col-span-1">
             <Link href="/" className="mb-4 sm:mb-6 inline-block">
-              <Image src="/upmark-wordmark.png" alt="Upmark" width={200} height={200} className="h-12 sm:h-14 w-auto" />
+              <Image src={settings?.globalLogoUrl || "/upmark-wordmark.png"} alt="Upmark" width={200} height={200} className="h-12 sm:h-14 w-auto object-contain" />
             </Link>
             <p className="text-muted-text/80 text-xs sm:text-sm leading-relaxed max-w-xs">
               Integrated marketing that moves markets.
@@ -60,11 +77,13 @@ export const Footer = () => {
           <div>
             <h4 className="text-white font-bold font-heading mb-4 sm:mb-6 tracking-wide text-sm sm:text-base">Services</h4>
             <ul className="flex flex-col gap-2 sm:gap-3">
-              <li><Link href="/services" className="text-muted-text hover:text-accent-blue transition-colors text-xs sm:text-sm">Marketing Strategy</Link></li>
-              <li><Link href="/services" className="text-muted-text hover:text-accent-blue transition-colors text-xs sm:text-sm">Performance Marketing</Link></li>
-              <li><Link href="/services" className="text-muted-text hover:text-accent-blue transition-colors text-xs sm:text-sm">Content Production</Link></li>
-              <li><Link href="/services" className="text-muted-text hover:text-accent-blue transition-colors text-xs sm:text-sm">Social Media Management</Link></li>
-              <li><Link href="/services" className="text-muted-text hover:text-accent-blue transition-colors text-xs sm:text-sm">SEO & Lead Generation</Link></li>
+              {services.map((service) => (
+                <li key={service.id}>
+                  <Link href={`/services#${service.id}`} className="text-muted-text hover:text-accent-blue transition-colors text-xs sm:text-sm">
+                    {service.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           
@@ -82,35 +101,43 @@ export const Footer = () => {
           <div>
             <h4 className="text-white font-bold font-heading mb-4 sm:mb-6 tracking-wide text-sm sm:text-base">Connect</h4>
             <ul className="flex flex-col gap-2 sm:gap-3">
-              <li>
-                <a href="https://x.com/upmarkmedia" target="_blank" rel="noopener noreferrer" className="group/social flex items-center gap-2 text-muted-text hover:text-accent-blue transition-colors text-sm duration-200">
-                  <span className="p-1.5 rounded-lg bg-transparent group-hover/social:bg-accent-blue/10 transition-colors duration-200">
-                    <TwitterIcon size={16} />
-                  </span>
-                  Twitter / X
-                </a>
-              </li>
-              <li>
-                <a href="https://linkedin.com/company/upmark" target="_blank" rel="noopener noreferrer" className="group/social flex items-center gap-2 text-muted-text hover:text-accent-blue transition-colors text-sm duration-200">
-                  <span className="p-1.5 rounded-lg bg-transparent group-hover/social:bg-accent-blue/10 transition-colors duration-200">
-                    <LinkedinIcon size={16} />
-                  </span>
-                  LinkedIn
-                </a>
-              </li>
-              <li>
-                <a href="https://www.instagram.com/upmarkmedia.in" target="_blank" rel="noopener noreferrer" className="group/social flex items-center gap-2 text-muted-text hover:text-accent-blue transition-colors text-sm duration-200">
-                  <span className="p-1.5 rounded-lg bg-transparent group-hover/social:bg-accent-blue/10 transition-colors duration-200">
-                    <InstagramIcon size={16} />
-                  </span>
-                  Instagram
-                </a>
-              </li>
-              <li className="pt-2 mt-2 border-t border-white/5">
-                <a href="mailto:connect@upmarkmedia.in" className="text-muted-text hover:text-accent-blue transition-colors text-sm font-medium">
-                  connect@upmarkmedia.in
-                </a>
-              </li>
+              {(settings?.socialTwitter || !settings) && (
+                <li>
+                  <a href={settings?.socialTwitter || "https://x.com/upmarkmedia"} target="_blank" rel="noopener noreferrer" className="group/social flex items-center gap-2 text-muted-text hover:text-accent-blue transition-colors text-sm duration-200">
+                    <span className="p-1.5 rounded-lg bg-transparent group-hover/social:bg-accent-blue/10 transition-colors duration-200">
+                      <TwitterIcon size={16} />
+                    </span>
+                    Twitter / X
+                  </a>
+                </li>
+              )}
+              {(settings?.socialLinkedin || !settings) && (
+                <li>
+                  <a href={settings?.socialLinkedin || "https://linkedin.com/company/upmark"} target="_blank" rel="noopener noreferrer" className="group/social flex items-center gap-2 text-muted-text hover:text-accent-blue transition-colors text-sm duration-200">
+                    <span className="p-1.5 rounded-lg bg-transparent group-hover/social:bg-accent-blue/10 transition-colors duration-200">
+                      <LinkedinIcon size={16} />
+                    </span>
+                    LinkedIn
+                  </a>
+                </li>
+              )}
+              {(settings?.socialInstagram || !settings) && (
+                <li>
+                  <a href={settings?.socialInstagram || "https://www.instagram.com/upmarkmedia.in"} target="_blank" rel="noopener noreferrer" className="group/social flex items-center gap-2 text-muted-text hover:text-accent-blue transition-colors text-sm duration-200">
+                    <span className="p-1.5 rounded-lg bg-transparent group-hover/social:bg-accent-blue/10 transition-colors duration-200">
+                      <InstagramIcon size={16} />
+                    </span>
+                    Instagram
+                  </a>
+                </li>
+              )}
+              {(settings?.contactEmail || !settings) && (
+                <li className="pt-2 mt-2 border-t border-white/5">
+                  <a href={`mailto:${settings?.contactEmail || "connect@upmarkmedia.in"}`} className="text-muted-text hover:text-accent-blue transition-colors text-sm font-medium">
+                    {settings?.contactEmail || "connect@upmarkmedia.in"}
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
         </div>

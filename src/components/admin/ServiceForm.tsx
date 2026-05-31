@@ -9,6 +9,8 @@ interface ServiceFormData {
   title: string;
   description: string;
   icon_url: string;
+  icon_name: string;
+  label: string;
   subtitle: string;
   order: number;
 }
@@ -35,6 +37,8 @@ export function ServiceForm({
       title: initialData?.title || "",
       description: initialData?.description || "",
       icon_url: initialData?.icon_url || "",
+      icon_name: initialData?.icon_name || "",
+      label: initialData?.label || "",
       subtitle: initialData?.subtitle || "",
       order: initialData?.order ?? 0,
     },
@@ -47,6 +51,8 @@ export function ServiceForm({
       title: data.title,
       description: data.description,
       icon_url: data.icon_url,
+      icon_name: data.icon_name,
+      label: data.label,
       subtitle: data.subtitle,
       order: data.order,
     });
@@ -84,6 +90,27 @@ export function ServiceForm({
             placeholder="e.g. Foundation, Paid Media, Social"
             className={inputClass}
           />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium text-[#F8FAFC]">Map Label</label>
+          <input
+            {...register("label")}
+            placeholder="e.g. Content"
+            className={inputClass}
+          />
+          <p className="text-xs text-[#94A3B8]">Short text for the capability map</p>
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium text-[#F8FAFC]">Lucide Icon Name</label>
+          <input
+            {...register("icon_name")}
+            placeholder="e.g. PlaySquare"
+            className={inputClass}
+          />
+          <p className="text-xs text-[#94A3B8]">Used if icon image is not uploaded</p>
         </div>
       </div>
 

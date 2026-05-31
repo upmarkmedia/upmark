@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
+import { getSiteSettings } from "@/lib/firestore";
 import {
   LayoutDashboard,
   FileText,
@@ -19,7 +20,7 @@ import {
   Mail,
   Globe,
 } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 
 const pageNavItems = [
   { href: "/admin/pages/home", label: "Home", icon: Home },
@@ -27,6 +28,7 @@ const pageNavItems = [
   { href: "/admin/pages/services", label: "Services", icon: Briefcase },
   { href: "/admin/pages/case-studies", label: "Case Studies", icon: FileText },
   { href: "/admin/pages/contact", label: "Contact", icon: Mail },
+  { href: "/admin/pages/settings", label: "Global Settings", icon: Globe },
 ];
 
 const dataNavItems = [
@@ -89,7 +91,16 @@ export function AdminLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const { user, logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [logoUrl, setLogoUrl] = useState("/upmark-wordmark.png");
   _setSidebarOpen = setSidebarOpen;
+
+  useEffect(() => {
+    getSiteSettings()
+      .then(settings => {
+        if (settings?.globalLogoUrl) setLogoUrl(settings.globalLogoUrl);
+      })
+      .catch(console.error);
+  }, []);
 
   function isActive(href: string, exact: boolean) {
     if (href === "/admin") return exact ? pathname === href : pathname.startsWith(href);
@@ -118,7 +129,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         {/* Logo */}
         <div className="flex items-center justify-between px-6 h-16 border-b border-white/5">
           <Link href="/admin">
-            <Image src="/upmark-wordmark.png" alt="Upmark" width={160} height={160} className="h-11 w-auto" />
+            <Image src={logoUrl} alt="Upmark" width={160} height={160} className="h-11 w-auto object-contain" />
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}
@@ -197,7 +208,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
             <Menu size={24} />
           </button>
           <span className="ml-4">
-            <Image src="/upmark-wordmark.png" alt="Upmark" width={140} height={140} className="h-10 w-auto" />
+            <Image src={logoUrl} alt="Upmark" width={140} height={140} className="h-10 w-auto object-contain" />
           </span>
         </header>
 

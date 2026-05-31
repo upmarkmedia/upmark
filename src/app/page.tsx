@@ -16,13 +16,13 @@ const DEFAULT_PHILOSOPHY_POINTERS = [
   { title: "Measurable Results", desc: "Every deliverable is tied to a business outcome. We track, report and relentlessly optimize for what matters." }
 ];
 
-const DEFAULT_PROCESS_ITEMS = [
-  { title: "Insight", description: "Deep-dive into your market, audience, competitors and brand. We surface the insights that define your edge." },
-  { title: "Strategy", description: "We translate insight into a precise strategy — positioning, messaging, channels and a roadmap for execution." },
-  { title: "Creative Production", description: "Our in-house team produces every asset — video, design, copy and content — aligned to the strategy." },
-  { title: "Campaign Launch", description: "Orchestrated rollout across paid, owned and earned channels with precision timing and audience targeting." },
-  { title: "Optimisation", description: "Real-time monitoring and rapid iteration. We cut what doesn't work and double down on what does." },
-  { title: "Growth", description: "We systematically compound results — scaling budgets, expanding channels and building long-term growth loops." }
+const DEFAULT_PROCESS_ITEMS: { title: string; description: string; imageUrl?: string }[] = [
+  { title: "Insight", description: "Deep-dive into your market, audience, competitors and brand. We surface the insights that define your edge.", imageUrl: "/images/service-strategy.png" },
+  { title: "Strategy", description: "We translate insight into a precise strategy — positioning, messaging, channels and a roadmap for execution.", imageUrl: "/images/service-seo.png" },
+  { title: "Creative Production", description: "Our in-house team produces every asset — video, design, copy and content — aligned to the strategy.", imageUrl: "/images/service-content.png" },
+  { title: "Campaign Launch", description: "Orchestrated rollout across paid, owned and earned channels with precision timing and audience targeting.", imageUrl: "/images/service-social.png" },
+  { title: "Optimisation", description: "Real-time monitoring and rapid iteration. We cut what doesn't work and double down on what does.", imageUrl: "/images/service-performance.png" },
+  { title: "Growth", description: "We systematically compound results — scaling budgets, expanding channels and building long-term growth loops.", imageUrl: "/images/process.png" }
 ];
 
 const DEFAULT_CONTENT_ITEMS = [
@@ -35,8 +35,8 @@ const DEFAULT_CONTENT_ITEMS = [
 ];
 
 const DEFAULT_STUDIO_CAPABILITIES = [
-  "In-house production team", "Director + DP on every shoot", "4K / cinema-grade equipment", 
-  "Same-day turnaround available", "Licensed music library", "Motion graphics included", 
+  "In-house production team", "Director + DP on every shoot", "4K / cinema-grade equipment",
+  "Same-day turnaround available", "Licensed music library", "Motion graphics included",
   "Platform-native formatting", "Raw footage delivery"
 ];
 
@@ -52,6 +52,7 @@ export default async function Home() {
     id: i + 1,
     title: p.title,
     description: p.description,
+    imageUrl: p.imageUrl,
   }));
   const contentItems = (settings?.contentItems?.length ? settings.contentItems : DEFAULT_CONTENT_ITEMS).map((c, i) => ({
     id: i + 1,
@@ -60,6 +61,7 @@ export default async function Home() {
     description: c.description,
   }));
   const studioCapabilities = settings?.studioCapabilities?.length ? settings.studioCapabilities : DEFAULT_STUDIO_CAPABILITIES;
+  const aboutImageUrl = settings?.homeAboutImageUrl || "/images/philosophy.png";
 
   return (
     <div className="flex flex-col gap-12 sm:gap-16 md:gap-24 pb-16 sm:pb-24 md:pb-28 relative">
@@ -68,60 +70,60 @@ export default async function Home() {
       {/* Philosophy / About Section */}
       <section id="about" className="container mx-auto px-4 sm:px-6 scroll-mt-32">
         <div className="flex flex-col lg:flex-row gap-10 sm:gap-12 lg:gap-16 mb-12 sm:mb-20 text-white items-center">
-           {/* Left Side */}
-           <div className="lg:w-7/12 flex flex-col items-start pr-0 lg:pr-10">
-             <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-6 inline-flex items-center gap-4">
-               <span className="w-8 h-[1px] bg-accent-blue"></span>
-                ABOUT US
-             </span>
-             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading text-white tracking-tight leading-tight mb-4">
-               Most agencies only <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-indigo-400">create content</span> <br className="hidden md:block"/>or run ads.
-             </h2>
-             <h3 className="text-xl sm:text-2xl md:text-3xl mt-4 mb-6 sm:mb-8 font-semibold">
-               Upmark builds <span className="text-accent-gold">complete marketing systems.</span>
-             </h3>
-             <div className="flex flex-col gap-4 sm:gap-6 text-muted-text font-light text-base sm:text-lg mb-8 sm:mb-10">
-                <p>
-                  Founded on the belief that modern marketing must be fast, precise and measurable, Upmark brings together strategists, creatives, producers and performance marketers who operate as one integrated team.
-                </p>
-                <p>
-                  When your strategist sits next to your editor, your performance data informs your creative, and your content team understands your media budget — the work gets sharper. We're not a collection of specialists working in parallel. We're a single, integrated team where every discipline makes every other one better. That's the Upmark advantage.
-                </p>
-             </div>
-                          <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-                <Link href="/services" className="group flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-white border border-white/20 hover:border-accent-blue hover:bg-accent-blue/5 transition-[border-color,background-color] w-full sm:w-auto">
-                  Explore our services
-                </Link>
-                <Link href="/#about" className="group flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-white bg-accent-blue/10 border border-accent-blue/30 hover:bg-accent-blue/20 hover:border-accent-blue/50 transition-[border-color,background-color] w-full sm:w-auto">
-                  Learn More
-                </Link>
-              </div>
-           </div>
-           
-           {/* Right Side Visual */}
-           <div className="lg:w-5/12 w-full flex justify-center items-center relative min-h-[280px] sm:min-h-[400px]">
-             <div className="absolute inset-0 bg-gradient-to-tr from-accent-blue/10 to-accent-gold/5 rounded-full blur-[40px] sm:blur-[60px] pointer-events-none"></div>
-             <div className="relative w-full aspect-square max-w-[320px] sm:max-w-[450px] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
-                <Image
-                  src="/images/philosophy.png"
-                  alt="Upmark strategy session — marketing team brainstorming around data-driven insights"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 40vw"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary-bg/60 via-transparent to-transparent"></div>
-             </div>
-           </div>
+          {/* Left Side */}
+          <div className="lg:w-7/12 flex flex-col items-start pr-0 lg:pr-10">
+            <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-6 inline-flex items-center gap-4">
+              <span className="w-8 h-[1px] bg-accent-blue"></span>
+              ABOUT US
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading text-white tracking-tight leading-tight mb-4">
+              Most agencies only <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-indigo-400">create content</span> <br className="hidden md:block" />or run ads.
+            </h2>
+            <h3 className="text-xl sm:text-2xl md:text-3xl mt-4 mb-6 sm:mb-8 font-semibold">
+              Upmark builds <span className="text-accent-gold">complete marketing systems.</span>
+            </h3>
+            <div className="flex flex-col gap-4 sm:gap-6 text-muted-text font-light text-base sm:text-lg mb-8 sm:mb-10">
+              <p>
+                Founded on the belief that modern marketing must be fast, precise and measurable, Upmark brings together strategists, creatives, producers and performance marketers who operate as one integrated team.
+              </p>
+              <p>
+                When your strategist sits next to your editor, your performance data informs your creative, and your content team understands your media budget — the work gets sharper. We're not a collection of specialists working in parallel. We're a single, integrated team where every discipline makes every other one better. That's the Upmark advantage.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+              <Link href="/services" className="group flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-white border border-white/20 hover:border-accent-blue hover:bg-accent-blue/5 transition-[border-color,background-color] w-full sm:w-auto">
+                Explore our services
+              </Link>
+              <Link href="/#about" className="group flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-white bg-accent-blue/10 border border-accent-blue/30 hover:bg-accent-blue/20 hover:border-accent-blue/50 transition-[border-color,background-color] w-full sm:w-auto">
+                Learn More
+              </Link>
+            </div>
+          </div>
+
+          {/* Right Side Visual */}
+          <div className="lg:w-5/12 w-full flex justify-center items-center relative min-h-[280px] sm:min-h-[400px]">
+            <div className="absolute inset-0 bg-gradient-to-tr from-accent-blue/10 to-accent-gold/5 rounded-full blur-[40px] sm:blur-[60px] pointer-events-none"></div>
+            <div className="relative w-full aspect-square max-w-[320px] sm:max-w-[450px] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+              <Image
+                src={aboutImageUrl}
+                alt="Upmark strategy session — marketing team brainstorming around data-driven insights"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 40vw"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary-bg/60 via-transparent to-transparent"></div>
+            </div>
+          </div>
         </div>
 
         {/* Philosophy Pointers */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
           {philosophyPointers.map((p, i) => (
             <div key={i} className="group p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-secondary-surface/40 border border-white/5 hover:border-accent-blue/30 transition-colors duration-300 relative overflow-hidden">
-               <div className="absolute top-0 right-0 p-3 sm:p-6 text-4xl sm:text-6xl font-black text-white/5 group-hover:text-white/10 transition-colors pointer-events-none">
-                 0{i + 1}
-               </div>
+              <div className="absolute top-0 right-0 p-3 sm:p-6 text-4xl sm:text-6xl font-black text-white/5 group-hover:text-white/10 transition-colors pointer-events-none">
+                0{i + 1}
+              </div>
               <h3 className="text-base sm:text-xl font-bold font-heading text-white mb-2 sm:mb-3 relative z-10">{p.title}</h3>
               <p className="text-muted-text/90 text-base font-light leading-relaxed relative z-10">{p.desc}</p>
             </div>
@@ -130,60 +132,48 @@ export default async function Home() {
       </section>
 
       {/* Process Section */}
-      <section className="container mx-auto px-4 sm:px-6 relative z-10 content-visibility-auto">
+      <section className="w-full">
         <ProcessOrbital items={processItems} />
-        
-        {/* CTA Buttons */}
-        <div className="mt-10 sm:mt-16 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-xl mx-auto">
-          <Link href="/services" className="group relative w-full sm:w-auto flex items-center justify-center gap-3 bg-accent-blue text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base overflow-hidden transition-[transform] hover:scale-[1.02] active:scale-95 shadow-[0_0_30px_-10px_rgba(59,130,246,0.6)]">
-            <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-600 to-accent-blue opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <span className="relative z-10 flex items-center gap-2">Our Services </span>
-          </Link>
-          
-          <Link href="/work" className="group w-full sm:w-auto flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-white bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-colors duration-200">
-            View our work
-          </Link>
-        </div>
       </section>
 
       {/* Content Studio */}
       <section className="container mx-auto px-4 sm:px-6 relative z-10 content-visibility-auto">
         <div className="mb-10 sm:mb-20 text-center flex flex-col items-center">
           <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-4 block inline-flex items-center gap-4">
-             <span className="w-8 h-[1px] bg-accent-blue"></span>
-             CONTENT THAT CONVERTS
-             <span className="w-8 h-[1px] bg-accent-blue"></span>
+            <span className="w-8 h-[1px] bg-accent-blue"></span>
+            CONTENT THAT CONVERTS
+            <span className="w-8 h-[1px] bg-accent-blue"></span>
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-6xl font-black font-heading text-white tracking-tight mb-4 sm:mb-6">Production <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-blue-400">Studio</span></h2>
           <p className="text-muted-text text-base sm:text-xl max-w-2xl font-light">Our production team creates across every format — from viral reels to cinematic brand films. All in-house. All on-brand.</p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
-           <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
-             {contentItems.map((item) => (
-                <div key={item.id} className="p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-secondary-surface/40 border border-white/5">
-                   <div className="text-accent-blue font-bold text-xs uppercase tracking-widest mb-3">{item.subtitle}</div>
-                   <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3">{item.title}</h3>
-                   <p className="text-muted-text font-light text-base">{item.description}</p>
-                </div>
-             ))}
-           </div>
-           
-           {/* Studio Capabilities feature block */}
-           <div className="lg:col-span-1 p-6 sm:p-10 rounded-2xl sm:rounded-3xl bg-accent-blue/5 border border-accent-blue/20 flex flex-col justify-center">
-              <div className="w-12 h-12 rounded-xl bg-accent-blue/20 text-accent-blue flex items-center justify-center mb-6"><PlaySquare size={24} /></div>
-              <h3 className="text-xl sm:text-2xl font-black text-white mb-4 sm:mb-6">Studio Capabilities</h3>
-              <p className="text-muted-text mb-6 sm:mb-8 text-base">Professional production infrastructure available to every Upmark client.</p>
-              
-              <ul className="flex flex-col gap-4">
-                {studioCapabilities.map((cap, i) => (
-                   <li key={i} className="flex items-center gap-3 text-white/90 text-base font-medium">
-                      <CheckCircle2 size={16} className="text-accent-blue flex-shrink-0" />
-                      {cap}
-                   </li>
-                ))}
-              </ul>
-           </div>
+          <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
+            {contentItems.map((item) => (
+              <div key={item.id} className="p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-secondary-surface/40 border border-white/5">
+                <div className="text-accent-blue font-bold text-xs uppercase tracking-widest mb-3">{item.subtitle}</div>
+                <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3">{item.title}</h3>
+                <p className="text-muted-text font-light text-base">{item.description}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Studio Capabilities feature block */}
+          <div className="lg:col-span-1 p-6 sm:p-10 rounded-2xl sm:rounded-3xl bg-accent-blue/5 border border-accent-blue/20 flex flex-col justify-center">
+            <div className="w-12 h-12 rounded-xl bg-accent-blue/20 text-accent-blue flex items-center justify-center mb-6"><PlaySquare size={24} /></div>
+            <h3 className="text-xl sm:text-2xl font-black text-white mb-4 sm:mb-6">Studio Capabilities</h3>
+            <p className="text-muted-text mb-6 sm:mb-8 text-base">Professional production infrastructure available to every Upmark client.</p>
+
+            <ul className="flex flex-col gap-4">
+              {studioCapabilities.map((cap, i) => (
+                <li key={i} className="flex items-center gap-3 text-white/90 text-base font-medium">
+                  <CheckCircle2 size={16} className="text-accent-blue flex-shrink-0" />
+                  {cap}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
 

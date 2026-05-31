@@ -3,17 +3,27 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useIdle } from "@/contexts/IdleContext";
+import { getSiteSettings } from "@/lib/firestore";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [mobileSubmenuOpen, setMobileSubmenuOpen] = useState<string | null>(null);
+  const [logoUrl, setLogoUrl] = useState("/upmark-wordmark.png");
+  const lastScrollY = useRef(0);
   const pathname = usePathname();
   const { isIdle, isHeroVisible } = useIdle();
+
+  useEffect(() => {
+    getSiteSettings().then(data => {
+      if (data?.globalLogoUrl) setLogoUrl(data.globalLogoUrl);
+    }).catch(console.error);
+  }, []);
 
   // Handle scroll effect for dynamic glassmorphism on desktop
   useEffect(() => {
@@ -21,7 +31,18 @@ export const Navbar = () => {
     const handleScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
-          setScrolled(window.scrollY > 20);
+          const currentScrollY = window.scrollY;
+          setScrolled(currentScrollY > 20);
+
+          if (window.innerWidth >= 1024) {
+            if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
+              setHidden(true);
+            } else if (currentScrollY < lastScrollY.current || currentScrollY <= 50) {
+              setHidden(false);
+            }
+          }
+
+          lastScrollY.current = currentScrollY;
           ticking = false;
         });
         ticking = true;
@@ -54,7 +75,7 @@ export const Navbar = () => {
   }, [pathname]);
 
   return (
-    <header className={`fixed top-0 w-full z-50 flex justify-center pt-3 sm:pt-6 px-3 sm:px-6 pointer-events-none transition-opacity duration-700 ${isIdle && isHeroVisible ? "opacity-0" : "opacity-100"}`}>
+    <header className={`fixed top-0 w-full z-50 flex justify-center pt-3 sm:pt-6 px-3 sm:px-6 pointer-events-none transition-all duration-500 ${isIdle && isHeroVisible ? "opacity-0" : "opacity-100"} ${hidden ? '-translate-y-full' : 'translate-y-0'}`}>
       <motion.div
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -67,7 +88,7 @@ export const Navbar = () => {
       >
         {/* Logo - Left Side */}
         <Link href="/" className="flex items-center shrink-0">
-          <Image src="/upmark-wordmark.png" alt="Upmark" width={180} height={180} className="h-12 sm:h-14 w-auto" priority />
+          <Image src={logoUrl} alt="Upmark" width={180} height={180} className="h-12 sm:h-14 w-auto object-contain" priority />
         </Link>
 
         {/* Desktop Nav - Right Side */}

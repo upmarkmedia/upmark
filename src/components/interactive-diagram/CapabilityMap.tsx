@@ -1,17 +1,65 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CAPABILITIES_DATA } from "./services-data";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import * as LucideIcons from "lucide-react";
+import { getSiteSettings } from "@/lib/firestore";
+import type { Service } from "@/types";
 
-export function CapabilityMap() {
-  const [activeId, setActiveId] = useState(CAPABILITIES_DATA[0].id);
+export function CapabilityMap({ services = [] }: { services?: Service[] }) {
+  // Use provided services or fallback to empty state
+  const data = services.length > 0 ? services : [];
+  
+  const [activeId, setActiveId] = useState(data[0]?.id || "");
+  const [logoUrl, setLogoUrl] = useState("/upmark-wordmark.png");
 
-  const activeIndex = CAPABILITIES_DATA.findIndex((s) => s.id === activeId);
-  const active = CAPABILITIES_DATA[activeIndex];
+  useEffect(() => {
+    getSiteSettings().then(data => {
+      if (data?.globalLogoUrl) setLogoUrl(data.globalLogoUrl);
+    }).catch(console.error);
+
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash && data.some(s => s.id === hash)) {
+        setActiveId(hash);
+      }
+    };
+
+    // Check on mount
+    handleHashChange();
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashChange);
+    
+    // Fallback for Next.js soft navigation (in case hashchange doesn't fire)
+    const originalPushState = history.pushState;
+    const originalReplaceState = history.replaceState;
+
+    history.pushState = function (...args) {
+      originalPushState.apply(this, args);
+      handleHashChange();
+    };
+
+    history.replaceState = function (...args) {
+      originalReplaceState.apply(this, args);
+      handleHashChange();
+    };
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+      history.pushState = originalPushState;
+      history.replaceState = originalReplaceState;
+    };
+  }, [data]);
+
+  const activeIndex = data.findIndex((s) => s.id === activeId);
+  const active = data[activeIndex] || data[0];
+  
+  if (!active) return null;
 
   const getPosStyles = (i: number, total: number) => {
     const angle = -Math.PI / 2 + (i / total) * 2 * Math.PI;
@@ -34,7 +82,7 @@ export function CapabilityMap() {
   return (
     <div className="w-full">
       <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16 max-w-6xl mx-auto px-4 sm:px-0">
-        
+
         {/* Orbital */}
         <div className="relative w-[340px] h-[340px] sm:w-[420px] sm:h-[420px] lg:w-[500px] lg:h-[500px] flex-shrink-0">
           {/* Ambient glow */}
@@ -67,8 +115,8 @@ export function CapabilityMap() {
             ))}
 
             {/* Connector lines */}
-            {CAPABILITIES_DATA.map((svc, i) => {
-              const pos = getSvgPos(i, CAPABILITIES_DATA.length);
+            {data.map((svc, i) => {
+              const pos = getSvgPos(i, data.length);
               const isActive = svc.id === activeId;
               return (
                 <motion.line
@@ -91,8 +139,8 @@ export function CapabilityMap() {
             {/* Active node glow pulse */}
             <motion.circle
               key={`pulse-${activeId}`}
-              cx={getSvgPos(activeIndex, CAPABILITIES_DATA.length).x}
-              cy={getSvgPos(activeIndex, CAPABILITIES_DATA.length).y}
+              cx={getSvgPos(activeIndex !== -1 ? activeIndex : 0, data.length).x}
+              cy={getSvgPos(activeIndex !== -1 ? activeIndex : 0, data.length).y}
               r="8"
               fill="rgba(59,130,246,0.12)"
               animate={{ r: [8, 12, 8], opacity: [0.8, 0, 0.8] }}
@@ -100,28 +148,28 @@ export function CapabilityMap() {
             />
           </svg>
 
-          {/* Center hub */}
-          <div className="absolute z-10 w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 rounded-full bg-[#080d17]/90 border border-white/10 backdrop-blur-sm flex items-center justify-center shadow-[0_0_40px_rgba(59,130,246,0.1)] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <div className="absolute inset-0 rounded-full border border-accent-blue/20 animate-[spin_14s_linear_infinite]"
-              style={{ borderTopColor: "transparent", borderRightColor: "transparent" }} />
-            <Image src="/upmark-wordmark.png" alt="Upmark" width={100} height={100} className="w-20 lg:w-28 h-auto z-10" />
+          {/* Center Logo */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 lg:w-44 lg:h-44 rounded-full bg-[#03060c]/80 border border-white/5 backdrop-blur-md flex items-center justify-center shadow-[0_0_80px_rgba(59,130,246,0.15)] z-10">
+            <div className="absolute inset-0 rounded-full border border-accent-blue/10 animate-[spin_10s_linear_infinite]" />
+            <div className="absolute inset-4 rounded-full border border-white/5 animate-[spin_15s_linear_infinite_reverse]" />
+            <Image src={logoUrl} alt="Upmark" width={100} height={100} className="w-20 lg:w-28 h-auto z-10 object-contain" />
           </div>
 
           {/* Nodes */}
-          {CAPABILITIES_DATA.map((svc, i) => {
+          {data.map((svc, i) => {
             const isActive = svc.id === activeId;
-            const Icon = svc.icon;
+            const IconComponent = (svc.icon_name && (LucideIcons as any)[svc.icon_name]) || LucideIcons.Check;
 
             return (
               <div
                 key={svc.id}
                 className="absolute z-20"
-                style={getPosStyles(i, CAPABILITIES_DATA.length)}
-                onMouseEnter={() => setActiveId(svc.id)}
-                onClick={() => setActiveId(svc.id)}
+                style={getPosStyles(i, data.length)}
+                onMouseEnter={() => setActiveId(svc.id || "")}
+                onClick={() => setActiveId(svc.id || "")}
               >
                 <motion.button
-                  className={`w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full border flex flex-col items-center justify-center gap-0.5 transition-colors duration-300 cursor-pointer focus-visible:outline-none
+                  className={`w-16 h-16 sm:w-18 sm:h-18 lg:w-20 lg:h-20 rounded-full border flex flex-col items-center justify-center gap-0.5 transition-colors duration-300 cursor-pointer focus-visible:outline-none
                     ${isActive
                       ? "bg-[#0d1525] border-accent-blue shadow-[0_0_28px_rgba(59,130,246,0.45)]"
                       : "bg-[#080d17] border-white/10 hover:border-white/30 hover:bg-white/5"
@@ -131,14 +179,22 @@ export function CapabilityMap() {
                   aria-label={svc.title}
                   aria-pressed={isActive}
                 >
-                  <Icon
-                    size={14}
-                    className={`lg:w-4 lg:h-4 transition-colors duration-300 ${isActive ? "text-accent-blue" : "text-white/35"}`}
-                  />
+                  {svc.icon_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img 
+                      src={svc.icon_url} 
+                      alt={svc.title} 
+                      className={`w-4 h-4 lg:w-6 lg:h-6 object-contain transition-all duration-300 ${isActive ? "opacity-100" : "opacity-40"}`} 
+                    />
+                  ) : (
+                    <IconComponent
+                      size={14}
+                      className={`lg:w-6 lg:h-6 transition-colors duration-300 ${isActive ? "text-accent-blue" : "text-white/35"}`}
+                    />
+                  )}
                   <span
-                    className={`text-[7px] lg:text-[9px] font-bold tracking-wider uppercase text-center leading-tight px-1 transition-colors duration-300 ${
-                      isActive ? "text-white" : "text-white/35"
-                    }`}
+                    className={`text-[7px] lg:text-[9px] font-bold tracking-wider uppercase text-center leading-tight px-1 transition-colors duration-300 ${isActive ? "text-white" : "text-white/35"
+                      }`}
                   >
                     {svc.label}
                   </span>
@@ -173,7 +229,7 @@ export function CapabilityMap() {
 
               {/* Decorative number */}
               <span className="absolute top-2 right-4 text-[6rem] lg:text-[8rem] font-black text-accent-blue/[0.05] leading-none select-none pointer-events-none font-heading">
-                {active.number}
+                {String(activeIndex + 1).padStart(2, '0')}
               </span>
 
               <div className="relative z-10">
@@ -205,15 +261,14 @@ export function CapabilityMap() {
 
           {/* Service dots navigation */}
           <div className="flex items-center justify-center lg:justify-start gap-2 mt-5 lg:pl-1">
-            {CAPABILITIES_DATA.map((svc) => (
+            {data.map((svc) => (
               <button
                 key={svc.id}
-                onClick={() => setActiveId(svc.id)}
-                className={`rounded-full transition-[width] duration-300 focus-visible:outline-none ${
-                  svc.id === activeId
-                    ? "w-6 h-2 bg-accent-blue"
-                    : "w-2 h-2 bg-white/20 hover:bg-white/40"
-                }`}
+                onClick={() => setActiveId(svc.id || "")}
+                className={`rounded-full transition-[width] duration-300 focus-visible:outline-none ${svc.id === activeId
+                  ? "w-6 h-2 bg-accent-blue"
+                  : "w-2 h-2 bg-white/20 hover:bg-white/40"
+                  }`}
                 aria-label={svc.title}
               />
             ))}

@@ -7,7 +7,7 @@ import { SeoSection } from "@/components/admin/ui/SeoSection";
 import { revalidatePathAction } from "@/app/actions";
 import {
   Save, Loader2, PlaySquare, ChevronDown, Plus, Trash2, Lightbulb,
-  ListOrdered, Film, Award, Home,
+  ListOrdered, Film, Award, Home, Image as ImageIcon,
 } from "lucide-react";
 import type { SiteSettings, HeroMetric, PhilosophyPointer, ProcessStep, ContentItem, SeoPageConfig } from "@/types";
 
@@ -73,6 +73,7 @@ export default function HomePageSettings() {
 
   const [heroVideoUrl, setHeroVideoUrl] = useState("");
   const [heroMobileVideoUrl, setHeroMobileVideoUrl] = useState("");
+  const [homeAboutImageUrl, setHomeAboutImageUrl] = useState("");
   const [heroMetrics, setHeroMetrics] = useState<HeroMetric[]>([
     { value: "120", suffix: "+", label: "Projects Delivered" },
     { value: "98", suffix: "%", label: "Client Retention" },
@@ -91,6 +92,7 @@ export default function HomePageSettings() {
         if (data) {
           setHeroVideoUrl(data.heroVideoUrl || "");
           setHeroMobileVideoUrl(data.heroMobileVideoUrl || "");
+          setHomeAboutImageUrl(data.homeAboutImageUrl || "");
           if (data.heroMetrics?.length) setHeroMetrics(data.heroMetrics);
           if (data.philosophyPointers?.length) setPhilosophyPointers(data.philosophyPointers);
           if (data.processSteps?.length) setProcessSteps(data.processSteps);
@@ -118,6 +120,7 @@ export default function HomePageSettings() {
       await updateSiteSettings({
         heroVideoUrl,
         heroMobileVideoUrl,
+        homeAboutImageUrl,
         heroMetrics,
         philosophyPointers,
         processSteps,
@@ -194,6 +197,16 @@ export default function HomePageSettings() {
         </div>
       </Section>
 
+      <Section title="About Us Section" icon={ImageIcon}>
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-[#F8FAFC] mb-2">About Us Image</label>
+            <p className="text-sm text-[#94A3B8] mb-4">Upload the image used in the Philosophy / About section on the homepage.</p>
+            <CloudinaryUploadWidget onUpload={(url) => setHomeAboutImageUrl(url)} currentUrl={homeAboutImageUrl} label="About Us Image" />
+          </div>
+        </div>
+      </Section>
+
       <Section title="Philosophy Pointers" icon={Lightbulb}>
         <p className="text-sm text-[#94A3B8] mb-4">Edit the 4 philosophy pointer cards on the homepage.</p>
         <div className="flex flex-col gap-3">
@@ -212,11 +225,21 @@ export default function HomePageSettings() {
         <p className="text-sm text-[#94A3B8] mb-4">Edit the 6-step process on the homepage.</p>
         <div className="flex flex-col gap-3">
           {processSteps.map((s, i) => (
-            <div key={i} className="grid grid-cols-[40px_200px_1fr_auto] gap-2 items-start">
-              <div className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-[#94A3B8] text-xs font-bold mt-1">{i + 1}</div>
-              <input value={s.title} onChange={(e) => { const arr = [...processSteps]; arr[i] = { ...arr[i], title: e.target.value }; setProcessSteps(arr); }} placeholder="Step title" className={inputClass} />
-              <textarea value={s.description} onChange={(e) => { const arr = [...processSteps]; arr[i] = { ...arr[i], description: e.target.value }; setProcessSteps(arr); }} placeholder="Step description" className={`${inputClass} resize-none`} rows={2} />
-              <button type="button" onClick={() => setProcessSteps(processSteps.filter((_, j) => j !== i))} className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg mt-1"><Trash2 size={14} /></button>
+            <div key={i} className="flex flex-col gap-2 p-4 border border-white/10 rounded-xl bg-white/[0.02]">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-sm font-bold text-[#F8FAFC]">Step {i + 1}</span>
+                <button type="button" onClick={() => setProcessSteps(processSteps.filter((_, j) => j !== i))} className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg"><Trash2 size={14} /></button>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-3">
+                  <input value={s.title} onChange={(e) => { const arr = [...processSteps]; arr[i] = { ...arr[i], title: e.target.value }; setProcessSteps(arr); }} placeholder="Step title" className={inputClass} />
+                  <textarea value={s.description} onChange={(e) => { const arr = [...processSteps]; arr[i] = { ...arr[i], description: e.target.value }; setProcessSteps(arr); }} placeholder="Step description" className={`${inputClass} resize-none`} rows={3} />
+                </div>
+                <div>
+                  <label className="block text-xs text-[#94A3B8] mb-2">Step Image</label>
+                  <CloudinaryUploadWidget onUpload={(url) => { const arr = [...processSteps]; arr[i] = { ...arr[i], imageUrl: url }; setProcessSteps(arr); }} currentUrl={s.imageUrl} label="Upload Image" />
+                </div>
+              </div>
             </div>
           ))}
           <button type="button" onClick={() => setProcessSteps([...processSteps, { title: "", description: "" }])} className="flex items-center gap-2 text-sm text-[#3B82F6] hover:text-blue-400 self-start"><Plus size={16} /> Add Step</button>
