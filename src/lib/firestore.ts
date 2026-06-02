@@ -32,8 +32,11 @@ export async function updateSiteSettings(
   data: Partial<SiteSettings>
 ): Promise<void> {
   const docRef = doc(db, "settings", "global");
+  const cleanData = Object.fromEntries(
+    Object.entries(data).filter(([, v]) => v !== undefined)
+  );
   await setDoc(docRef, {
-    ...data,
+    ...cleanData,
     updatedAt: serverTimestamp(),
   }, { merge: true });
 }
