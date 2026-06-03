@@ -228,6 +228,12 @@ export default function WorkPage() {
 
                   <div className={`absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-20 pointer-events-none transition-opacity duration-500 group-hover:animate-none ${initialLoad ? "opacity-100" : "opacity-0 group-hover:!opacity-100"} ${!initialLoad ? "animate-[staggeredPopup_20s_infinite]" : ""}`} style={{ animationDelay: `${index * 3}s` }}></div>
 
+                  <div className={`absolute top-3 left-3 z-30 transition-opacity duration-500 group-hover:animate-none ${initialLoad ? "opacity-100" : "opacity-0 group-hover:!opacity-100"} ${!initialLoad ? "animate-[staggeredPopup_20s_infinite]" : ""}`} style={{ animationDelay: `${index * 3}s` }}>
+                     <div className="px-3 py-1 bg-black/60 rounded-full text-[10px] text-primary-text uppercase tracking-widest font-semibold border border-primary-text/10 backdrop-blur-md">
+                       {item.tag || item.category}
+                     </div>
+                  </div>
+
                   <div className={`absolute bottom-0 left-0 right-0 p-5 z-30 transition-all duration-500 group-hover:animate-none ${initialLoad ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0 group-hover:!translate-y-0 group-hover:!opacity-100"} ${!initialLoad ? "animate-[staggeredPopup_20s_infinite]" : ""}`} style={{ animationDelay: `${index * 3}s` }}>
                     <div className="flex items-center gap-2 mb-2">
                        <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-primary-text/10 text-primary-text/90">
@@ -236,6 +242,9 @@ export default function WorkPage() {
                        {item.duration && <span className="text-[10px] text-primary-text/70 font-mono tracking-widest">{item.duration}</span>}
                     </div>
                     <h3 className="text-base sm:text-lg font-bold text-primary-text">{item.title}</h3>
+                    {item.client && (
+                      <div className="text-sm font-semibold text-accent-blue mt-1 uppercase tracking-wider">{item.client}</div>
+                    )}
                   </div>
                 </div>
               </div>

@@ -31,15 +31,29 @@ export const Hero = ({ videoUrl, mobileVideoUrl }: HeroProps) => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      // Sometimes browsers require muted property to be set directly on the element for autoplay
+      video.muted = isMuted;
+      
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          console.error("Autoplay was prevented:", error);
+          setIsPlaying(false);
+        });
+      }
+    }
+  }, [currentVideoUrl, isMuted]);
+
   const togglePlay = () => {
     const video = videoRef.current;
     if (!video) return;
     if (video.paused) {
-      video.play();
-      setIsPlaying(true);
+      video.play().catch(console.error);
     } else {
       video.pause();
-      setIsPlaying(false);
     }
   };
 
@@ -63,12 +77,14 @@ export const Hero = ({ videoUrl, mobileVideoUrl }: HeroProps) => {
           ref={videoRef}
           key={currentVideoUrl}
           autoPlay 
-          muted 
+          muted={isMuted}
           loop 
           playsInline 
           className="object-cover w-full h-full"
           poster={!videoUrl ? defaultPoster : undefined}
           preload="metadata"
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
         >
           <source src={currentVideoUrl} type="video/mp4" />
         </video>
