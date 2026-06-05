@@ -19,6 +19,8 @@ interface CloudinaryUploadWidgetProps {
   currentUrl?: string;
   label?: string;
   multiple?: boolean;
+  fit?: "cover" | "contain";
+  height?: string;
 }
 
 export function CloudinaryUploadWidget({
@@ -26,6 +28,8 @@ export function CloudinaryUploadWidget({
   currentUrl,
   label = "Upload Media",
   multiple = false,
+  fit = "cover",
+  height = "h-48",
 }: CloudinaryUploadWidgetProps) {
   const widgetRef = useRef<{ open: () => void; destroy: () => void } | null>(null);
   const [scriptLoaded, setScriptLoaded] = useState(false);
@@ -118,28 +122,28 @@ export function CloudinaryUploadWidget({
 
   return (
     <div className="flex flex-col gap-3">
-      <label className="text-sm font-medium text-[#F8FAFC]">{label}</label>
+      <label className="text-sm font-medium text-primary-text">{label}</label>
 
       {multiple ? (
         <button
           type="button"
           onClick={openWidget}
           disabled={!scriptLoaded}
-          className="flex flex-col items-center justify-center gap-2 h-24 border-2 border-dashed border-white/10 rounded-lg bg-[#0F172A] hover:border-[#3B82F6]/50 hover:bg-[#3B82F6]/5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex flex-col items-center justify-center gap-2 h-24 border-2 border-dashed border-primary-text/10 rounded-lg bg-primary-bg hover:border-accent-blue/50 hover:bg-accent-blue/5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <div className="w-10 h-10 rounded-full bg-[#3B82F6]/10 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full bg-accent-blue/10 flex items-center justify-center">
             {scriptLoaded ? (
-              <Upload size={16} className="text-[#3B82F6]" />
+              <Upload size={16} className="text-accent-blue" />
             ) : (
-              <ImageIcon size={16} className="text-[#94A3B8]" />
+              <ImageIcon size={16} className="text-muted-text" />
             )}
           </div>
-          <span className="text-xs font-medium text-[#94A3B8]">
+          <span className="text-xs font-medium text-muted-text">
             {scriptLoaded ? "Click to add media" : "Loading widget..."}
           </span>
         </button>
       ) : preview ? (
-        <div className="relative group rounded-lg overflow-hidden border border-white/10 bg-[#0F172A]">
+        <div className={`relative group rounded-lg overflow-hidden border border-primary-text/10 bg-primary-bg ${height}`}>
           {preview.match(/\.(mp4|webm|ogg|mov)$/i) ? (
             <video
               src={preview}
@@ -147,21 +151,21 @@ export function CloudinaryUploadWidget({
               muted
               loop
               playsInline
-              className="w-full h-48 object-cover"
+              className={`w-full h-full ${fit === "contain" ? "object-contain" : "object-cover"}`}
             />
           ) : (
             /* eslint-disable-next-line @next/next/no-img-element */
             <img
               src={preview}
               alt="Uploaded media preview"
-              className="w-full h-48 object-cover"
+              className={`w-full h-full ${fit === "contain" ? "object-contain" : "object-cover"}`}
             />
           )}
           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
             <button
               type="button"
               onClick={openWidget}
-              className="px-4 py-2 bg-[#3B82F6] text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors"
+              className="px-4 py-2 bg-accent-blue text-white text-sm font-medium rounded-lg hover:bg-accent-blue/90 transition-colors"
             >
               Replace
             </button>
@@ -179,16 +183,16 @@ export function CloudinaryUploadWidget({
           type="button"
           onClick={openWidget}
           disabled={!scriptLoaded}
-          className="flex flex-col items-center justify-center gap-3 h-48 border-2 border-dashed border-white/10 rounded-lg bg-[#0F172A] hover:border-[#3B82F6]/50 hover:bg-[#3B82F6]/5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          className={`flex flex-col items-center justify-center gap-3 ${height} border-2 border-dashed border-primary-text/10 rounded-lg bg-primary-bg hover:border-accent-blue/50 hover:bg-accent-blue/5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed`}
         >
-          <div className="w-12 h-12 rounded-full bg-[#3B82F6]/10 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-full bg-accent-blue/10 flex items-center justify-center">
             {scriptLoaded ? (
-              <Upload size={20} className="text-[#3B82F6]" />
+              <Upload size={20} className="text-accent-blue" />
             ) : (
-              <ImageIcon size={20} className="text-[#94A3B8]" />
+              <ImageIcon size={20} className="text-muted-text" />
             )}
           </div>
-          <span className="text-sm font-medium text-[#94A3B8]">
+          <span className="text-sm font-medium text-muted-text">
             {scriptLoaded ? "Click to upload" : "Loading widget..."}
           </span>
         </button>

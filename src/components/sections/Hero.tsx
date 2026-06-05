@@ -10,7 +10,7 @@ interface HeroProps {
 }
 
 export const Hero = ({ videoUrl, mobileVideoUrl }: HeroProps) => {
-  const { isIdle } = useIdle();
+  const { isIdle, isHeroVisible } = useIdle();
   const defaultVideo = "https://res.cloudinary.com/demo/video/upload/q_auto:good,f_auto/v1614264627/docs/cld-video-default.mp4";
   const defaultPoster = "https://res.cloudinary.com/demo/video/upload/so_0/v1614264627/video/cld-video-default-poster.jpg";
 
@@ -36,16 +36,25 @@ export const Hero = ({ videoUrl, mobileVideoUrl }: HeroProps) => {
     if (video) {
       // Sometimes browsers require muted property to be set directly on the element for autoplay
       video.muted = isMuted;
-      
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((error) => {
-          console.error("Autoplay was prevented:", error);
-          setIsPlaying(false);
-        });
+
+      if (isHeroVisible) {
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((error) => {
+            console.error("Autoplay was prevented:", error);
+            setIsPlaying(false);
+          });
+        }
       }
     }
-  }, [currentVideoUrl, isMuted]);
+  }, [currentVideoUrl, isMuted, isHeroVisible]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video && !isHeroVisible) {
+      video.pause();
+    }
+  }, [isHeroVisible]);
 
   const togglePlay = () => {
     const video = videoRef.current;

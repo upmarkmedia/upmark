@@ -43,14 +43,14 @@ export const ContactForm = () => {
         <div className="w-16 h-16 bg-accent-blue/20 rounded-full flex items-center justify-center mx-auto mb-6">
           <Send className="text-accent-blue" size={32} />
         </div>
-        <h3 className="text-2xl font-bold text-white mb-2 font-heading">Message Sent successfully</h3>
+        <h3 className="text-2xl font-bold text-primary-text mb-2 font-heading">Message Sent successfully</h3>
         <p className="text-muted-text">Thank you for reaching out. Our team will review your project and get back to you within 24 hours.</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-primary-bg/70 border border-white/10 rounded-2xl p-6 md:p-8 w-full">
+    <div className="bg-primary-bg/70 border border-primary-text/10 rounded-2xl p-6 md:p-8 w-full">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col gap-1">
@@ -61,7 +61,7 @@ export const ContactForm = () => {
               name="name" 
               required 
               placeholder="Jane Smith"
-              className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-base text-white placeholder-[rgba(255,255,255,0.3)] focus:outline-none focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-[border-color,box-shadow]"
+              className="bg-primary-text/5 border border-primary-text/10 rounded-lg px-4 py-3 text-base text-primary-text placeholder-primary-text/30 focus:outline-none focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-[border-color,box-shadow]"
             />
           </div>
           <div className="flex flex-col gap-1">
@@ -72,7 +72,7 @@ export const ContactForm = () => {
               name="email" 
               required 
               placeholder="jane@company.com"
-              className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-base text-white placeholder-[rgba(255,255,255,0.3)] focus:outline-none focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-[border-color,box-shadow]"
+              className="bg-primary-text/5 border border-primary-text/10 rounded-lg px-4 py-3 text-base text-primary-text placeholder-primary-text/30 focus:outline-none focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-[border-color,box-shadow]"
             />
           </div>
         </div>
@@ -85,7 +85,7 @@ export const ContactForm = () => {
               id="company" 
               name="company" 
               placeholder="Acme Corp"
-              className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-base text-white placeholder-[rgba(255,255,255,0.3)] focus:outline-none focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-[border-color,box-shadow]"
+              className="bg-primary-text/5 border border-primary-text/10 rounded-lg px-4 py-3 text-base text-primary-text placeholder-primary-text/30 focus:outline-none focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-[border-color,box-shadow]"
             />
           </div>
           <div className="flex flex-col gap-1">
@@ -94,7 +94,7 @@ export const ContactForm = () => {
               id="service" 
               name="service" 
               required
-              className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-base text-white focus:outline-none focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-[border-color,box-shadow] appearance-none cursor-pointer"
+              className="bg-primary-text/5 border border-primary-text/10 rounded-lg px-4 py-3 text-base text-primary-text focus:outline-none focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-[border-color,box-shadow] appearance-none cursor-pointer"
               defaultValue=""
             >
               <option value="" disabled className="text-black">Select a service...</option>
@@ -114,7 +114,7 @@ export const ContactForm = () => {
             name="project" 
             required 
             placeholder="Share your goals, current challenges and any relevant context..."
-            className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-base text-white placeholder-[rgba(255,255,255,0.3)] focus:outline-none focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-[border-color,box-shadow] min-h-[120px] resize-none h-full"
+            className="bg-primary-text/5 border border-primary-text/10 rounded-lg px-4 py-3 text-base text-primary-text placeholder-primary-text/30 focus:outline-none focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-[border-color,box-shadow] min-h-[120px] resize-none h-full"
           ></textarea>
         </div>
 

@@ -110,13 +110,13 @@ export default function ServicesPage() {
           <div className="flex items-center gap-3">
             <button
               onClick={coll.refresh}
-              className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 text-[#94A3B8] hover:text-white text-sm rounded-lg border border-white/5 transition-all"
+              className="flex items-center gap-2 px-4 py-2 bg-primary-text/5 hover:bg-primary-text/10 text-muted-text hover:text-primary-text text-sm rounded-lg border border-primary-text/5 transition-all"
             >
               <RefreshCw size={14} className={coll.loading ? "animate-spin" : ""} />
             </button>
             <button
               onClick={openCreate}
-              className="flex items-center gap-2 px-4 py-2 bg-[#3B82F6] hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-all"
+              className="flex items-center gap-2 px-4 py-2 bg-accent-blue hover:bg-accent-blue/90 text-white text-sm font-medium rounded-lg transition-all"
             >
               <Plus size={16} /> Add New
             </button>
@@ -162,22 +162,22 @@ export default function ServicesPage() {
           {coll.filteredItems.map((service) => (
             <div
               key={service.id}
-              className="bg-[#1E293B] rounded-xl border border-white/5 p-6 hover:border-white/10 transition-all group"
+              className="bg-secondary-surface rounded-xl border border-primary-text/5 p-6 hover:border-primary-text/10 transition-all group"
             >
               {service.icon_url ? (
-                <div className="w-12 h-12 rounded-lg bg-[#0F172A] border border-white/5 overflow-hidden mb-4">
+                <div className="w-12 h-12 rounded-lg bg-primary-bg border border-primary-text/5 overflow-hidden mb-4">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={service.icon_url} alt={service.title} className="w-full h-full object-cover" />
                 </div>
               ) : (
-                <div className="w-12 h-12 rounded-lg bg-[#3B82F6]/10 flex items-center justify-center mb-4">
-                  <Briefcase size={20} className="text-[#3B82F6]" />
+                <div className="w-12 h-12 rounded-lg bg-accent-blue/10 flex items-center justify-center mb-4">
+                  <Briefcase size={20} className="text-accent-blue" />
                 </div>
               )}
-              <h3 className="text-base font-semibold text-[#F8FAFC] mb-2">{service.title}</h3>
-              <p className="text-sm text-[#94A3B8] line-clamp-3 mb-4">{service.description}</p>
+              <h3 className="text-base font-semibold text-primary-text mb-2">{service.title}</h3>
+              <p className="text-sm text-muted-text line-clamp-3 mb-4">{service.description}</p>
               <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button onClick={() => openEdit(service)} className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[#3B82F6] bg-[#3B82F6]/10 hover:bg-[#3B82F6]/20 rounded-lg transition-colors">
+                <button onClick={() => openEdit(service)} className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-accent-blue bg-accent-blue/10 hover:bg-accent-blue/20 rounded-lg transition-colors">
                   <Pencil size={12} /> Edit
                 </button>
                 <button onClick={() => service.id && coll.remove(service.id)} disabled={coll.deletingId === service.id} className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-400 bg-red-500/10 hover:bg-red-500/20 rounded-lg transition-colors disabled:opacity-50">
@@ -191,18 +191,18 @@ export default function ServicesPage() {
       )}
 
       {!coll.loading && coll.filteredItems.length > 0 && (
-        <p className="text-xs text-[#94A3B8] text-center">
+        <p className="text-xs text-muted-text text-center">
           {coll.filteredItems.length} service{coll.filteredItems.length === 1 ? "" : "s"}
         </p>
       )}
 
       {/* ─── Page & Section Visibility ────────────── */}
-      <div className="bg-[#1E293B] border border-white/10 rounded-2xl p-6">
+      <div className="bg-secondary-surface border border-primary-text/10 rounded-2xl p-6">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-2 h-2 rounded-full bg-[#3B82F6]" />
-          <h2 className="text-lg font-semibold text-white">Visibility</h2>
+          <div className="w-2 h-2 rounded-full bg-accent-blue" />
+          <h2 className="text-lg font-semibold text-primary-text">Visibility</h2>
         </div>
-        <p className="text-sm text-[#94A3B8] mb-4">Toggle sections on/off on the public services page.</p>
+        <p className="text-sm text-muted-text mb-4">Toggle sections on/off on the public services page.</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-4">
           {[
             { key: "services", label: "Page (entire services page)" },
@@ -210,21 +210,21 @@ export default function ServicesPage() {
             { key: "servicesCapabilityMap", label: "Capability Map" },
             { key: "servicesCTA", label: "Bottom CTA" },
           ].map(({ key, label }) => (
-            <label key={key} className="flex items-center gap-3 p-3 rounded-lg bg-[#0F172A] border border-white/5 cursor-pointer hover:border-white/10 transition-colors">
+            <label key={key} className="flex items-center gap-3 p-3 rounded-lg bg-primary-bg border border-primary-text/5 cursor-pointer hover:border-primary-text/10 transition-colors">
               <input
                 type="checkbox"
                 checked={visibility[key as keyof PageVisibility] ?? true}
                 onChange={(e) => setVisibility((prev) => ({ ...prev, [key]: e.target.checked }))}
                 className="sr-only peer"
               />
-              <div className="w-9 h-5 bg-white/10 rounded-full peer-checked:bg-[#3B82F6] peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all relative flex-shrink-0"></div>
-              <span className="text-sm text-[#F8FAFC]">{label}</span>
+              <div className="w-9 h-5 bg-primary-text/10 rounded-full peer-checked:bg-accent-blue peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all relative flex-shrink-0"></div>
+              <span className="text-sm text-primary-text">{label}</span>
             </label>
           ))}
         </div>
         <div className="flex items-center justify-end gap-3">
           {visSuccess && <span className="text-emerald-400 text-sm">{visSuccess}</span>}
-          <button onClick={handleVisSave} disabled={visSaving} className="flex items-center gap-2 bg-[#3B82F6] hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
+          <button onClick={handleVisSave} disabled={visSaving} className="flex items-center gap-2 bg-accent-blue hover:bg-accent-blue/90 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
             {visSaving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
             Save Visibility
           </button>
@@ -234,7 +234,7 @@ export default function ServicesPage() {
       <SeoSection config={seo} onChange={handleSeoChange} path="/services" />
       <div className="flex items-center justify-end gap-3">
         {seoSuccess && <span className="text-emerald-400 text-sm">{seoSuccess}</span>}
-        <button onClick={handleSeoSave} disabled={seoSaving} className="flex items-center gap-2 bg-[#3B82F6] hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
+        <button onClick={handleSeoSave} disabled={seoSaving} className="flex items-center gap-2 bg-accent-blue hover:bg-accent-blue/90 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
           {seoSaving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
           Save SEO
         </button>

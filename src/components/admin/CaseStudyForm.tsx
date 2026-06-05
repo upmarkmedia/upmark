@@ -126,21 +126,21 @@ export function CaseStudyForm({
   }
 
   const inputClass =
-    "w-full bg-[#0F172A] border border-white/10 rounded-lg px-4 py-3 text-[#F8FAFC] placeholder-white/30 focus:outline-none focus:border-[#3B82F6] transition-colors text-sm";
+    "w-full bg-primary-bg border border-primary-text/10 rounded-lg px-4 py-3 text-primary-text placeholder-primary-text/30 focus:outline-none focus:border-accent-blue transition-colors text-sm";
 
   return (
     <form
       onSubmit={handleSubmit(handleFormSubmit)}
-      className="flex flex-col gap-6 bg-[#1E293B] p-6 lg:p-8 rounded-xl border border-white/5"
+      className="flex flex-col gap-6 bg-secondary-surface p-6 lg:p-8 rounded-xl border border-primary-text/5"
     >
-      <h2 className="text-xl font-bold text-[#F8FAFC]">
+      <h2 className="text-xl font-bold text-primary-text">
         {initialData ? "Edit Case Study" : "New Case Study"}
       </h2>
 
       {/* Title & Client */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">Title *</label>
+          <label className="text-sm font-medium text-primary-text">Title *</label>
           <input
             {...register("title", { required: "Title is required" })}
             placeholder="Revenue Scale"
@@ -151,7 +151,7 @@ export function CaseStudyForm({
           )}
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">
+          <label className="text-sm font-medium text-primary-text">
             Client *
           </label>
           <input
@@ -168,7 +168,7 @@ export function CaseStudyForm({
       {/* Category & Tag */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">
+          <label className="text-sm font-medium text-primary-text">
             Category *
           </label>
           <select
@@ -183,7 +183,7 @@ export function CaseStudyForm({
           </select>
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">
+          <label className="text-sm font-medium text-primary-text">
             Tag / Industry
           </label>
           <input
@@ -198,29 +198,29 @@ export function CaseStudyForm({
       <div className="flex items-center gap-3">
         <label className="relative inline-flex items-center cursor-pointer">
           <input type="checkbox" {...register("published")} className="sr-only peer" />
-          <div className="w-9 h-5 bg-white/10 rounded-full peer peer-checked:bg-[#3B82F6] peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+          <div className="w-9 h-5 bg-primary-text/10 rounded-full peer peer-checked:bg-accent-blue peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
         </label>
-        <span className="text-sm text-[#F8FAFC]">Published</span>
+        <span className="text-sm text-primary-text">Published</span>
       </div>
 
       {/* Stats Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">Stat 1 Value</label>
+          <label className="text-sm font-medium text-primary-text">Stat 1 Value</label>
           <input {...register("stat1")} placeholder="e.g. +210%" className={inputClass} />
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">Stat 1 Label</label>
+          <label className="text-sm font-medium text-primary-text">Stat 1 Label</label>
           <input {...register("stat1label")} placeholder="e.g. Revenue Growth" className={inputClass} />
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">Stat 2 Value</label>
+          <label className="text-sm font-medium text-primary-text">Stat 2 Value</label>
           <input {...register("stat2")} placeholder="e.g. +380%" className={inputClass} />
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">Stat 2 Label</label>
+          <label className="text-sm font-medium text-primary-text">Stat 2 Label</label>
           <input {...register("stat2label")} placeholder="e.g. Social Engagement" className={inputClass} />
         </div>
       </div>
@@ -228,7 +228,7 @@ export function CaseStudyForm({
       {/* Gradient */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">Card Gradient</label>
+          <label className="text-sm font-medium text-primary-text">Card Gradient</label>
           <select {...register("gradient")} className={`${inputClass} appearance-none`}>
             {GRADIENT_OPTIONS.map((g) => (
               <option key={g.value} value={g.value}>{g.label}</option>
@@ -239,7 +239,7 @@ export function CaseStudyForm({
 
       {/* Description */}
       <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium text-[#F8FAFC]">
+        <label className="text-sm font-medium text-primary-text">
           Short Description *
         </label>
         <textarea
@@ -256,11 +256,11 @@ export function CaseStudyForm({
       </div>
 
       {/* Detailed Sections */}
-      <div className="flex flex-col gap-4 border-t border-white/10 pt-4">
-        <h3 className="text-lg font-semibold text-white">Detailed Content Sections</h3>
+      <div className="flex flex-col gap-4 border-t border-primary-text/10 pt-4">
+        <h3 className="text-lg font-semibold text-primary-text">Detailed Content Sections</h3>
         
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">What we were hired to do</label>
+          <label className="text-sm font-medium text-primary-text">What we were hired to do</label>
           <textarea
             {...register("hiredFor")}
             rows={3}
@@ -270,7 +270,7 @@ export function CaseStudyForm({
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">The situation</label>
+          <label className="text-sm font-medium text-primary-text">The situation</label>
           <textarea
             {...register("situation")}
             rows={3}
@@ -280,7 +280,7 @@ export function CaseStudyForm({
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">Key executions</label>
+          <label className="text-sm font-medium text-primary-text">Key executions</label>
           <textarea
             {...register("keyExecutions")}
             rows={4}
@@ -290,7 +290,7 @@ export function CaseStudyForm({
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">Timeframe</label>
+          <label className="text-sm font-medium text-primary-text">Timeframe</label>
           <input
             {...register("timeframe")}
             placeholder="e.g. Approximately 1 year"
@@ -299,7 +299,7 @@ export function CaseStudyForm({
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">Website URL</label>
+          <label className="text-sm font-medium text-primary-text">Website URL</label>
           <input
             {...register("websiteUrl")}
             placeholder="https://example.com"
@@ -308,7 +308,7 @@ export function CaseStudyForm({
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">LinkedIn URL</label>
+          <label className="text-sm font-medium text-primary-text">LinkedIn URL</label>
           <input
             {...register("linkedinUrl")}
             placeholder="https://linkedin.com/company/..."
@@ -317,7 +317,7 @@ export function CaseStudyForm({
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">YouTube URL</label>
+          <label className="text-sm font-medium text-primary-text">YouTube URL</label>
           <input
             {...register("youtubeUrl")}
             placeholder="https://youtube.com/@..."
@@ -328,7 +328,7 @@ export function CaseStudyForm({
 
       {/* Metrics */}
       <div className="flex flex-col gap-3">
-        <label className="text-sm font-medium text-[#F8FAFC]">Metrics</label>
+        <label className="text-sm font-medium text-primary-text">Metrics</label>
         {fields.map((field, index) => (
           <div key={field.id} className="flex items-center gap-2">
             <input
@@ -350,7 +350,7 @@ export function CaseStudyForm({
         <button
           type="button"
           onClick={() => append({ value: "" })}
-          className="flex items-center gap-2 text-sm text-[#3B82F6] hover:text-blue-400 transition-colors self-start"
+          className="flex items-center gap-2 text-sm text-accent-blue hover:text-accent-blue transition-colors self-start"
         >
           <Plus size={16} />
           Add Metric
@@ -374,18 +374,18 @@ export function CaseStudyForm({
       <input type="hidden" {...register("imageUrl")} />
 
       {/* Actions */}
-      <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/5">
+      <div className="flex items-center justify-end gap-3 pt-4 border-t border-primary-text/5">
         <button
           type="button"
           onClick={onCancel}
-          className="px-5 py-2.5 text-sm font-medium text-[#94A3B8] hover:text-white bg-white/5 hover:bg-white/10 rounded-lg transition-all"
+          className="px-5 py-2.5 text-sm font-medium text-muted-text hover:text-primary-text bg-primary-text/5 hover:bg-primary-text/10 rounded-lg transition-all"
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-5 py-2.5 text-sm font-medium text-white bg-[#3B82F6] hover:bg-blue-600 rounded-lg transition-all flex items-center gap-2 disabled:opacity-60"
+          className="px-5 py-2.5 text-sm font-medium text-white bg-accent-blue hover:bg-accent-blue/90 rounded-lg transition-all flex items-center gap-2 disabled:opacity-60"
         >
           {isSubmitting && <Loader2 size={16} className="animate-spin" />}
           {initialData ? "Update" : "Create"}

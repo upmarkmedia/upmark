@@ -128,13 +128,13 @@ export default function CaseStudiesPage() {
           <div className="flex items-center gap-3">
             <button
               onClick={coll.refresh}
-              className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 text-[#94A3B8] hover:text-white text-sm rounded-lg border border-white/5 transition-all"
+              className="flex items-center gap-2 px-4 py-2 bg-primary-text/5 hover:bg-primary-text/10 text-muted-text hover:text-primary-text text-sm rounded-lg border border-primary-text/5 transition-all"
             >
               <RefreshCw size={14} className={coll.loading ? "animate-spin" : ""} />
             </button>
             <button
               onClick={openCreate}
-              className="flex items-center gap-2 px-4 py-2 bg-[#3B82F6] hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-all"
+              className="flex items-center gap-2 px-4 py-2 bg-accent-blue hover:bg-accent-blue/90 text-white text-sm font-medium rounded-lg transition-all"
             >
               <Plus size={16} /> Add New
             </button>
@@ -168,15 +168,15 @@ export default function CaseStudiesPage() {
       />
 
       {/* Category filter tabs — replaces the old Portfolio page */}
-      <div className="flex gap-1 bg-[#1E293B] border border-white/10 rounded-xl p-1 overflow-x-auto">
+      <div className="flex gap-1 bg-secondary-surface border border-primary-text/10 rounded-xl p-1 overflow-x-auto">
         {CATEGORY_TABS.map((tab) => (
           <button
             key={tab.value}
             onClick={() => setCategoryFilter(tab.value)}
             className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
               categoryFilter === tab.value
-                ? "bg-[#3B82F6]/10 text-[#3B82F6]"
-                : "text-[#94A3B8] hover:text-white hover:bg-white/5"
+                ? "bg-accent-blue/10 text-accent-blue"
+                : "text-muted-text hover:text-primary-text hover:bg-primary-text/5"
             }`}
           >
             {tab.label}
@@ -199,40 +199,40 @@ export default function CaseStudiesPage() {
           action={coll.searchQuery ? undefined : { label: "Add New", onClick: openCreate }}
         />
       ) : (
-        <div className="bg-[#1E293B] rounded-xl border border-white/5 overflow-hidden">
-          <div className="hidden md:grid md:grid-cols-[1fr_120px_80px_120px_80px] gap-4 px-6 py-3 border-b border-white/5 bg-white/[0.02]">
-            <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider">Title / Client</span>
-            <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider">Category</span>
-            <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider">Status</span>
-            <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider">Metrics</span>
-            <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider text-right">Actions</span>
+        <div className="bg-secondary-surface rounded-xl border border-primary-text/5 overflow-hidden">
+          <div className="hidden md:grid md:grid-cols-[1fr_120px_80px_120px_80px] gap-4 px-6 py-3 border-b border-primary-text/5 bg-primary-text/[0.02]">
+            <span className="text-xs font-semibold text-muted-text uppercase tracking-wider">Title / Client</span>
+            <span className="text-xs font-semibold text-muted-text uppercase tracking-wider">Category</span>
+            <span className="text-xs font-semibold text-muted-text uppercase tracking-wider">Status</span>
+            <span className="text-xs font-semibold text-muted-text uppercase tracking-wider">Metrics</span>
+            <span className="text-xs font-semibold text-muted-text uppercase tracking-wider text-right">Actions</span>
           </div>
           {filteredByCategory.map((study) => (
             <div
               key={study.id}
-              className="grid grid-cols-1 md:grid-cols-[1fr_120px_80px_120px_80px] gap-2 md:gap-4 px-6 py-4 border-b border-white/5 last:border-0 hover:bg-white/[0.02] transition-colors items-center"
+              className="grid grid-cols-1 md:grid-cols-[1fr_120px_80px_120px_80px] gap-2 md:gap-4 px-6 py-4 border-b border-primary-text/5 last:border-0 hover:bg-primary-text/[0.02] transition-colors items-center"
             >
               <div className="min-w-0">
-                <p className="text-sm font-medium text-[#F8FAFC] truncate">{study.title}</p>
-                <p className="text-xs text-[#94A3B8] truncate">{study.client}</p>
+                <p className="text-sm font-medium text-primary-text truncate">{study.title}</p>
+                <p className="text-xs text-muted-text truncate">{study.client}</p>
               </div>
               <div>
-                <span className={`inline-block px-2.5 py-1 text-xs font-medium rounded-full border ${categoryBadgeColor[study.category] || "bg-white/5 text-[#94A3B8] border-white/10"}`}>
+                <span className={`inline-block px-2.5 py-1 text-xs font-medium rounded-full border ${categoryBadgeColor[study.category] || "bg-primary-text/5 text-muted-text border-primary-text/10"}`}>
                   {study.category}
                 </span>
               </div>
               <div>
-                <span className={`inline-flex items-center gap-1.5 text-xs font-medium ${study.published ? "text-green-400" : "text-[#94A3B8]"}`}>
-                  <span className={`w-1.5 h-1.5 rounded-full ${study.published ? "bg-green-400" : "bg-[#94A3B8]"}`} />
+                <span className={`inline-flex items-center gap-1.5 text-xs font-medium ${study.published ? "text-green-400" : "text-muted-text"}`}>
+                  <span className={`w-1.5 h-1.5 rounded-full ${study.published ? "bg-green-400" : "bg-muted-text"}`} />
                   {study.published ? "Live" : "Draft"}
                 </span>
               </div>
-              <div className="text-xs text-[#94A3B8] truncate">{study.metrics?.join(", ") || "—"}</div>
+              <div className="text-xs text-muted-text truncate">{study.metrics?.join(", ") || "—"}</div>
               <div className="flex items-center gap-2 justify-end">
-                <button onClick={() => openEdit(study)} className="p-2 text-[#94A3B8] hover:text-[#3B82F6] hover:bg-[#3B82F6]/10 rounded-lg transition-all" title="Edit">
+                <button onClick={() => openEdit(study)} className="p-2 text-muted-text hover:text-accent-blue hover:bg-accent-blue/10 rounded-lg transition-all" title="Edit">
                   <Pencil size={14} />
                 </button>
-                <button onClick={() => study.id && coll.remove(study.id)} disabled={coll.deletingId === study.id} className="p-2 text-[#94A3B8] hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all disabled:opacity-50" title="Delete">
+                <button onClick={() => study.id && coll.remove(study.id)} disabled={coll.deletingId === study.id} className="p-2 text-muted-text hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all disabled:opacity-50" title="Delete">
                   {coll.deletingId === study.id ? <X size={14} className="animate-spin" /> : <Trash2 size={14} />}
                 </button>
               </div>
@@ -242,33 +242,33 @@ export default function CaseStudiesPage() {
       )}
 
       {!coll.loading && filteredByCategory.length > 0 && (
-        <p className="text-xs text-[#94A3B8] text-center">
+        <p className="text-xs text-muted-text text-center">
           {filteredByCategory.length} case {filteredByCategory.length === 1 ? "study" : "studies"}
         </p>
       )}
 
       {/* ─── Page Visibility ────────────── */}
-      <div className="bg-[#1E293B] border border-white/10 rounded-2xl p-6">
+      <div className="bg-secondary-surface border border-primary-text/10 rounded-2xl p-6">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-2 h-2 rounded-full bg-[#3B82F6]" />
-          <h2 className="text-lg font-semibold text-white">Visibility</h2>
+          <div className="w-2 h-2 rounded-full bg-accent-blue" />
+          <h2 className="text-lg font-semibold text-primary-text">Visibility</h2>
         </div>
-        <p className="text-sm text-[#94A3B8] mb-4">Toggle the case studies page on/off.</p>
+        <p className="text-sm text-muted-text mb-4">Toggle the case studies page on/off.</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-4">
-          <label className="flex items-center gap-3 p-3 rounded-lg bg-[#0F172A] border border-white/5 cursor-pointer hover:border-white/10 transition-colors">
+          <label className="flex items-center gap-3 p-3 rounded-lg bg-primary-bg border border-primary-text/5 cursor-pointer hover:border-primary-text/10 transition-colors">
             <input
               type="checkbox"
               checked={visibility.caseStudies ?? true}
               onChange={(e) => setVisibility((prev) => ({ ...prev, caseStudies: e.target.checked }))}
               className="sr-only peer"
             />
-            <div className="w-9 h-5 bg-white/10 rounded-full peer-checked:bg-[#3B82F6] peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all relative flex-shrink-0"></div>
-            <span className="text-sm text-[#F8FAFC]">Page (entire case studies page)</span>
+            <div className="w-9 h-5 bg-primary-text/10 rounded-full peer-checked:bg-accent-blue peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all relative flex-shrink-0"></div>
+            <span className="text-sm text-primary-text">Page (entire case studies page)</span>
           </label>
         </div>
         <div className="flex items-center justify-end gap-3">
           {visSuccess && <span className="text-emerald-400 text-sm">{visSuccess}</span>}
-          <button onClick={handleVisSave} disabled={visSaving} className="flex items-center gap-2 bg-[#3B82F6] hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
+          <button onClick={handleVisSave} disabled={visSaving} className="flex items-center gap-2 bg-accent-blue hover:bg-accent-blue/90 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
             {visSaving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
             Save Visibility
           </button>
@@ -278,7 +278,7 @@ export default function CaseStudiesPage() {
       <SeoSection config={seo} onChange={handleSeoChange} path="/case-studies" />
       <div className="flex items-center justify-end gap-3">
         {seoSuccess && <span className="text-emerald-400 text-sm">{seoSuccess}</span>}
-        <button onClick={handleSeoSave} disabled={seoSaving} className="flex items-center gap-2 bg-[#3B82F6] hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
+        <button onClick={handleSeoSave} disabled={seoSaving} className="flex items-center gap-2 bg-accent-blue hover:bg-accent-blue/90 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
           {seoSaving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
           Save SEO
         </button>

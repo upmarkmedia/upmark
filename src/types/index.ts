@@ -105,13 +105,6 @@ export interface Testimonial {
   updatedAt?: Timestamp;
 }
 
-export interface HeroMetric {
-  value: string;
-  label: string;
-  suffix?: string; // e.g. "+", "%", "x"
-  isGold?: boolean; // for the gold gradient style
-}
-
 export interface PhilosophyPointer {
   title: string;
   desc: string;
@@ -203,8 +196,6 @@ export interface SiteSettings {
   homeAboutImageUrl?: string;
   heroVideoUrl?: string;
   heroMobileVideoUrl?: string;
-  // Hero metrics
-  heroMetrics?: HeroMetric[];
   // Contact & Socials
   contactEmail?: string;
   contactPhone?: string;

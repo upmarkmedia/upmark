@@ -22,12 +22,12 @@ export default async function CaseStudiesPage() {
              <span className="w-8 h-[1px] bg-accent-blue"></span>
              CASE STUDIES
           </span>
-          <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold font-heading text-white mb-4 sm:mb-6 tracking-tight">content coming soon...</h1>
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold font-heading text-primary-text mb-4 sm:mb-6 tracking-tight">content coming soon...</h1>
         </div>
 
         {/* CTA Area */}
-        <section className="mt-10 py-16 border-t border-white/10 flex flex-col items-center justify-center text-center">
-           <h2 className="text-2xl sm:text-3xl md:text-5xl font-black font-heading text-white mb-6 sm:mb-8">Ready to compound your growth?</h2>
+        <section className="mt-10 py-16 border-t border-primary-text/10 flex flex-col items-center justify-center text-center">
+           <h2 className="text-2xl sm:text-3xl md:text-5xl font-black font-heading text-primary-text mb-6 sm:mb-8">Ready to compound your growth?</h2>
            <p className="text-muted-text text-base sm:text-lg max-w-xl mb-8 sm:mb-10 font-light">Let&apos;s discuss how Upmark can build a complete marketing system for your business.</p>
            <div className="flex flex-col sm:flex-row items-center gap-4">
               {show("contact") && (
@@ -36,7 +36,7 @@ export default async function CaseStudiesPage() {
                </Link>
               )}
               {show("services") && (
-                <Link href="/services" className="group flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-semibold text-base text-primary-text bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-colors duration-200">
+                <Link href="/services" className="group flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-semibold text-base text-primary-text bg-primary-text/5 border border-primary-text/10 hover:bg-primary-text/10 hover:border-primary-text/20 transition-colors duration-200">
                  View our services <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                </Link>
               )}

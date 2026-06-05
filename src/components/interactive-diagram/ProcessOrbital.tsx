@@ -124,7 +124,7 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
           HOW WE WORK
           <span className="w-8 h-[1px] bg-accent-blue"></span>
         </span>
-        <h2 className="text-3xl md:text-5xl font-black font-heading text-white">
+        <h2 className="text-3xl md:text-5xl font-black font-heading text-primary-text">
           Our <span className="text-accent-gold">6-Step Process</span>
         </h2>
       </div>
@@ -137,8 +137,8 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
 
             {/* Orbital rings */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="w-[62%] h-[62%] rounded-full border border-white/5" />
-              <div className="absolute w-[74%] h-[74%] rounded-full border border-white/5 border-dashed animate-[spin_60s_linear_infinite]" />
+              <div className="w-[62%] h-[62%] rounded-full border border-primary-text/10" />
+              <div className="absolute w-[74%] h-[74%] rounded-full border border-primary-text/10 border-dashed animate-[spin_60s_linear_infinite]" />
             </div>
 
             {/* SVG Connection Paths (Center to Nodes) */}
@@ -155,9 +155,9 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
                     y1="50"
                     x2={50 + xPct}
                     y2={50 + yPct}
-                    stroke={isActive ? "rgba(212, 175, 55, 0.5)" : "rgba(255, 255, 255, 0.05)"}
+                    stroke={isActive ? "rgba(212, 175, 55, 0.5)" : "currentColor"}
                     strokeWidth={isActive ? 0.3 : 0.15}
-                    className="transition-colors duration-500"
+                    className={`transition-colors duration-500 ${isActive ? "" : "text-primary-text/5"}`}
                   />
                 );
               })}
@@ -168,7 +168,8 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
                 cy="50"
                 r="32"
                 fill="none"
-                stroke="rgba(255,255,255,0.05)"
+                stroke="currentColor"
+                className="text-primary-text/5"
                 strokeWidth="0.15"
               />
 
@@ -238,7 +239,7 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
 
                     {/* Floating Title (always visible, or visible on hover/active) */}
                     <div className={`absolute top-full mt-2 sm:mt-4 whitespace-nowrap text-[9px] sm:text-xs lg:text-sm font-bold tracking-wider uppercase transition-[opacity,transform] duration-300
-                    ${isActive ? "text-white opacity-100 translate-y-0" : "text-white/30 opacity-50 group-hover:opacity-100 -translate-y-1"}`}>
+                    ${isActive ? "text-primary-text opacity-100 translate-y-0" : "text-primary-text/30 opacity-50 group-hover:opacity-100 -translate-y-1"}`}>
                       {item.title}
                     </div>
 
@@ -320,7 +321,7 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
             )}
 
             {showWork && (
-              <Link href="/work" className="group w-full sm:w-auto flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-white bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-colors duration-200">
+              <Link href="/work" className="group w-full sm:w-auto flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-primary-text bg-primary-text/5 border border-primary-text/10 hover:bg-primary-text/10 hover:border-primary-text/20 transition-colors duration-200">
                 View our work
               </Link>
             )}

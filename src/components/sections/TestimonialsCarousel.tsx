@@ -57,12 +57,12 @@ export const TestimonialsCarousel = ({ testimonials, maxItems = 3, section }: Te
             onClick={() => openPreview(t)}
             className="snap-start flex-shrink-0 w-[320px] sm:w-[400px] md:w-[450px] cursor-pointer group"
           >
-            <div className="relative z-10 bg-secondary-surface/60 border border-white/10 p-6 sm:p-8 rounded-2xl sm:rounded-3xl overflow-hidden h-full flex flex-col gap-6 hover:border-accent-blue/30 transition-[border-color,box-shadow] duration-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
-              <Quote size={32} className="text-white/10 flex-shrink-0" />
-              <p className="text-sm sm:text-base font-light text-white leading-relaxed italic flex-grow line-clamp-5">
+            <div className="relative z-10 bg-secondary-surface/60 border border-primary-text/10 p-6 sm:p-8 rounded-2xl sm:rounded-3xl overflow-hidden h-full flex flex-col gap-6 hover:border-accent-blue/30 transition-[border-color,box-shadow] duration-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
+              <Quote size={32} className="text-primary-text/10 flex-shrink-0" />
+              <p className="text-sm sm:text-base font-light text-primary-text leading-relaxed italic flex-grow line-clamp-5">
                 &quot;{t.quote}&quot;
               </p>
-              <div className="flex items-center gap-3 mt-auto pt-4 border-t border-white/10">
+              <div className="flex items-center gap-3 mt-auto pt-4 border-t border-primary-text/10">
                 {t.imageUrl ? (
                   <div className="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden bg-accent-blue/20">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -74,7 +74,7 @@ export const TestimonialsCarousel = ({ testimonials, maxItems = 3, section }: Te
                   </div>
                 )}
                 <div>
-                  <h4 className="text-white font-semibold text-sm">{t.name}</h4>
+                  <h4 className="text-primary-text font-semibold text-sm">{t.name}</h4>
                   <p className="text-accent-blue text-xs">{t.role}</p>
                 </div>
               </div>

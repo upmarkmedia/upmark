@@ -37,7 +37,7 @@ export default async function ContactPage() {
                   LET&apos;S TALK
                   <span className="w-8 h-[1px] bg-accent-blue"></span>
                </span>
-               <h1 className="text-2xl sm:text-3xl md:text-5xl font-black font-heading text-white tracking-tight mb-3 sm:mb-4">
+               <h1 className="text-2xl sm:text-3xl md:text-5xl font-black font-heading text-primary-text tracking-tight mb-3 sm:mb-4">
                   Ready to <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-blue-400">Grow?</span>
                </h1>
                <p className="text-muted-text text-sm sm:text-lg max-w-2xl font-light mx-auto">
@@ -51,39 +51,39 @@ export default async function ContactPage() {
                {infoVisible && (
                <div className="lg:w-1/3 flex flex-col gap-4 sm:gap-6">
                   <div className="grid grid-cols-3 lg:grid-cols-1 gap-3 sm:gap-4">
-                     <div className="p-3 sm:p-4 rounded-xl bg-white/5 border border-white/5">
-                        <div className="text-accent-blue uppercase tracking-widest text-[10px] font-bold mb-1">Email us</div>
-                        <a href={`mailto:${email}`} className="text-white text-xs sm:text-sm font-medium truncate block">{email}</a>
-                     </div>
-                     <div className="p-3 sm:p-4 rounded-xl bg-white/5 border border-white/5">
-                        <div className="text-accent-blue uppercase tracking-widest text-[10px] font-bold mb-1">Call us</div>
-                        <a href={`tel:${phone.replace(/\s+/g, '')}`} className="text-white text-xs sm:text-sm font-medium truncate block">{phone}</a>
-                     </div>
-                     <div className="p-3 sm:p-4 rounded-xl bg-white/5 border border-white/5">
-                        <div className="text-accent-blue uppercase tracking-widest text-[10px] font-bold mb-1">Find us</div>
-                        <div className="text-white text-xs sm:text-sm font-medium">{address}</div>
-                     </div>
+                      <div className="p-3 sm:p-4 rounded-xl bg-primary-text/5 border border-primary-text/10">
+                         <div className="text-accent-blue uppercase tracking-widest text-[10px] font-bold mb-1">Email us</div>
+                          <a href={`mailto:${email}`} className="text-primary-text text-xs sm:text-sm font-medium truncate block">{email}</a>
+                      </div>
+                      <div className="p-3 sm:p-4 rounded-xl bg-primary-text/5 border border-primary-text/10">
+                         <div className="text-accent-blue uppercase tracking-widest text-[10px] font-bold mb-1">Call us</div>
+                          <a href={`tel:${phone.replace(/\s+/g, '')}`} className="text-primary-text text-xs sm:text-sm font-medium truncate block">{phone}</a>
+                      </div>
+                      <div className="p-3 sm:p-4 rounded-xl bg-primary-text/5 border border-primary-text/10">
+                         <div className="text-accent-blue uppercase tracking-widest text-[10px] font-bold mb-1">Find us</div>
+                          <div className="text-primary-text text-xs sm:text-sm font-medium">{address}</div>
+                      </div>
                   </div>
 
                   <div className="hidden lg:block">
-                     <h3 className="text-white font-bold mb-4 text-base">What happens next?</h3>
+                     <h3 className="text-primary-text font-bold mb-4 text-base">What happens next?</h3>
                      <ul className="flex flex-col gap-3">
                         <li className="flex items-center gap-3">
-                           <div className="w-6 h-6 rounded-full border border-white/20 text-white/50 flex items-center justify-center font-bold text-xs">1</div>
-                           <div className="text-muted-text text-xs">We review your brief within 24h</div>
-                        </li>
-                        <li className="flex items-center gap-3">
-                           <div className="w-6 h-6 rounded-full border border-white/20 text-white/50 flex items-center justify-center font-bold text-xs">2</div>
-                           <div className="text-muted-text text-xs">You receive a tailored proposal</div>
-                        </li>
-                        <li className="flex items-center gap-3">
-                           <div className="w-6 h-6 rounded-full border border-white/20 text-white/50 flex items-center justify-center font-bold text-xs">3</div>
-                           <div className="text-muted-text text-xs">Strategy kickoff call within 48h</div>
-                        </li>
-                        <li className="flex items-center gap-3">
-                           <div className="w-6 h-6 rounded-full border border-white/20 text-white/50 flex items-center justify-center font-bold text-xs">4</div>
-                           <div className="text-muted-text text-xs">Your campaign launches in days</div>
-                        </li>
+                            <div className="w-6 h-6 rounded-full border border-primary-text/20 text-primary-text/50 flex items-center justify-center font-bold text-xs">1</div>
+                            <div className="text-muted-text text-xs">We review your brief within 24h</div>
+                         </li>
+                         <li className="flex items-center gap-3">
+                            <div className="w-6 h-6 rounded-full border border-primary-text/20 text-primary-text/50 flex items-center justify-center font-bold text-xs">2</div>
+                            <div className="text-muted-text text-xs">You receive a tailored proposal</div>
+                         </li>
+                         <li className="flex items-center gap-3">
+                            <div className="w-6 h-6 rounded-full border border-primary-text/20 text-primary-text/50 flex items-center justify-center font-bold text-xs">3</div>
+                            <div className="text-muted-text text-xs">Strategy kickoff call within 48h</div>
+                         </li>
+                         <li className="flex items-center gap-3">
+                            <div className="w-6 h-6 rounded-full border border-primary-text/20 text-primary-text/50 flex items-center justify-center font-bold text-xs">4</div>
+                            <div className="text-muted-text text-xs">Your campaign launches in days</div>
+                         </li>
                      </ul>
                   </div>
                </div>

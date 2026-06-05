@@ -15,7 +15,7 @@ function Section({ title, icon: Icon, children, defaultOpen = false }: { title: 
       <button type="button" onClick={() => setOpen(!open)} className="w-full flex items-center justify-between p-6 text-left hover:bg-primary-text/[0.02] transition-colors">
         <div className="flex items-center gap-3">
           <Icon size={20} className="text-accent-blue" />
-          <h2 className="text-lg font-semibold text-white">{title}</h2>
+          <h2 className="text-lg font-semibold text-primary-text">{title}</h2>
         </div>
         <ChevronDown size={18} className={`text-muted-text transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
       </button>
@@ -108,7 +108,7 @@ export default function GlobalSettingsPage() {
         </div>
         <div className="flex items-center gap-3">
           {successMessage && <span className="text-emerald-400 text-sm">{successMessage}</span>}
-          <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 bg-accent-blue hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
+          <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 bg-accent-blue hover:bg-accent-blue/90 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
             {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
             Save
           </button>
@@ -198,7 +198,7 @@ export default function GlobalSettingsPage() {
 
       <div className="flex items-center justify-between py-4">
         <div>{successMessage && <span className="text-emerald-400 text-sm">{successMessage}</span>}</div>
-        <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 bg-accent-blue hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
+        <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 bg-accent-blue hover:bg-accent-blue/90 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
           {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
           Save Global Settings
         </button>

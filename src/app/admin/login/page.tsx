@@ -19,8 +19,8 @@ function LoginForm() {
   // Redirect if already logged in
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-[#0F172A] flex items-center justify-center">
-        <div className="w-10 h-10 border-2 border-[#3B82F6] border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen bg-primary-bg flex items-center justify-center">
+        <div className="w-10 h-10 border-2 border-accent-blue border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -54,15 +54,15 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0F172A] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-primary-bg flex items-center justify-center p-4">
       {/* Subtle background glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#3B82F6]/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent-blue/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="w-full max-w-md relative">
         {/* Logo */}
         <div className="text-center mb-8">
           <Image src="/upmark-wordmark.png" alt="Upmark" width={280} height={280} className="h-16 sm:h-20 w-auto mx-auto" />
-          <p className="text-[#94A3B8] text-sm mt-2">
+          <p className="text-muted-text text-sm mt-2">
             Admin Dashboard
           </p>
         </div>
@@ -70,11 +70,11 @@ function LoginForm() {
         {/* Login Card */}
         <form
           onSubmit={handleSubmit}
-          className="bg-[#1E293B] rounded-2xl border border-white/5 p-8 flex flex-col gap-6 shadow-2xl"
+          className="bg-secondary-surface rounded-2xl border border-primary-text/5 p-8 flex flex-col gap-6 shadow-2xl"
         >
           <div>
-            <h2 className="text-xl font-semibold text-[#F8FAFC]">Sign In</h2>
-            <p className="text-sm text-[#94A3B8] mt-1">
+            <h2 className="text-xl font-semibold text-primary-text">Sign In</h2>
+            <p className="text-sm text-muted-text mt-1">
               Enter your credentials to access the dashboard.
             </p>
           </div>
@@ -91,7 +91,7 @@ function LoginForm() {
           <div className="flex flex-col gap-2">
             <label
               htmlFor="admin-email"
-              className="text-sm font-medium text-[#F8FAFC]"
+              className="text-sm font-medium text-primary-text"
             >
               Email
             </label>
@@ -102,7 +102,7 @@ function LoginForm() {
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="admin@upmark.co"
-              className="w-full bg-[#0F172A] border border-white/10 rounded-lg px-4 py-3 text-[#F8FAFC] placeholder-white/30 focus:outline-none focus:border-[#3B82F6] transition-colors text-sm"
+              className="w-full bg-primary-bg border border-primary-text/10 rounded-lg px-4 py-3 text-primary-text placeholder-primary-text/30 focus:outline-none focus:border-accent-blue transition-colors text-sm"
             />
           </div>
 
@@ -110,7 +110,7 @@ function LoginForm() {
           <div className="flex flex-col gap-2">
             <label
               htmlFor="admin-password"
-              className="text-sm font-medium text-[#F8FAFC]"
+              className="text-sm font-medium text-primary-text"
             >
               Password
             </label>
@@ -122,12 +122,12 @@ function LoginForm() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="••••••••"
-                className="w-full bg-[#0F172A] border border-white/10 rounded-lg px-4 py-3 pr-12 text-[#F8FAFC] placeholder-white/30 focus:outline-none focus:border-[#3B82F6] transition-colors text-sm"
+                className="w-full bg-primary-bg border border-primary-text/10 rounded-lg px-4 py-3 pr-12 text-primary-text placeholder-primary-text/30 focus:outline-none focus:border-accent-blue transition-colors text-sm"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-white transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-text hover:text-primary-text transition-colors"
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -138,7 +138,7 @@ function LoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-[#3B82F6] hover:bg-blue-600 text-white font-medium rounded-lg transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full py-3 bg-accent-blue hover:bg-accent-blue/90 text-white font-medium rounded-lg transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {loading ? (
               <Loader2 size={18} className="animate-spin" />
@@ -148,7 +148,7 @@ function LoginForm() {
           </button>
         </form>
 
-        <p className="text-center text-xs text-[#94A3B8]/60 mt-6">
+        <p className="text-center text-xs text-muted-text/60 mt-6">
           © {new Date().getFullYear()} Upmark. All rights reserved.
         </p>
       </div>

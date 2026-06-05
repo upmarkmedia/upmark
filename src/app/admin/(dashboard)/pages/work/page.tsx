@@ -39,7 +39,7 @@ const WORK_SEO_DEFAULTS: SeoPageConfig = {
   keywords: "marketing portfolio, case studies, campaign results",
 };
 
-const inputClass = "w-full bg-[#0F172A] border border-white/10 rounded-lg px-4 py-3 text-[#F8FAFC] placeholder-white/30 focus:outline-none focus:border-[#3B82F6] transition-colors text-sm";
+const inputClass = "w-full bg-primary-bg border border-primary-text/10 rounded-lg px-4 py-3 text-primary-text placeholder-primary-text/30 focus:outline-none focus:border-accent-blue transition-colors text-sm";
 
 export default function WorkPageSettings() {
   // ─── Tab state ──────────────────────────────
@@ -353,7 +353,7 @@ export default function WorkPageSettings() {
           <div className="flex items-center gap-3">
             <button
               onClick={coll.refresh}
-              className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 text-[#94A3B8] hover:text-white text-sm rounded-lg border border-white/5 transition-all"
+              className="flex items-center gap-2 px-4 py-2 bg-primary-text/5 hover:bg-primary-text/10 text-muted-text hover:text-primary-text text-sm rounded-lg border border-primary-text/5 transition-all"
             >
               <RefreshCw size={14} className={coll.loading ? "animate-spin" : ""} />
             </button>
@@ -382,7 +382,7 @@ export default function WorkPageSettings() {
       </FormModal>
 
       {/* ─── Tab Bar ──────────────────────────────── */}
-      <div className="flex gap-1 bg-[#1E293B] border border-white/10 rounded-xl p-1 overflow-x-auto">
+      <div className="flex gap-1 bg-secondary-surface border border-primary-text/10 rounded-xl p-1 overflow-x-auto">
         {TABS.map((tab) => {
           const Icon = tab.icon;
           return (
@@ -391,8 +391,8 @@ export default function WorkPageSettings() {
               onClick={() => setActiveTab(tab.key)}
               className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
                 activeTab === tab.key
-                  ? "bg-[#3B82F6]/10 text-[#3B82F6]"
-                  : "text-[#94A3B8] hover:text-white hover:bg-white/5"
+                  ? "bg-accent-blue/10 text-accent-blue"
+                  : "text-muted-text hover:text-primary-text hover:bg-primary-text/5"
               }`}
             >
               <Icon size={16} />
@@ -407,27 +407,27 @@ export default function WorkPageSettings() {
           ════════════════════════════════════════════ */}
       {activeTab === "portfolio" && (
         <div className="flex flex-col gap-6">
-          <div className="bg-[#1E293B] border border-white/10 rounded-2xl p-6">
-            <h2 className="text-lg font-semibold text-white mb-1">{tabMeta.portfolio.title}</h2>
-            <p className="text-sm text-[#94A3B8] mb-4">{tabMeta.portfolio.desc}</p>
+          <div className="bg-secondary-surface border border-primary-text/10 rounded-2xl p-6">
+            <h2 className="text-lg font-semibold text-primary-text mb-1">{tabMeta.portfolio.title}</h2>
+            <p className="text-sm text-muted-text mb-4">{tabMeta.portfolio.desc}</p>
             <div className="flex flex-col gap-3">
               <div>
-                <label className="block text-xs text-[#94A3B8] mb-1">Label (badge text)</label>
+                <label className="block text-xs text-muted-text mb-1">Label (badge text)</label>
                 <input value={portfolioSection.label} onChange={(e) => setPortfolioSection({ ...portfolioSection, label: e.target.value })} className={inputClass} />
               </div>
               <div>
-                <label className="block text-xs text-[#94A3B8] mb-1">Title</label>
+                <label className="block text-xs text-muted-text mb-1">Title</label>
                 <input value={portfolioSection.title} onChange={(e) => setPortfolioSection({ ...portfolioSection, title: e.target.value })} className={inputClass} />
               </div>
               <div>
-                <label className="block text-xs text-[#94A3B8] mb-1">Subtitle</label>
+                <label className="block text-xs text-muted-text mb-1">Subtitle</label>
                 <input value={portfolioSection.subtitle} onChange={(e) => setPortfolioSection({ ...portfolioSection, subtitle: e.target.value })} className={inputClass} />
               </div>
             </div>
           </div>
 
           <div className="flex items-center justify-between gap-4 flex-wrap">
-            <div className="flex items-center gap-1 bg-[#0F172A] border border-white/5 rounded-lg p-1">
+            <div className="flex items-center gap-1 bg-primary-bg border border-primary-text/5 rounded-lg p-1">
               {(["alphabetical", "publishDate", "custom"] as SortMode[]).map((mode) => (
                 <button
                   key={mode}
@@ -439,8 +439,8 @@ export default function WorkPageSettings() {
                   }}
                   className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
                     portfolioSortMode === mode
-                      ? "bg-[#3B82F6]/20 text-[#3B82F6]"
-                      : "text-[#94A3B8] hover:text-white"
+                      ? "bg-accent-blue/10 text-accent-blue"
+                      : "text-muted-text hover:text-primary-text"
                   }`}
                 >
                   {mode === "alphabetical" ? "A–Z" : mode === "publishDate" ? "Date" : "Custom"}
@@ -449,18 +449,18 @@ export default function WorkPageSettings() {
             </div>
             <div className="flex items-center gap-3 flex-1 max-w-sm">
               <div className="relative flex-1">
-                <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
+                <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-text" />
                 <input
                   type="text"
                   placeholder="Search portfolio items..."
                   value={portfolioSearch}
                   onChange={(e) => setPortfolioSearch(e.target.value)}
-                  className="w-full bg-[#1E293B] border border-white/5 rounded-lg pl-11 pr-4 py-3 text-[#F8FAFC] placeholder-white/30 focus:outline-none focus:border-[#3B82F6] transition-colors text-sm"
+                  className="w-full bg-secondary-surface border border-primary-text/5 rounded-lg pl-11 pr-4 py-3 text-primary-text placeholder-primary-text/30 focus:outline-none focus:border-accent-blue transition-colors text-sm"
                 />
               </div>
               <button
                 onClick={() => openCreateWorkItem("Studies")}
-                className="flex items-center gap-2 px-4 py-2 bg-[#3B82F6] hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-all flex-shrink-0"
+                className="flex items-center gap-2 px-4 py-2 bg-accent-blue hover:bg-accent-blue/90 text-white text-sm font-medium rounded-lg transition-all flex-shrink-0"
               >
                 <Plus size={16} /> Add New
               </button>
@@ -476,18 +476,18 @@ export default function WorkPageSettings() {
               action={portfolioSearch ? undefined : { label: "Add New", onClick: () => openCreateWorkItem("Studies") }}
             />
           ) : (
-            <div className="bg-[#1E293B] rounded-xl border border-white/5 overflow-hidden">
-              <div className="hidden md:grid md:grid-cols-[32px_1fr_100px_80px_80px] gap-4 px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+            <div className="bg-secondary-surface rounded-xl border border-primary-text/5 overflow-hidden">
+              <div className="hidden md:grid md:grid-cols-[32px_1fr_100px_80px_80px] gap-4 px-6 py-3 border-b border-primary-text/5 bg-primary-text/[0.02]">
                 <span />
-                <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider">Title / Client</span>
-                <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider">Category</span>
-                <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider">Status</span>
-                <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider text-right">Actions</span>
+                <span className="text-xs font-semibold text-muted-text uppercase tracking-wider">Title / Client</span>
+                <span className="text-xs font-semibold text-muted-text uppercase tracking-wider">Category</span>
+                <span className="text-xs font-semibold text-muted-text uppercase tracking-wider">Status</span>
+                <span className="text-xs font-semibold text-muted-text uppercase tracking-wider text-right">Actions</span>
               </div>
               {sortedPortfolio.map((item, index) => (
                 <div
                   key={item.id}
-                  className="grid grid-cols-[32px_1fr_100px_80px_80px] gap-4 px-6 py-4 border-b border-white/5 last:border-0 hover:bg-white/[0.02] transition-colors items-center"
+                  className="grid grid-cols-[32px_1fr_100px_80px_80px] gap-4 px-6 py-4 border-b border-primary-text/5 last:border-0 hover:bg-primary-text/[0.02] transition-colors items-center"
                 >
                   <div className="flex flex-col items-center gap-0.5">
                     {portfolioSortMode === "custom" && (
@@ -495,7 +495,7 @@ export default function WorkPageSettings() {
                         <button
                           onClick={() => handleMoveItem(sortedPortfolio, index, "up")}
                           disabled={index === 0 || reorderingId !== null}
-                          className="p-0.5 text-[#94A3B8] hover:text-white disabled:opacity-20 transition-colors"
+                          className="p-0.5 text-muted-text hover:text-primary-text disabled:opacity-20 transition-colors"
                           title="Move up"
                         >
                           <ArrowUp size={12} />
@@ -503,7 +503,7 @@ export default function WorkPageSettings() {
                         <button
                           onClick={() => handleMoveItem(sortedPortfolio, index, "down")}
                           disabled={index === sortedPortfolio.length - 1 || reorderingId !== null}
-                          className="p-0.5 text-[#94A3B8] hover:text-white disabled:opacity-20 transition-colors"
+                          className="p-0.5 text-muted-text hover:text-primary-text disabled:opacity-20 transition-colors"
                           title="Move down"
                         >
                           <ArrowDown size={12} />
@@ -512,25 +512,25 @@ export default function WorkPageSettings() {
                     )}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-medium text-[#F8FAFC] truncate">{item.title}</p>
-                    <p className="text-xs text-[#94A3B8] truncate">{item.client}</p>
+                    <p className="text-sm font-medium text-primary-text truncate">{item.title}</p>
+                    <p className="text-xs text-muted-text truncate">{item.client}</p>
                   </div>
                   <div>
-                    <span className={`inline-block px-2.5 py-1 text-xs font-medium rounded-full border ${categoryBadgeColor[item.category] || "bg-white/5 text-[#94A3B8] border-white/10"}`}>
+                    <span className={`inline-block px-2.5 py-1 text-xs font-medium rounded-full border ${categoryBadgeColor[item.category] || "bg-primary-text/5 text-muted-text border-primary-text/10"}`}>
                       {item.category}
                     </span>
                   </div>
                   <div>
-                    <span className={`inline-flex items-center gap-1.5 text-xs font-medium ${item.published ? "text-green-400" : "text-[#94A3B8]"}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${item.published ? "bg-green-400" : "bg-[#94A3B8]"}`} />
+                    <span className={`inline-flex items-center gap-1.5 text-xs font-medium ${item.published ? "text-green-400" : "text-muted-text"}`}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${item.published ? "bg-green-400" : "bg-muted-text"}`} />
                       {item.published ? "Published" : "Draft"}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 justify-end">
-                    <button onClick={() => openEditWorkItem(item)} className="p-2 text-[#94A3B8] hover:text-[#3B82F6] hover:bg-[#3B82F6]/10 rounded-lg transition-all" title="Edit">
+                    <button onClick={() => openEditWorkItem(item)} className="p-2 text-muted-text hover:text-accent-blue hover:bg-accent-blue/10 rounded-lg transition-all" title="Edit">
                       <Pencil size={14} />
                     </button>
-                    <button onClick={() => item.id && coll.remove(item.id)} disabled={coll.deletingId === item.id} className="p-2 text-[#94A3B8] hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all disabled:opacity-50" title="Delete">
+                    <button onClick={() => item.id && coll.remove(item.id)} disabled={coll.deletingId === item.id} className="p-2 text-muted-text hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all disabled:opacity-50" title="Delete">
                       {coll.deletingId === item.id ? <X size={14} className="animate-spin" /> : <Trash2 size={14} />}
                     </button>
                   </div>
@@ -540,7 +540,7 @@ export default function WorkPageSettings() {
           )}
 
           {!coll.loading && portfolioItems.length > 0 && (
-            <p className="text-xs text-[#94A3B8] text-center">
+            <p className="text-xs text-muted-text text-center">
               {portfolioItems.length} portfolio {portfolioItems.length === 1 ? "item" : "items"}
             </p>
           )}
@@ -552,33 +552,33 @@ export default function WorkPageSettings() {
           ════════════════════════════════════════════ */}
       {activeTab === "production" && (
         <div className="flex flex-col gap-6">
-          <div className="bg-[#1E293B] border border-white/10 rounded-2xl p-6">
-            <h2 className="text-lg font-semibold text-white mb-1">{tabMeta.production.title}</h2>
-            <p className="text-sm text-[#94A3B8] mb-4">{tabMeta.production.desc}</p>
+          <div className="bg-secondary-surface border border-primary-text/10 rounded-2xl p-6">
+            <h2 className="text-lg font-semibold text-primary-text mb-1">{tabMeta.production.title}</h2>
+            <p className="text-sm text-muted-text mb-4">{tabMeta.production.desc}</p>
             <div className="flex flex-col gap-3">
               <div>
-                <label className="block text-xs text-[#94A3B8] mb-1">Label (badge text)</label>
+                <label className="block text-xs text-muted-text mb-1">Label (badge text)</label>
                 <input value={productionSection.label} onChange={(e) => setProductionSection({ ...productionSection, label: e.target.value })} className={inputClass} />
               </div>
               <div>
-                <label className="block text-xs text-[#94A3B8] mb-1">Title</label>
+                <label className="block text-xs text-muted-text mb-1">Title</label>
                 <input value={productionSection.title} onChange={(e) => setProductionSection({ ...productionSection, title: e.target.value })} className={inputClass} />
               </div>
               <div>
-                <label className="block text-xs text-[#94A3B8] mb-1">Subtitle</label>
+                <label className="block text-xs text-muted-text mb-1">Subtitle</label>
                 <input value={productionSection.subtitle} onChange={(e) => setProductionSection({ ...productionSection, subtitle: e.target.value })} className={inputClass} />
               </div>
 
-              <div className="border-t border-white/10 pt-4 mt-2">
-                <label className="block text-xs text-[#94A3B8] mb-1">Autoplay Videos in Carousel</label>
+              <div className="border-t border-primary-text/10 pt-4 mt-2">
+                <label className="block text-xs text-muted-text mb-1">Autoplay Videos in Carousel</label>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" checked={productionSection.autoplayVideos ?? true} onChange={(e) => setProductionSection({ ...productionSection, autoplayVideos: e.target.checked })} className="sr-only peer" />
-                  <div className="w-9 h-5 bg-white/10 rounded-full peer peer-checked:bg-[#3B82F6] peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+                  <div className="w-9 h-5 bg-primary-text/10 rounded-full peer peer-checked:bg-accent-blue peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
                 </label>
               </div>
 
-              <div className="border-t border-white/10 pt-4 mt-2">
-                <label className="block text-xs text-[#94A3B8] mb-3">Detail Fields (shown in preview overlay)</label>
+              <div className="border-t border-primary-text/10 pt-4 mt-2">
+                <label className="block text-xs text-muted-text mb-3">Detail Fields (shown in preview overlay)</label>
                 {["title", "client", "description", "tag", "mediaType", "duration", "details"].map((field) => (
                   <label key={field} className="flex items-center gap-2 py-1 cursor-pointer">
                     <input
@@ -593,9 +593,9 @@ export default function WorkPageSettings() {
                             : current.filter((f) => f !== field),
                         });
                       }}
-                      className="accent-[#3B82F6]"
+                      className="accent-accent-blue"
                     />
-                    <span className="text-sm text-[#F8FAFC] capitalize">{field}</span>
+                    <span className="text-sm text-primary-text capitalize">{field}</span>
                   </label>
                 ))}
               </div>
@@ -603,7 +603,7 @@ export default function WorkPageSettings() {
           </div>
 
           <div className="flex items-center justify-between gap-4 flex-wrap">
-            <div className="flex items-center gap-1 bg-[#0F172A] border border-white/5 rounded-lg p-1">
+            <div className="flex items-center gap-1 bg-primary-bg border border-primary-text/5 rounded-lg p-1">
               {(["alphabetical", "publishDate", "custom"] as SortMode[]).map((mode) => (
                 <button
                   key={mode}
@@ -615,8 +615,8 @@ export default function WorkPageSettings() {
                   }}
                   className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
                     productionSortMode === mode
-                      ? "bg-[#3B82F6]/20 text-[#3B82F6]"
-                      : "text-[#94A3B8] hover:text-white"
+                      ? "bg-accent-blue/10 text-accent-blue"
+                      : "text-muted-text hover:text-primary-text"
                   }`}
                 >
                   {mode === "alphabetical" ? "A–Z" : mode === "publishDate" ? "Date" : "Custom"}
@@ -625,18 +625,18 @@ export default function WorkPageSettings() {
             </div>
             <div className="flex items-center gap-3 flex-1 max-w-sm">
               <div className="relative flex-1">
-                <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
+                <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-text" />
                 <input
                   type="text"
                   placeholder="Search production items..."
                   value={productionSearch}
                   onChange={(e) => setProductionSearch(e.target.value)}
-                  className="w-full bg-[#1E293B] border border-white/5 rounded-lg pl-11 pr-4 py-3 text-[#F8FAFC] placeholder-white/30 focus:outline-none focus:border-[#3B82F6] transition-colors text-sm"
+                  className="w-full bg-secondary-surface border border-primary-text/5 rounded-lg pl-11 pr-4 py-3 text-primary-text placeholder-primary-text/30 focus:outline-none focus:border-accent-blue transition-colors text-sm"
                 />
               </div>
               <button
                 onClick={() => openCreateWorkItem("Production")}
-                className="flex items-center gap-2 px-4 py-2 bg-[#3B82F6] hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-all flex-shrink-0"
+                className="flex items-center gap-2 px-4 py-2 bg-accent-blue hover:bg-accent-blue/90 text-white text-sm font-medium rounded-lg transition-all flex-shrink-0"
               >
                 <Plus size={16} /> Add New
               </button>
@@ -652,18 +652,18 @@ export default function WorkPageSettings() {
               action={productionSearch ? undefined : { label: "Add New", onClick: () => openCreateWorkItem("Production") }}
             />
           ) : (
-            <div className="bg-[#1E293B] rounded-xl border border-white/5 overflow-hidden">
-              <div className="hidden md:grid md:grid-cols-[32px_1fr_100px_80px_80px] gap-4 px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+            <div className="bg-secondary-surface rounded-xl border border-primary-text/5 overflow-hidden">
+              <div className="hidden md:grid md:grid-cols-[32px_1fr_100px_80px_80px] gap-4 px-6 py-3 border-b border-primary-text/5 bg-primary-text/[0.02]">
                 <span />
-                <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider">Title / Client</span>
-                <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider">Folder</span>
-                <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider">Status</span>
-                <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider text-right">Actions</span>
+                <span className="text-xs font-semibold text-muted-text uppercase tracking-wider">Title / Client</span>
+                <span className="text-xs font-semibold text-muted-text uppercase tracking-wider">Folder</span>
+                <span className="text-xs font-semibold text-muted-text uppercase tracking-wider">Status</span>
+                <span className="text-xs font-semibold text-muted-text uppercase tracking-wider text-right">Actions</span>
               </div>
               {sortedProduction.map((item, index) => (
                 <div
                   key={item.id}
-                  className="grid grid-cols-[32px_1fr_100px_80px_80px] gap-4 px-6 py-4 border-b border-white/5 last:border-0 hover:bg-white/[0.02] transition-colors items-center"
+                  className="grid grid-cols-[32px_1fr_100px_80px_80px] gap-4 px-6 py-4 border-b border-primary-text/5 last:border-0 hover:bg-primary-text/[0.02] transition-colors items-center"
                 >
                   <div className="flex flex-col items-center gap-0.5">
                     {productionSortMode === "custom" && (
@@ -671,7 +671,7 @@ export default function WorkPageSettings() {
                         <button
                           onClick={() => handleMoveItem(sortedProduction, index, "up")}
                           disabled={index === 0 || reorderingId !== null}
-                          className="p-0.5 text-[#94A3B8] hover:text-white disabled:opacity-20 transition-colors"
+                          className="p-0.5 text-muted-text hover:text-primary-text disabled:opacity-20 transition-colors"
                           title="Move up"
                         >
                           <ArrowUp size={12} />
@@ -679,7 +679,7 @@ export default function WorkPageSettings() {
                         <button
                           onClick={() => handleMoveItem(sortedProduction, index, "down")}
                           disabled={index === sortedProduction.length - 1 || reorderingId !== null}
-                          className="p-0.5 text-[#94A3B8] hover:text-white disabled:opacity-20 transition-colors"
+                          className="p-0.5 text-muted-text hover:text-primary-text disabled:opacity-20 transition-colors"
                           title="Move down"
                         >
                           <ArrowDown size={12} />
@@ -688,8 +688,8 @@ export default function WorkPageSettings() {
                     )}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-medium text-[#F8FAFC] truncate">{item.title}</p>
-                    <p className="text-xs text-[#94A3B8] truncate">{item.client}</p>
+                    <p className="text-sm font-medium text-primary-text truncate">{item.title}</p>
+                    <p className="text-xs text-muted-text truncate">{item.client}</p>
                   </div>
                   <div>
                     <span className="inline-block px-2.5 py-1 text-xs font-medium rounded-full border bg-amber-500/10 text-amber-400 border-amber-500/20">
@@ -697,16 +697,16 @@ export default function WorkPageSettings() {
                     </span>
                   </div>
                   <div>
-                    <span className={`inline-flex items-center gap-1.5 text-xs font-medium ${item.published ? "text-green-400" : "text-[#94A3B8]"}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${item.published ? "bg-green-400" : "bg-[#94A3B8]"}`} />
+                    <span className={`inline-flex items-center gap-1.5 text-xs font-medium ${item.published ? "text-green-400" : "text-muted-text"}`}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${item.published ? "bg-green-400" : "bg-muted-text"}`} />
                       {item.published ? "Published" : "Draft"}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 justify-end">
-                    <button onClick={() => openEditWorkItem(item)} className="p-2 text-[#94A3B8] hover:text-[#3B82F6] hover:bg-[#3B82F6]/10 rounded-lg transition-all" title="Edit">
+                    <button onClick={() => openEditWorkItem(item)} className="p-2 text-muted-text hover:text-accent-blue hover:bg-accent-blue/10 rounded-lg transition-all" title="Edit">
                       <Pencil size={14} />
                     </button>
-                    <button onClick={() => item.id && coll.remove(item.id)} disabled={coll.deletingId === item.id} className="p-2 text-[#94A3B8] hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all disabled:opacity-50" title="Delete">
+                    <button onClick={() => item.id && coll.remove(item.id)} disabled={coll.deletingId === item.id} className="p-2 text-muted-text hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all disabled:opacity-50" title="Delete">
                       {coll.deletingId === item.id ? <X size={14} className="animate-spin" /> : <Trash2 size={14} />}
                     </button>
                   </div>
@@ -716,7 +716,7 @@ export default function WorkPageSettings() {
           )}
 
           {!coll.loading && productionItems.length > 0 && (
-            <p className="text-xs text-[#94A3B8] text-center">
+            <p className="text-xs text-muted-text text-center">
               {productionItems.length} production {productionItems.length === 1 ? "item" : "items"}
             </p>
           )}
@@ -728,20 +728,20 @@ export default function WorkPageSettings() {
           ════════════════════════════════════════════ */}
       {activeTab === "testimonials" && (
         <div className="flex flex-col gap-6">
-          <div className="bg-[#1E293B] border border-white/10 rounded-2xl p-6">
-            <h2 className="text-lg font-semibold text-white mb-1">{tabMeta.testimonials.title}</h2>
-            <p className="text-sm text-[#94A3B8] mb-4">{tabMeta.testimonials.desc}</p>
+          <div className="bg-secondary-surface border border-primary-text/10 rounded-2xl p-6">
+            <h2 className="text-lg font-semibold text-primary-text mb-1">{tabMeta.testimonials.title}</h2>
+            <p className="text-sm text-muted-text mb-4">{tabMeta.testimonials.desc}</p>
             <div className="flex flex-col gap-3">
               <div>
-                <label className="block text-xs text-[#94A3B8] mb-1">Label (badge text)</label>
+                <label className="block text-xs text-muted-text mb-1">Label (badge text)</label>
                 <input value={testimonialsSection.label} onChange={(e) => setTestimonialsSection({ ...testimonialsSection, label: e.target.value })} className={inputClass} />
               </div>
               <div>
-                <label className="block text-xs text-[#94A3B8] mb-1">Title</label>
+                <label className="block text-xs text-muted-text mb-1">Title</label>
                 <input value={testimonialsSection.title} onChange={(e) => setTestimonialsSection({ ...testimonialsSection, title: e.target.value })} className={inputClass} />
               </div>
               <div>
-                <label className="block text-xs text-[#94A3B8] mb-1">Subtitle</label>
+                <label className="block text-xs text-muted-text mb-1">Subtitle</label>
                 <input value={testimonialsSection.subtitle} onChange={(e) => setTestimonialsSection({ ...testimonialsSection, subtitle: e.target.value })} className={inputClass} />
               </div>
             </div>
@@ -761,24 +761,24 @@ export default function WorkPageSettings() {
               <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                   <div className="relative flex-1 max-w-sm">
-                    <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
+                    <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-text" />
                     <input
                       type="text"
                       placeholder="Search testimonials..."
                       value={testimonialSearch}
                       onChange={(e) => setTestimonialSearch(e.target.value)}
-                      className="w-full bg-[#1E293B] border border-white/5 rounded-lg pl-11 pr-4 py-3 text-[#F8FAFC] placeholder-white/30 focus:outline-none focus:border-[#3B82F6] transition-colors text-sm"
+                      className="w-full bg-secondary-surface border border-primary-text/5 rounded-lg pl-11 pr-4 py-3 text-primary-text placeholder-primary-text/30 focus:outline-none focus:border-accent-blue transition-colors text-sm"
                     />
                   </div>
-                  <div className="flex items-center gap-1.5 px-3 py-2 bg-[#F59E0B]/10 border border-[#F59E0B]/20 rounded-lg text-sm flex-shrink-0">
-                    <Star size={14} className="text-[#F59E0B]" />
-                    <span className="text-[#F59E0B] font-medium">{featuredCount}/3</span>
-                    <span className="text-[#94A3B8] text-xs">featured</span>
+                  <div className="flex items-center gap-1.5 px-3 py-2 bg-accent-gold/10 border border-accent-gold/20 rounded-lg text-sm flex-shrink-0">
+                    <Star size={14} className="text-accent-gold" />
+                    <span className="text-accent-gold font-medium">{featuredCount}/3</span>
+                    <span className="text-muted-text text-xs">featured</span>
                   </div>
                 </div>
                 <button
                   onClick={openCreateTestimonial}
-                  className="flex items-center gap-2 px-4 py-2 bg-[#3B82F6] hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-all flex-shrink-0"
+                  className="flex items-center gap-2 px-4 py-2 bg-accent-blue hover:bg-accent-blue/90 text-white text-sm font-medium rounded-lg transition-all flex-shrink-0"
                 >
                   <Plus size={16} /> Add New
                 </button>
@@ -797,28 +797,28 @@ export default function WorkPageSettings() {
                   {filteredTestimonials.map((testimonial) => (
                     <div
                       key={testimonial.id}
-                      className={`bg-[#1E293B] rounded-xl border p-6 hover:border-white/10 transition-all group ${
-                        testimonial.featured ? "border-[#F59E0B]/30 bg-[#F59E0B]/[0.03]" : "border-white/5"
+                      className={`bg-secondary-surface rounded-xl border p-6 hover:border-primary-text/10 transition-all group ${
+                        testimonial.featured ? "border-accent-gold/30 bg-accent-gold/[0.03]" : "border-primary-text/5"
                       }`}
                     >
                       <div className="flex items-start gap-4">
-                        <Quote size={24} className="text-[#3B82F6]/30 mt-1 flex-shrink-0" />
+                        <Quote size={24} className="text-accent-blue/30 mt-1 flex-shrink-0" />
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-2">
                             {testimonial.featured && (
-                              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#F59E0B]/15 border border-[#F59E0B]/30 rounded text-[10px] font-bold uppercase tracking-wider text-[#F59E0B]">
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-accent-gold/15 border border-accent-gold/30 rounded text-[10px] font-bold uppercase tracking-wider text-accent-gold">
                                 <Star size={10} fill="currentColor" />
                                 Featured
                               </span>
                             )}
                           </div>
-                          <p className="text-sm text-[#F8FAFC] italic mb-4 line-clamp-3">
+                          <p className="text-sm text-primary-text italic mb-4 line-clamp-3">
                             &quot;{testimonial.quote}&quot;
                           </p>
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="text-sm font-medium text-[#F8FAFC]">{testimonial.name}</p>
-                              <p className="text-xs text-[#94A3B8]">{testimonial.role}</p>
+                              <p className="text-sm font-medium text-primary-text">{testimonial.name}</p>
+                              <p className="text-xs text-muted-text">{testimonial.role}</p>
                             </div>
                             <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                               <button
@@ -826,8 +826,8 @@ export default function WorkPageSettings() {
                                 disabled={togglingFeaturedId === testimonial.id}
                                 className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
                                   testimonial.featured
-                                    ? "text-[#F59E0B] bg-[#F59E0B]/10 hover:bg-[#F59E0B]/20"
-                                    : "text-[#94A3B8] bg-white/5 hover:bg-white/10"
+                                    ? "text-accent-gold bg-accent-gold/10 hover:bg-accent-gold/20"
+                                    : "text-muted-text bg-primary-text/5 hover:bg-primary-text/10"
                                 } disabled:opacity-50`}
                               >
                                 <Star size={12} fill={testimonial.featured ? "currentColor" : "none"} />
@@ -835,7 +835,7 @@ export default function WorkPageSettings() {
                               </button>
                               <button
                                 onClick={() => openEditTestimonial(testimonial)}
-                                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[#3B82F6] bg-[#3B82F6]/10 hover:bg-[#3B82F6]/20 rounded-lg transition-colors"
+                                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-accent-blue bg-accent-blue/10 hover:bg-accent-blue/20 rounded-lg transition-colors"
                               >
                                 <Pencil size={12} />
                                 Edit
@@ -862,7 +862,7 @@ export default function WorkPageSettings() {
               )}
 
               {!testimonialsLoading && filteredTestimonials.length > 0 && (
-                <p className="text-xs text-[#94A3B8] text-center">
+                <p className="text-xs text-muted-text text-center">
                   {filteredTestimonials.length} testimonial{filteredTestimonials.length === 1 ? "" : "s"}
                 </p>
               )}
@@ -872,12 +872,12 @@ export default function WorkPageSettings() {
       )}
 
       {/* ─── Page & Section Visibility ────────────── */}
-      <div className="bg-[#1E293B] border border-white/10 rounded-2xl p-6">
+      <div className="bg-secondary-surface border border-primary-text/10 rounded-2xl p-6">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-2 h-2 rounded-full bg-[#3B82F6]" />
-          <h2 className="text-lg font-semibold text-white">Visibility</h2>
+          <div className="w-2 h-2 rounded-full bg-accent-blue" />
+          <h2 className="text-lg font-semibold text-primary-text">Visibility</h2>
         </div>
-        <p className="text-sm text-[#94A3B8] mb-4">Toggle sections on/off on the public work page.</p>
+        <p className="text-sm text-muted-text mb-4">Toggle sections on/off on the public work page.</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {[
             { key: "work", label: "Page (entire work page)" },
@@ -886,15 +886,15 @@ export default function WorkPageSettings() {
             { key: "workProduction", label: "Production" },
             { key: "workTestimonials", label: "Testimonials" },
           ].map(({ key, label }) => (
-            <label key={key} className="flex items-center gap-3 p-3 rounded-lg bg-[#0F172A] border border-white/5 cursor-pointer hover:border-white/10 transition-colors">
+            <label key={key} className="flex items-center gap-3 p-3 rounded-lg bg-primary-bg border border-primary-text/5 cursor-pointer hover:border-primary-text/10 transition-colors">
               <input
                 type="checkbox"
                 checked={visibility[key as keyof PageVisibility] ?? true}
                 onChange={(e) => setVisibility((prev) => ({ ...prev, [key]: e.target.checked }))}
                 className="sr-only peer"
               />
-              <div className="w-9 h-5 bg-white/10 rounded-full peer-checked:bg-[#3B82F6] peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all relative flex-shrink-0"></div>
-              <span className="text-sm text-[#F8FAFC]">{label}</span>
+              <div className="w-9 h-5 bg-primary-text/10 rounded-full peer-checked:bg-accent-blue peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all relative flex-shrink-0"></div>
+              <span className="text-sm text-primary-text">{label}</span>
             </label>
           ))}
         </div>
@@ -905,7 +905,7 @@ export default function WorkPageSettings() {
 
       <div className="flex items-center justify-end gap-3">
         {successMessage && <span className="text-emerald-400 text-sm">{successMessage}</span>}
-        <button onClick={handleSaveSettings} disabled={saving} className="flex items-center gap-2 bg-[#3B82F6] hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
+        <button onClick={handleSaveSettings} disabled={saving} className="flex items-center gap-2 bg-accent-blue hover:bg-accent-blue/90 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
           {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
           Save Settings
         </button>

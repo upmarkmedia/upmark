@@ -57,20 +57,20 @@ export function TestimonialForm({
   }
 
   const inputClass =
-    "w-full bg-[#0F172A] border border-white/10 rounded-lg px-4 py-3 text-[#F8FAFC] placeholder-white/30 focus:outline-none focus:border-[#3B82F6] transition-colors text-sm";
+    "w-full bg-primary-bg border border-primary-text/10 rounded-lg px-4 py-3 text-primary-text placeholder-primary-text/30 focus:outline-none focus:border-accent-blue transition-colors text-sm";
 
   return (
     <form
       onSubmit={handleSubmit(handleFormSubmit)}
-      className="flex flex-col gap-6 bg-[#1E293B] p-6 lg:p-8 rounded-xl border border-white/5"
+      className="flex flex-col gap-6 bg-secondary-surface p-6 lg:p-8 rounded-xl border border-primary-text/5"
     >
-      <h2 className="text-xl font-bold text-[#F8FAFC]">
+      <h2 className="text-xl font-bold text-primary-text">
         {initialData ? "Edit Testimonial" : "New Testimonial"}
       </h2>
 
       {/* Quote */}
       <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium text-[#F8FAFC]">Quote *</label>
+        <label className="text-sm font-medium text-primary-text">Quote *</label>
         <textarea
           {...register("quote", { required: "Quote is required" })}
           rows={4}
@@ -85,7 +85,7 @@ export function TestimonialForm({
       {/* Name & Role */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">Name *</label>
+          <label className="text-sm font-medium text-primary-text">Name *</label>
           <input
             {...register("name", { required: "Name is required" })}
             placeholder="Sarah Jenkins"
@@ -96,7 +96,7 @@ export function TestimonialForm({
           )}
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">Role / Company *</label>
+          <label className="text-sm font-medium text-primary-text">Role / Company *</label>
           <input
             {...register("role", { required: "Role is required" })}
             placeholder="CMO, Vertex Corp"
@@ -111,22 +111,22 @@ export function TestimonialForm({
       {/* Order & Featured */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">Display Order</label>
+          <label className="text-sm font-medium text-primary-text">Display Order</label>
           <input
             type="number"
             {...register("order", { valueAsNumber: true })}
             placeholder="0"
             className={inputClass}
           />
-          <p className="text-xs text-[#94A3B8]">Lower numbers appear first in the carousel.</p>
+          <p className="text-xs text-muted-text">Lower numbers appear first in the carousel.</p>
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">Featured (Top 3)</label>
+          <label className="text-sm font-medium text-primary-text">Featured (Top 3)</label>
           <label
             className={`flex items-center gap-3 px-4 py-3 rounded-lg border cursor-pointer transition-all ${
               isFeatured
-                ? "border-[#F59E0B]/40 bg-[#F59E0B]/10"
-                : "border-white/10 bg-[#0F172A] hover:border-white/20"
+                ? "border-accent-gold/40 bg-accent-gold/10"
+                : "border-primary-text/10 bg-primary-bg hover:border-primary-text/20"
             }`}
           >
             <input
@@ -136,14 +136,14 @@ export function TestimonialForm({
             />
             <Star
               size={18}
-              className={isFeatured ? "text-[#F59E0B]" : "text-[#94A3B8]"}
+              className={isFeatured ? "text-accent-gold" : "text-muted-text"}
               fill={isFeatured ? "currentColor" : "none"}
             />
-            <span className={`text-sm font-medium ${isFeatured ? "text-[#F59E0B]" : "text-[#94A3B8]"}`}>
+            <span className={`text-sm font-medium ${isFeatured ? "text-accent-gold" : "text-muted-text"}`}>
               {isFeatured ? "Featured on homepage" : "Not featured"}
             </span>
           </label>
-          <p className="text-xs text-[#94A3B8]">Mark as featured to display in the homepage carousel (max 3).</p>
+          <p className="text-xs text-muted-text">Mark as featured to display in the homepage carousel (max 3).</p>
         </div>
       </div>
 
@@ -156,18 +156,18 @@ export function TestimonialForm({
       <input type="hidden" {...register("imageUrl")} />
 
       {/* Actions */}
-      <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/5">
+      <div className="flex items-center justify-end gap-3 pt-4 border-t border-primary-text/5">
         <button
           type="button"
           onClick={onCancel}
-          className="px-5 py-2.5 text-sm font-medium text-[#94A3B8] hover:text-white bg-white/5 hover:bg-white/10 rounded-lg transition-all"
+          className="px-5 py-2.5 text-sm font-medium text-muted-text hover:text-primary-text bg-primary-text/5 hover:bg-primary-text/10 rounded-lg transition-all"
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-5 py-2.5 text-sm font-medium text-white bg-[#3B82F6] hover:bg-blue-600 rounded-lg transition-all flex items-center gap-2 disabled:opacity-60"
+          className="px-5 py-2.5 text-sm font-medium text-white bg-accent-blue hover:bg-accent-blue/90 rounded-lg transition-all flex items-center gap-2 disabled:opacity-60"
         >
           {isSubmitting && <Loader2 size={16} className="animate-spin" />}
           {initialData ? "Update" : "Create"}

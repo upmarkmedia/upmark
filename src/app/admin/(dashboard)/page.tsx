@@ -101,7 +101,7 @@ export default function AdminOverviewPage() {
               <div>
                 <p className="text-sm text-muted-text mb-1">{card.label}</p>
                 {loading ? (
-                  <div className="h-9 w-16 bg-white/5 rounded animate-pulse" />
+                  <div className="h-9 w-16 bg-primary-text/5 rounded animate-pulse" />
                 ) : (
                   <p className="text-4xl font-bold text-primary-text">
                     {card.value}
@@ -140,35 +140,35 @@ export default function AdminOverviewPage() {
             href="/admin/pages/work"
             className="flex items-center gap-3 px-4 py-3 bg-primary-bg rounded-lg border border-primary-text/5 hover:border-accent-blue/30 transition-colors"
           >
-            <PenTool size={18} className="text-[#F59E0B]" />
+            <PenTool size={18} className="text-accent-blue" />
             <span className="text-sm text-primary-text">Manage Work Items</span>
           </Link>
           <Link
             href="/admin/pages/services"
             className="flex items-center gap-3 px-4 py-3 bg-primary-bg rounded-lg border border-primary-text/5 hover:border-accent-blue/30 transition-colors"
           >
-            <Briefcase size={18} className="text-[#22C55E]" />
+            <Briefcase size={18} className="text-accent-blue" />
             <span className="text-sm text-primary-text">Manage Services</span>
           </Link>
           <Link
             href="/admin/pages/work"
             className="flex items-center gap-3 px-4 py-3 bg-primary-bg rounded-lg border border-primary-text/5 hover:border-accent-blue/30 transition-colors"
           >
-            <MessageSquareQuote size={18} className="text-[#A855F7]" />
+            <MessageSquareQuote size={18} className="text-accent-blue" />
             <span className="text-sm text-primary-text">Manage Testimonials</span>
           </Link>
           <Link
             href="/admin/leads"
             className="flex items-center gap-3 px-4 py-3 bg-primary-bg rounded-lg border border-primary-text/5 hover:border-accent-blue/30 transition-colors"
           >
-            <Users size={18} className="text-[#F59E0B]" />
+            <Users size={18} className="text-accent-blue" />
             <span className="text-sm text-primary-text">Review Leads</span>
           </Link>
           <Link
             href="/admin/pages/home"
             className="flex items-center gap-3 px-4 py-3 bg-primary-bg rounded-lg border border-primary-text/5 hover:border-accent-blue/30 transition-colors"
           >
-            <Globe size={18} className="text-[#10B981]" />
+            <Globe size={18} className="text-accent-blue" />
             <span className="text-sm text-primary-text">Edit Home Page</span>
           </Link>
         </div>

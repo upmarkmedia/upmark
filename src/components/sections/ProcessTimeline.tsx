@@ -31,7 +31,7 @@ export const ProcessTimeline = ({ steps }: ProcessTimelineProps) => {
       {/* Left: Interactive Steps */}
       <div className="lg:w-7/12 w-full relative">
         {/* Vertical connector line */}
-        <div className="absolute left-5 top-0 bottom-0 w-[2px] bg-white/5 hidden md:block" />
+        <div className="absolute left-5 top-0 bottom-0 w-[2px] bg-primary-text/10 hidden md:block" />
 
         {/* Animated progress fill */}
         <motion.div
@@ -53,7 +53,7 @@ export const ProcessTimeline = ({ steps }: ProcessTimelineProps) => {
                   className={`group w-full text-left flex items-start gap-3 sm:gap-4 md:gap-6 p-3 sm:p-4 md:p-5 rounded-2xl transition-colors duration-300 relative ${
                     isActive
                       ? "bg-accent-blue/8 border border-accent-blue/20"
-                      : "bg-transparent border border-transparent hover:bg-white/[0.02] hover:border-white/5"
+                      : "bg-transparent border border-transparent hover:bg-primary-text/[0.02] hover:border-primary-text/5"
                   }`}
                 >
                   {/* Step Number Circle */}
@@ -61,7 +61,7 @@ export const ProcessTimeline = ({ steps }: ProcessTimelineProps) => {
                     className={`relative z-10 flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-heading font-black text-sm transition-colors duration-300 ${
                       isActive
                         ? "bg-accent-blue text-white shadow-[0_0_20px_rgba(59,130,246,0.4)]"
-                        : "bg-secondary-surface border border-white/10 text-white/40 group-hover:text-white/70 group-hover:border-white/20"
+                        : "bg-secondary-surface border border-primary-text/10 text-primary-text/40 group-hover:text-primary-text/70 group-hover:border-primary-text/20"
                     }`}
                   >
                     {step.id}
@@ -71,7 +71,7 @@ export const ProcessTimeline = ({ steps }: ProcessTimelineProps) => {
                   <div className="flex-1 min-w-0">
                     <h3
                       className={`text-lg md:text-xl font-bold font-heading transition-colors duration-200 ${
-                        isActive ? "text-white" : "text-white/60 group-hover:text-white/80"
+                        isActive ? "text-primary-text" : "text-primary-text/60 group-hover:text-primary-text/80"
                       }`}
                     >
                       {step.title}
@@ -109,7 +109,7 @@ export const ProcessTimeline = ({ steps }: ProcessTimelineProps) => {
 
       {/* Right: Dynamic Detail Panel */}
       <div className="lg:w-5/12 w-full lg:sticky lg:top-32">
-        <div className="relative w-full aspect-[4/3] sm:aspect-[4/5] rounded-[1.5rem] sm:rounded-[2rem] border border-white/5 bg-secondary-surface/30 overflow-hidden">
+        <div className="relative w-full aspect-[4/3] sm:aspect-[4/5] rounded-[1.5rem] sm:rounded-[2rem] border border-primary-text/10 bg-secondary-surface/30 overflow-hidden">
           {/* Background glow — reduced blur radii */}
           <div className="absolute -top-20 -right-20 w-64 h-64 bg-accent-blue/10 rounded-full blur-[50px] pointer-events-none" />
           <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-accent-gold/5 rounded-full blur-[50px] pointer-events-none" />
@@ -131,12 +131,12 @@ export const ProcessTimeline = ({ steps }: ProcessTimelineProps) => {
                 </div>
 
                 {/* Step Number */}
-                <div className="text-5xl sm:text-7xl md:text-8xl font-black font-heading text-transparent bg-clip-text bg-gradient-to-b from-white/15 to-white/5">
+                <div className="text-5xl sm:text-7xl md:text-8xl font-black font-heading text-transparent bg-clip-text bg-gradient-to-b from-primary-text/15 to-primary-text/5">
                   0{steps[activeStep]?.id}
                 </div>
 
                 {/* Step Title */}
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold font-heading text-white">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold font-heading text-primary-text">
                   {steps[activeStep]?.title}
                 </h3>
 
@@ -156,7 +156,7 @@ export const ProcessTimeline = ({ steps }: ProcessTimelineProps) => {
                           ? "w-8 bg-accent-blue"
                           : i < activeStep
                           ? "w-3 bg-accent-blue/40"
-                          : "w-3 bg-white/10"
+                          : "w-3 bg-primary-text/10"
                       }`}
                     />
                   ))}

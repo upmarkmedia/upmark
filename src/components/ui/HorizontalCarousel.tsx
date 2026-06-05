@@ -66,7 +66,7 @@ export function HorizontalCarousel({
               </span>
             )}
             {title && (
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black font-heading text-white tracking-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black font-heading text-primary-text tracking-tight">
                 {title}
               </h2>
             )}
@@ -82,7 +82,7 @@ export function HorizontalCarousel({
             <button
               onClick={() => scroll("left")}
               disabled={!canScrollLeft}
-              className="w-11 h-11 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 hover:border-accent-blue/50 transition-colors text-white disabled:opacity-20 disabled:cursor-not-allowed"
+              className="w-11 h-11 rounded-full border border-primary-text/10 flex items-center justify-center hover:bg-primary-text/5 hover:border-accent-blue/50 transition-colors text-primary-text disabled:opacity-20 disabled:cursor-not-allowed"
               aria-label="Scroll left"
             >
               <ChevronLeft size={20} />
@@ -90,7 +90,7 @@ export function HorizontalCarousel({
             <button
               onClick={() => scroll("right")}
               disabled={!canScrollRight}
-              className="w-11 h-11 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 hover:border-accent-blue/50 transition-colors text-white disabled:opacity-20 disabled:cursor-not-allowed"
+              className="w-11 h-11 rounded-full border border-primary-text/10 flex items-center justify-center hover:bg-primary-text/5 hover:border-accent-blue/50 transition-colors text-primary-text disabled:opacity-20 disabled:cursor-not-allowed"
               aria-label="Scroll right"
             >
               <ChevronRight size={20} />

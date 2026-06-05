@@ -171,7 +171,7 @@ export default function WorkPage() {
               onClick={() => { setSelectedCs(cs); setCsPreviewOpen(true); }}
               className="snap-start flex-shrink-0 cursor-pointer group"
             >
-              <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-secondary-surface/40 border border-white/5 hover:border-accent-blue/30 transition-[border-color,box-shadow] duration-200 h-[300px] sm:h-[420px] w-auto flex hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
+              <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-secondary-surface/40 border border-primary-text/10 hover:border-accent-blue/30 transition-[border-color,box-shadow] duration-200 h-[300px] sm:h-[420px] w-auto flex hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={cs.imageUrl || "/images/placeholder.png"}
@@ -219,7 +219,7 @@ export default function WorkPage() {
               onClick={() => { setSelectedPf(item); setPfPreviewOpen(true); }}
               className="snap-start flex-shrink-0 cursor-pointer group"
             >
-              <div className="relative rounded-2xl overflow-hidden bg-secondary-surface/40 border border-white/5 hover:border-accent-blue/30 transition-[border-color]">
+              <div className="relative rounded-2xl overflow-hidden bg-secondary-surface/40 border border-primary-text/10 hover:border-accent-blue/30 transition-[border-color]">
                 <div className="h-[300px] sm:h-[420px] w-auto relative overflow-hidden flex">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors z-10"></div>
 

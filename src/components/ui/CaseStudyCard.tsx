@@ -23,7 +23,7 @@ export const CaseStudyCard = ({ title, client, category, metric, imageUrl, link 
       transition={{ duration: 0.5 }}
       className="group cursor-pointer flex flex-col gap-4"
     >
-      <Link href={link} className="block relative aspect-[4/3] rounded-2xl overflow-hidden bg-secondary-surface border border-white/5">
+      <Link href={link} className="block relative aspect-[4/3] rounded-2xl overflow-hidden bg-secondary-surface border border-primary-text/10">
         {imageUrl ? (
           <Image 
             src={imageUrl} 
@@ -49,13 +49,13 @@ export const CaseStudyCard = ({ title, client, category, metric, imageUrl, link 
       <div className="flex flex-col gap-1 px-1">
         <div className="flex justify-between items-center text-sm font-medium text-muted-text">
           <span className="uppercase tracking-wider">{category}</span>
-          <span className="text-white/60">{client}</span>
+          <span className="text-primary-text/60">{client}</span>
         </div>
         <Link href={link} className="flex justify-between items-center group/link">
-          <h3 className="text-2xl font-bold font-heading text-white group-hover/link:text-accent-blue transition-colors">
+          <h3 className="text-2xl font-bold font-heading text-primary-text group-hover/link:text-accent-blue transition-colors">
             {title}
           </h3>
-          <ArrowRight className="text-white/30 group-hover/link:text-accent-blue transition-[color,transform,opacity] duration-300 transform group-hover/link:-rotate-45" size={24} />
+          <ArrowRight className="text-primary-text/30 group-hover/link:text-accent-blue transition-[color,transform,opacity] duration-300 transform group-hover/link:-rotate-45" size={24} />
         </Link>
       </div>
     </motion.div>

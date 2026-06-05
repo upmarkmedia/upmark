@@ -14,20 +14,20 @@ import type { TeamMember, Investor, SeoPageConfig, PageVisibility } from "@/type
 function Section({ title, icon: Icon, children, defaultOpen = false }: { title: string; icon: React.ElementType; children: React.ReactNode; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="bg-[#1E293B] border border-white/10 rounded-2xl overflow-hidden">
-      <button type="button" onClick={() => setOpen(!open)} className="w-full flex items-center justify-between p-6 text-left hover:bg-white/[0.02] transition-colors">
+    <div className="bg-secondary-surface border border-primary-text/10 rounded-2xl overflow-hidden">
+      <button type="button" onClick={() => setOpen(!open)} className="w-full flex items-center justify-between p-6 text-left hover:bg-primary-text/[0.02] transition-colors">
         <div className="flex items-center gap-3">
-          <Icon size={20} className="text-[#3B82F6]" />
-          <h2 className="text-lg font-semibold text-white">{title}</h2>
+          <Icon size={20} className="text-accent-blue" />
+          <h2 className="text-lg font-semibold text-primary-text">{title}</h2>
         </div>
-        <ChevronDown size={18} className={`text-[#94A3B8] transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
+        <ChevronDown size={18} className={`text-muted-text transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
       </button>
-      {open && <div className="px-6 pb-6 border-t border-white/5 pt-6">{children}</div>}
+      {open && <div className="px-6 pb-6 border-t border-primary-text/5 pt-6">{children}</div>}
     </div>
   );
 }
 
-const inputClass = "w-full bg-[#0F172A] border border-white/10 rounded-lg px-4 py-3 text-[#F8FAFC] placeholder-white/30 focus:outline-none focus:border-[#3B82F6] transition-colors text-sm";
+const inputClass = "w-full bg-primary-bg border border-primary-text/10 rounded-lg px-4 py-3 text-primary-text placeholder-primary-text/30 focus:outline-none focus:border-accent-blue transition-colors text-sm";
 
 const ABOUT_SEO_DEFAULTS: SeoPageConfig = {
   title: "About Us | Upmark",
@@ -130,7 +130,7 @@ export default function AboutPageSettings() {
 
   if (loading) {
     return (
-      <div className="flex h-[50vh] items-center justify-center text-[#94A3B8]">
+      <div className="flex h-[50vh] items-center justify-center text-muted-text">
         <Loader2 className="animate-spin w-8 h-8" />
       </div>
     );
@@ -140,14 +140,14 @@ export default function AboutPageSettings() {
     <div className="flex flex-col gap-6 max-w-4xl mx-auto">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[#F8FAFC] flex items-center gap-3">
-            <Info className="text-[#3B82F6]" size={28} /> About Page
+          <h1 className="text-3xl font-bold text-primary-text flex items-center gap-3">
+            <Info className="text-accent-blue" size={28} /> About Page
           </h1>
-          <p className="text-[#94A3B8] mt-2">Manage team members, investors, and page SEO.</p>
+          <p className="text-muted-text mt-2">Manage team members, investors, and page SEO.</p>
         </div>
         <div className="flex items-center gap-3">
           {successMessage && <span className="text-emerald-400 text-sm">{successMessage}</span>}
-          <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 bg-[#3B82F6] hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
+          <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 bg-accent-blue hover:bg-accent-blue/90 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
             {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
             Save
           </button>
@@ -156,10 +156,10 @@ export default function AboutPageSettings() {
 
       {/* ─── Page Content ─── */}
       <Section title="Page Content" icon={FileText} defaultOpen={true}>
-        <p className="text-sm text-[#94A3B8] mb-4">Edit the headings and text for each section on the About page.</p>
+        <p className="text-sm text-muted-text mb-4">Edit the headings and text for each section on the About page.</p>
         <div className="flex flex-col gap-6">
           <div>
-            <h3 className="text-md font-semibold text-[#F8FAFC] mb-3">About Section</h3>
+            <h3 className="text-md font-semibold text-primary-text mb-3">About Section</h3>
             <div className="flex flex-col gap-3">
               <input value={aboutEyebrow} onChange={(e) => setAboutEyebrow(e.target.value)} placeholder='Eyebrow label (e.g. "ABOUT US")' className={inputClass} />
               <input value={aboutTitle} onChange={(e) => setAboutTitle(e.target.value)} placeholder='Title (e.g. "Most agencies only...")' className={inputClass} />
@@ -168,7 +168,7 @@ export default function AboutPageSettings() {
             </div>
           </div>
           <div>
-            <h3 className="text-md font-semibold text-[#F8FAFC] mb-3">Team Section</h3>
+            <h3 className="text-md font-semibold text-primary-text mb-3">Team Section</h3>
             <div className="flex flex-col gap-3">
               <input value={teamEyebrow} onChange={(e) => setTeamEyebrow(e.target.value)} placeholder='Eyebrow label (e.g. "MEET THE TEAM")' className={inputClass} />
               <input value={teamTitle} onChange={(e) => setTeamTitle(e.target.value)} placeholder='Title (e.g. "The people behind the work")' className={inputClass} />
@@ -176,7 +176,7 @@ export default function AboutPageSettings() {
             </div>
           </div>
           <div>
-            <h3 className="text-md font-semibold text-[#F8FAFC] mb-3">Investors Section</h3>
+            <h3 className="text-md font-semibold text-primary-text mb-3">Investors Section</h3>
             <div className="flex flex-col gap-3">
               <input value={investorsEyebrow} onChange={(e) => setInvestorsEyebrow(e.target.value)} placeholder='Eyebrow label (e.g. "OUR INVESTORS")' className={inputClass} />
               <input value={investorsTitle} onChange={(e) => setInvestorsTitle(e.target.value)} placeholder='Title (e.g. "Backed by visionaries")' className={inputClass} />
@@ -184,7 +184,7 @@ export default function AboutPageSettings() {
             </div>
           </div>
           <div>
-            <h3 className="text-md font-semibold text-[#F8FAFC] mb-3">CTA Section</h3>
+            <h3 className="text-md font-semibold text-primary-text mb-3">CTA Section</h3>
             <div className="flex flex-col gap-3">
               <input value={ctaTitle} onChange={(e) => setCtaTitle(e.target.value)} placeholder='Title (e.g. "Ready to build your marketing system?")' className={inputClass} />
               <textarea value={ctaDescription} onChange={(e) => setCtaDescription(e.target.value)} placeholder="CTA description" className={`${inputClass} resize-none`} rows={2} />
@@ -195,13 +195,13 @@ export default function AboutPageSettings() {
 
       {/* ─── Meet the Team ─── */}
       <Section title="Meet the Team" icon={Users} defaultOpen={true}>
-        <p className="text-sm text-[#94A3B8] mb-4">Add and manage team members shown on the About page.</p>
+        <p className="text-sm text-muted-text mb-4">Add and manage team members shown on the About page.</p>
         <div className="flex flex-col gap-4">
           {teamMembers.map((member, i) => (
-            <div key={i} className="flex flex-col gap-3 p-4 border border-white/10 rounded-xl bg-white/[0.02]">
+            <div key={i} className="flex flex-col gap-3 p-4 border border-primary-text/10 rounded-xl bg-primary-text/[0.02]">
               <div className="flex justify-between items-center">
-                <span className="text-sm font-semibold text-[#F8FAFC] flex items-center gap-2">
-                  <GripVertical size={14} className="text-[#94A3B8]" />
+                <span className="text-sm font-semibold text-primary-text flex items-center gap-2">
+                  <GripVertical size={14} className="text-muted-text" />
                   Team Member {i + 1}
                 </span>
                 <button type="button" onClick={() => setTeamMembers(teamMembers.filter((_, j) => j !== i))} className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg"><Trash2 size={14} /></button>
@@ -221,7 +221,7 @@ export default function AboutPageSettings() {
               </div>
             </div>
           ))}
-          <button type="button" onClick={() => setTeamMembers([...teamMembers, { name: "", specialty: "", description: "" }])} className="flex items-center gap-2 text-sm text-[#3B82F6] hover:text-blue-400 self-start">
+          <button type="button" onClick={() => setTeamMembers([...teamMembers, { name: "", specialty: "", description: "" }])} className="flex items-center gap-2 text-sm text-accent-blue hover:text-accent-blue/80 self-start">
             <Plus size={16} /> Add Team Member
           </button>
         </div>
@@ -229,13 +229,13 @@ export default function AboutPageSettings() {
 
       {/* ─── Meet the Investors ─── */}
       <Section title="Meet the Investors" icon={BadgeCheck}>
-        <p className="text-sm text-[#94A3B8] mb-4">Add and manage investors shown on the About page.</p>
+        <p className="text-sm text-muted-text mb-4">Add and manage investors shown on the About page.</p>
         <div className="flex flex-col gap-4">
           {investors.map((investor, i) => (
-            <div key={i} className="flex flex-col gap-3 p-4 border border-white/10 rounded-xl bg-white/[0.02]">
+            <div key={i} className="flex flex-col gap-3 p-4 border border-primary-text/10 rounded-xl bg-primary-text/[0.02]">
               <div className="flex justify-between items-center">
-                <span className="text-sm font-semibold text-[#F8FAFC] flex items-center gap-2">
-                  <GripVertical size={14} className="text-[#94A3B8]" />
+                <span className="text-sm font-semibold text-primary-text flex items-center gap-2">
+                  <GripVertical size={14} className="text-muted-text" />
                   Investor {i + 1}
                 </span>
                 <button type="button" onClick={() => setInvestors(investors.filter((_, j) => j !== i))} className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg"><Trash2 size={14} /></button>
@@ -255,34 +255,34 @@ export default function AboutPageSettings() {
               </div>
             </div>
           ))}
-          <button type="button" onClick={() => setInvestors([...investors, { name: "", specialty: "", description: "" }])} className="flex items-center gap-2 text-sm text-[#3B82F6] hover:text-blue-400 self-start">
+          <button type="button" onClick={() => setInvestors([...investors, { name: "", specialty: "", description: "" }])} className="flex items-center gap-2 text-sm text-accent-blue hover:text-accent-blue/80 self-start">
             <Plus size={16} /> Add Investor
           </button>
         </div>
       </Section>
 
       {/* ─── Page & Section Visibility ────────────── */}
-      <div className="bg-[#1E293B] border border-white/10 rounded-2xl p-6">
+      <div className="bg-secondary-surface border border-primary-text/10 rounded-2xl p-6">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-2 h-2 rounded-full bg-[#3B82F6]" />
-          <h2 className="text-lg font-semibold text-white">Visibility</h2>
+          <div className="w-2 h-2 rounded-full bg-accent-blue" />
+          <h2 className="text-lg font-semibold text-primary-text">Visibility</h2>
         </div>
-        <p className="text-sm text-[#94A3B8] mb-4">Toggle sections on/off on the public About page.</p>
+        <p className="text-sm text-muted-text mb-4">Toggle sections on/off on the public About page.</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {[
             { key: "about", label: "Page (entire about page)" },
             { key: "aboutTeam", label: "Meet the Team" },
             { key: "aboutInvestors", label: "Meet the Investors" },
           ].map(({ key, label }) => (
-            <label key={key} className="flex items-center gap-3 p-3 rounded-lg bg-[#0F172A] border border-white/5 cursor-pointer hover:border-white/10 transition-colors">
+            <label key={key} className="flex items-center gap-3 p-3 rounded-lg bg-primary-bg border border-primary-text/5 cursor-pointer hover:border-primary-text/10 transition-colors">
               <input
                 type="checkbox"
                 checked={visibility[key as keyof PageVisibility] ?? true}
                 onChange={(e) => setVisibility((prev) => ({ ...prev, [key]: e.target.checked }))}
                 className="sr-only peer"
               />
-              <div className="w-9 h-5 bg-white/10 rounded-full peer-checked:bg-[#3B82F6] peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all relative flex-shrink-0"></div>
-              <span className="text-sm text-[#F8FAFC]">{label}</span>
+              <div className="w-9 h-5 bg-white/10 rounded-full peer-checked:bg-accent-blue peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all relative flex-shrink-0"></div>
+              <span className="text-sm text-primary-text">{label}</span>
             </label>
           ))}
         </div>
@@ -292,7 +292,7 @@ export default function AboutPageSettings() {
 
       <div className="flex items-center justify-between py-4">
         <div>{successMessage && <span className="text-emerald-400 text-sm">{successMessage}</span>}</div>
-        <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 bg-[#3B82F6] hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
+        <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 bg-accent-blue hover:bg-accent-blue/90 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
           {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
           Save About Page Settings
         </button>

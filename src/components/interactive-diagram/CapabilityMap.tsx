@@ -109,7 +109,8 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
                 cy="50"
                 r={r}
                 fill="none"
-                stroke="rgba(255,255,255,0.04)"
+                stroke="currentColor"
+                className="text-primary-text/5"
                 strokeWidth="0.2"
               />
             ))}
@@ -125,13 +126,13 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
                   y1="50"
                   x2={pos.x}
                   y2={pos.y}
-                  stroke={isActive ? "url(#line-active)" : "rgba(255,255,255,0.07)"}
+                  stroke={isActive ? "url(#line-active)" : "currentColor"}
                   strokeWidth={isActive ? 0.3 : 0.2}
                   strokeDasharray={isActive ? "none" : "1 1.5"}
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
                   transition={{ duration: 1.2, ease: "easeInOut" }}
-                  className="transition-colors duration-500"
+                  className={`transition-colors duration-500 ${isActive ? "" : "text-primary-text/5"}`}
                 />
               );
             })}
@@ -220,10 +221,10 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
               transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              className="relative rounded-2xl lg:rounded-3xl border border-white/10 bg-secondary-surface/40 backdrop-blur-xl p-6 sm:p-8 lg:p-10 overflow-hidden shadow-2xl"
+              className="relative rounded-2xl lg:rounded-3xl border border-primary-text/10 bg-secondary-surface/40 backdrop-blur-xl p-6 sm:p-8 lg:p-10 overflow-hidden shadow-2xl"
             >
               {/* Glass sheen */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary-text/[0.04] to-transparent pointer-events-none" />
               {/* Blue top accent */}
               <div className="absolute top-0 left-6 right-6 lg:left-8 lg:right-8 h-[1px] bg-gradient-to-r from-transparent via-accent-blue/50 to-transparent" />
 
@@ -237,7 +238,7 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
                   {active.subtitle}
                 </span>
 
-                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white font-heading mb-4 lg:mb-5 leading-tight">
+                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-primary-text font-heading mb-4 lg:mb-5 leading-tight">
                   {active.title}
                 </h3>
 
@@ -247,7 +248,7 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
 
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 text-xs lg:text-sm font-semibold text-white/65 hover:text-accent-blue transition-colors duration-200 group"
+                  className="inline-flex items-center gap-2 text-xs lg:text-sm font-semibold text-primary-text/65 hover:text-accent-blue transition-colors duration-200 group"
                 >
                   <span>Discuss this service</span>
                   <ArrowRight
@@ -267,7 +268,7 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
                 onClick={() => setActiveId(svc.id || "")}
                 className={`rounded-full transition-[width] duration-300 focus-visible:outline-none ${svc.id === activeId
                   ? "w-6 h-2 bg-accent-blue"
-                  : "w-2 h-2 bg-white/20 hover:bg-white/40"
+                  : "w-2 h-2 bg-primary-text/20 hover:bg-primary-text/40"
                   }`}
                 aria-label={svc.title}
               />

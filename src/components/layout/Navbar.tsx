@@ -15,6 +15,7 @@ export const Navbar = () => {
   const [hidden, setHidden] = useState(false);
   const [mobileSubmenuOpen, setMobileSubmenuOpen] = useState<string | null>(null);
   const [logoUrl, setLogoUrl] = useState("/upmark-wordmark.png");
+  const [isLight, setIsLight] = useState(false);
   const lastScrollY = useRef(0);
   const pathname = usePathname();
   const { isIdle, isHeroVisible } = useIdle();
@@ -26,10 +27,12 @@ export const Navbar = () => {
       if (data?.theme === "editorial") {
         document.documentElement.classList.remove("dark");
         document.documentElement.classList.add("theme-editorial");
+        setIsLight(true);
         if (data?.editorialLogoUrl) setLogoUrl(data.editorialLogoUrl);
       } else {
         document.documentElement.classList.remove("theme-editorial");
         document.documentElement.classList.add("dark");
+        setIsLight(false);
         if (data?.globalLogoUrl) setLogoUrl(data.globalLogoUrl);
       }
       if (data?.visibility) setVisibility(data.visibility as Record<string, boolean>);
@@ -97,7 +100,9 @@ export const Navbar = () => {
         className={`relative w-full max-w-6xl rounded-full transition-colors duration-300 pointer-events-auto flex justify-between items-center ${
           scrolled
             ? "bg-primary-bg/80 backdrop-blur-xl border border-primary-text/10 shadow-lg py-2.5 sm:py-3 px-4 sm:px-6 md:px-8"
-            : "bg-transparent py-3 sm:py-4 px-4 sm:px-6 md:px-8"
+            : isLight
+              ? "bg-primary-bg/85 backdrop-blur-md border border-primary-text/10 shadow-md py-2.5 sm:py-3 px-4 sm:px-6 md:px-8"
+              : "bg-transparent py-3 sm:py-4 px-4 sm:px-6 md:px-8"
         }`}
       >
         {/* Logo - Left Side */}

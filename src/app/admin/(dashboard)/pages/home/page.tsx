@@ -9,25 +9,25 @@ import {
   Save, Loader2, PlaySquare, ChevronDown, Plus, Trash2, Lightbulb,
   ListOrdered, Film, Award, Home, Image as ImageIcon,
 } from "lucide-react";
-import type { HeroMetric, PhilosophyPointer, ProcessStep, ContentItem, SeoPageConfig, PageVisibility } from "@/types";
+import type { PhilosophyPointer, ProcessStep, ContentItem, SeoPageConfig, PageVisibility } from "@/types";
 
 function Section({ title, icon: Icon, children, defaultOpen = false }: { title: string; icon: React.ElementType; children: React.ReactNode; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="bg-[#1E293B] border border-white/10 rounded-2xl overflow-hidden">
-      <button type="button" onClick={() => setOpen(!open)} className="w-full flex items-center justify-between p-6 text-left hover:bg-white/[0.02] transition-colors">
+    <div className="bg-secondary-surface border border-primary-text/10 rounded-2xl overflow-hidden">
+      <button type="button" onClick={() => setOpen(!open)} className="w-full flex items-center justify-between p-6 text-left hover:bg-primary-text/[0.02] transition-colors">
         <div className="flex items-center gap-3">
-          <Icon size={20} className="text-[#3B82F6]" />
-          <h2 className="text-lg font-semibold text-white">{title}</h2>
+          <Icon size={20} className="text-accent-blue" />
+          <h2 className="text-lg font-semibold text-primary-text">{title}</h2>
         </div>
-        <ChevronDown size={18} className={`text-[#94A3B8] transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
+        <ChevronDown size={18} className={`text-muted-text transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
       </button>
-      {open && <div className="px-6 pb-6 border-t border-white/5 pt-6">{children}</div>}
+      {open && <div className="px-6 pb-6 border-t border-primary-text/5 pt-6">{children}</div>}
     </div>
   );
 }
 
-const inputClass = "w-full bg-[#0F172A] border border-white/10 rounded-lg px-4 py-3 text-[#F8FAFC] placeholder-white/30 focus:outline-none focus:border-[#3B82F6] transition-colors text-sm";
+const inputClass = "w-full bg-primary-bg border border-primary-text/10 rounded-lg px-4 py-3 text-primary-text placeholder-primary-text/30 focus:outline-none focus:border-accent-blue transition-colors text-sm";
 
 const HOME_SEO_DEFAULTS: SeoPageConfig = {
   title: "Upmark — Integrated Marketing That Moves Markets",
@@ -74,11 +74,6 @@ export default function HomePageSettings() {
   const [heroVideoUrl, setHeroVideoUrl] = useState("");
   const [heroMobileVideoUrl, setHeroMobileVideoUrl] = useState("");
   const [homeAboutImageUrl, setHomeAboutImageUrl] = useState("");
-  const [heroMetrics, setHeroMetrics] = useState<HeroMetric[]>([
-    { value: "120", suffix: "+", label: "Projects Delivered" },
-    { value: "98", suffix: "%", label: "Client Retention" },
-    { value: "3x", label: "Average ROI", isGold: true },
-  ]);
   const [philosophyPointers, setPhilosophyPointers] = useState<PhilosophyPointer[]>(DEFAULT_PHILOSOPHY_POINTERS);
   const [processSteps, setProcessSteps] = useState<ProcessStep[]>(DEFAULT_PROCESS_ITEMS);
   const [contentItems, setContentItems] = useState<ContentItem[]>(DEFAULT_CONTENT_ITEMS);
@@ -94,7 +89,6 @@ export default function HomePageSettings() {
           setHeroVideoUrl(data.heroVideoUrl || "");
           setHeroMobileVideoUrl(data.heroMobileVideoUrl || "");
           setHomeAboutImageUrl(data.homeAboutImageUrl || "");
-          if (data.heroMetrics?.length) setHeroMetrics(data.heroMetrics);
           if (data.philosophyPointers?.length) setPhilosophyPointers(data.philosophyPointers);
           if (data.processSteps?.length) setProcessSteps(data.processSteps);
           if (data.contentItems?.length) setContentItems(data.contentItems);
@@ -123,7 +117,6 @@ export default function HomePageSettings() {
         heroVideoUrl,
         heroMobileVideoUrl,
         homeAboutImageUrl,
-        heroMetrics,
         philosophyPointers,
         processSteps,
         contentItems,
@@ -144,7 +137,7 @@ export default function HomePageSettings() {
 
   if (loading) {
     return (
-      <div className="flex h-[50vh] items-center justify-center text-[#94A3B8]">
+      <div className="flex h-[50vh] items-center justify-center text-muted-text">
         <Loader2 className="animate-spin w-8 h-8" />
       </div>
     );
@@ -154,14 +147,14 @@ export default function HomePageSettings() {
     <div className="flex flex-col gap-6 max-w-4xl mx-auto">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[#F8FAFC] flex items-center gap-3">
-            <Home className="text-[#3B82F6]" size={28} /> Home Page
+          <h1 className="text-3xl font-bold text-primary-text flex items-center gap-3">
+            <Home className="text-accent-blue" size={28} /> Home Page
           </h1>
-          <p className="text-[#94A3B8] mt-2">Configure homepage content, sections, and SEO.</p>
+          <p className="text-muted-text mt-2">Configure homepage content, sections, and SEO.</p>
         </div>
         <div className="flex items-center gap-3">
           {successMessage && <span className="text-emerald-400 text-sm">{successMessage}</span>}
-          <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 bg-[#3B82F6] hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
+          <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 bg-accent-blue hover:bg-accent-blue/90 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
             {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
             Save
           </button>
@@ -169,32 +162,15 @@ export default function HomePageSettings() {
       </div>
 
       <Section title="Hero Section" icon={PlaySquare} defaultOpen={true}>
-        <div className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-[#F8FAFC] mb-2">Background Video</label>
-            <p className="text-sm text-[#94A3B8] mb-4">Upload an MP4 or WebM video for the hero background.</p>
-            <CloudinaryUploadWidget onUpload={(url) => setHeroVideoUrl(url)} currentUrl={heroVideoUrl} label="Hero Background Video (Desktop)" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-[#F8FAFC] mb-2">Mobile Background Video</label>
-            <p className="text-sm text-[#94A3B8] mb-4">Upload a separate video for mobile devices (optional). If not set, the desktop video will be used as fallback.</p>
-            <CloudinaryUploadWidget onUpload={(url) => setHeroMobileVideoUrl(url)} currentUrl={heroMobileVideoUrl} label="Hero Background Video (Mobile)" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-[#F8FAFC] mb-4">Hero Metrics</label>
-            <div className="flex flex-col gap-3">
-              {heroMetrics.map((metric, i) => (
-                <div key={i} className="grid grid-cols-[1fr_80px_1fr_auto_auto] gap-2 items-center">
-                  <input value={metric.value} onChange={(e) => { const m = [...heroMetrics]; m[i] = { ...m[i], value: e.target.value }; setHeroMetrics(m); }} placeholder="Value (e.g. 120)" className={inputClass} />
-                  <input value={metric.suffix || ""} onChange={(e) => { const m = [...heroMetrics]; m[i] = { ...m[i], suffix: e.target.value }; setHeroMetrics(m); }} placeholder="+" className={inputClass} />
-                  <input value={metric.label} onChange={(e) => { const m = [...heroMetrics]; m[i] = { ...m[i], label: e.target.value }; setHeroMetrics(m); }} placeholder="Label" className={inputClass} />
-                  <label className="flex items-center gap-1 text-xs text-[#94A3B8] cursor-pointer whitespace-nowrap">
-                    <input type="checkbox" checked={metric.isGold || false} onChange={(e) => { const m = [...heroMetrics]; m[i] = { ...m[i], isGold: e.target.checked }; setHeroMetrics(m); }} className="accent-[#F59E0B]" /> Gold
-                  </label>
-                  {heroMetrics.length > 1 && <button type="button" onClick={() => setHeroMetrics(heroMetrics.filter((_, j) => j !== i))} className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"><Trash2 size={14} /></button>}
-                </div>
-              ))}
-              <button type="button" onClick={() => setHeroMetrics([...heroMetrics, { value: "", label: "" }])} className="flex items-center gap-2 text-sm text-[#3B82F6] hover:text-blue-400 self-start"><Plus size={16} /> Add Metric</button>
+        <div>
+          <label className="block text-sm font-medium text-primary-text mb-2">Background Video</label>
+          <p className="text-sm text-muted-text mb-4">Upload an MP4 or WebM video for the hero background. The desktop video is shown in landscape and the mobile video in portrait, side by side.</p>
+          <div className="flex flex-col md:flex-row md:items-stretch gap-4">
+            <div className="flex-[2] min-w-0">
+              <CloudinaryUploadWidget onUpload={(url) => setHeroVideoUrl(url)} currentUrl={heroVideoUrl} label="Hero Background Video (Desktop)" fit="cover" height="h-[28rem]" />
+            </div>
+            <div className="flex-1 min-w-0 md:max-w-[280px]">
+              <CloudinaryUploadWidget onUpload={(url) => setHeroMobileVideoUrl(url)} currentUrl={heroMobileVideoUrl} label="Hero Background Video (Mobile)" fit="cover" height="h-[28rem]" />
             </div>
           </div>
         </div>
@@ -203,15 +179,15 @@ export default function HomePageSettings() {
       <Section title="About Us Section" icon={ImageIcon}>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-[#F8FAFC] mb-2">About Us Image</label>
-            <p className="text-sm text-[#94A3B8] mb-4">Upload the image used in the Philosophy / About section on the homepage.</p>
+            <label className="block text-sm font-medium text-primary-text mb-2">About Us Image</label>
+            <p className="text-sm text-muted-text mb-4">Upload the image used in the Philosophy / About section on the homepage.</p>
             <CloudinaryUploadWidget onUpload={(url) => setHomeAboutImageUrl(url)} currentUrl={homeAboutImageUrl} label="About Us Image" />
           </div>
         </div>
       </Section>
 
       <Section title="Philosophy Pointers" icon={Lightbulb}>
-        <p className="text-sm text-[#94A3B8] mb-4">Edit the 4 philosophy pointer cards on the homepage.</p>
+        <p className="text-sm text-muted-text mb-4">Edit the 4 philosophy pointer cards on the homepage.</p>
         <div className="flex flex-col gap-3">
           {philosophyPointers.map((p, i) => (
             <div key={i} className="grid grid-cols-[200px_1fr_auto] gap-2 items-start">
@@ -220,17 +196,17 @@ export default function HomePageSettings() {
               <button type="button" onClick={() => setPhilosophyPointers(philosophyPointers.filter((_, j) => j !== i))} className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg mt-1"><Trash2 size={14} /></button>
             </div>
           ))}
-          <button type="button" onClick={() => setPhilosophyPointers([...philosophyPointers, { title: "", desc: "" }])} className="flex items-center gap-2 text-sm text-[#3B82F6] hover:text-blue-400 self-start"><Plus size={16} /> Add Pointer</button>
+          <button type="button" onClick={() => setPhilosophyPointers([...philosophyPointers, { title: "", desc: "" }])} className="flex items-center gap-2 text-sm text-accent-blue hover:text-accent-blue/80 self-start"><Plus size={16} /> Add Pointer</button>
         </div>
       </Section>
 
       <Section title="Process Steps" icon={ListOrdered}>
-        <p className="text-sm text-[#94A3B8] mb-4">Edit the 6-step process on the homepage.</p>
+        <p className="text-sm text-muted-text mb-4">Edit the 6-step process on the homepage.</p>
         <div className="flex flex-col gap-3">
           {processSteps.map((s, i) => (
-            <div key={i} className="flex flex-col gap-2 p-4 border border-white/10 rounded-xl bg-white/[0.02]">
+            <div key={i} className="flex flex-col gap-2 p-4 border border-primary-text/10 rounded-xl bg-primary-text/[0.02]">
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-bold text-[#F8FAFC]">Step {i + 1}</span>
+                <span className="text-sm font-bold text-primary-text">Step {i + 1}</span>
                 <button type="button" onClick={() => setProcessSteps(processSteps.filter((_, j) => j !== i))} className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg"><Trash2 size={14} /></button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -239,18 +215,18 @@ export default function HomePageSettings() {
                   <textarea value={s.description} onChange={(e) => { const arr = [...processSteps]; arr[i] = { ...arr[i], description: e.target.value }; setProcessSteps(arr); }} placeholder="Step description" className={`${inputClass} resize-none`} rows={3} />
                 </div>
                 <div>
-                  <label className="block text-xs text-[#94A3B8] mb-2">Step Image</label>
+                  <label className="block text-xs text-muted-text mb-2">Step Image</label>
                   <CloudinaryUploadWidget onUpload={(url) => { const arr = [...processSteps]; arr[i] = { ...arr[i], imageUrl: url }; setProcessSteps(arr); }} currentUrl={s.imageUrl} label="Upload Image" />
                 </div>
               </div>
             </div>
           ))}
-          <button type="button" onClick={() => setProcessSteps([...processSteps, { title: "", description: "" }])} className="flex items-center gap-2 text-sm text-[#3B82F6] hover:text-blue-400 self-start"><Plus size={16} /> Add Step</button>
+          <button type="button" onClick={() => setProcessSteps([...processSteps, { title: "", description: "" }])} className="flex items-center gap-2 text-sm text-accent-blue hover:text-accent-blue/80 self-start"><Plus size={16} /> Add Step</button>
         </div>
       </Section>
 
       <Section title="Content Studio Items" icon={Film}>
-        <p className="text-sm text-[#94A3B8] mb-4">Edit the content studio grid on the homepage.</p>
+        <p className="text-sm text-muted-text mb-4">Edit the content studio grid on the homepage.</p>
         <div className="flex flex-col gap-3">
           {contentItems.map((c, i) => (
             <div key={i} className="grid grid-cols-[150px_150px_1fr_auto] gap-2 items-start">
@@ -260,12 +236,12 @@ export default function HomePageSettings() {
               <button type="button" onClick={() => setContentItems(contentItems.filter((_, j) => j !== i))} className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg mt-1"><Trash2 size={14} /></button>
             </div>
           ))}
-          <button type="button" onClick={() => setContentItems([...contentItems, { title: "", subtitle: "", description: "" }])} className="flex items-center gap-2 text-sm text-[#3B82F6] hover:text-blue-400 self-start"><Plus size={16} /> Add Item</button>
+          <button type="button" onClick={() => setContentItems([...contentItems, { title: "", subtitle: "", description: "" }])} className="flex items-center gap-2 text-sm text-accent-blue hover:text-accent-blue/80 self-start"><Plus size={16} /> Add Item</button>
         </div>
       </Section>
 
       <Section title="Studio Capabilities" icon={Award}>
-        <p className="text-sm text-[#94A3B8] mb-4">Edit the studio capabilities list.</p>
+        <p className="text-sm text-muted-text mb-4">Edit the studio capabilities list.</p>
         <div className="flex flex-col gap-2">
           {studioCapabilities.map((cap, i) => (
             <div key={i} className="flex items-center gap-2">
@@ -273,17 +249,17 @@ export default function HomePageSettings() {
               <button type="button" onClick={() => setStudioCapabilities(studioCapabilities.filter((_, j) => j !== i))} className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg"><Trash2 size={14} /></button>
             </div>
           ))}
-          <button type="button" onClick={() => setStudioCapabilities([...studioCapabilities, ""])} className="flex items-center gap-2 text-sm text-[#3B82F6] hover:text-blue-400 self-start"><Plus size={16} /> Add Capability</button>
+          <button type="button" onClick={() => setStudioCapabilities([...studioCapabilities, ""])} className="flex items-center gap-2 text-sm text-accent-blue hover:text-accent-blue/80 self-start"><Plus size={16} /> Add Capability</button>
         </div>
       </Section>
 
       {/* ─── Page & Section Visibility ────────────── */}
-      <div className="bg-[#1E293B] border border-white/10 rounded-2xl p-6">
+      <div className="bg-secondary-surface border border-primary-text/10 rounded-2xl p-6">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-2 h-2 rounded-full bg-[#3B82F6]" />
-          <h2 className="text-lg font-semibold text-white">Visibility</h2>
+          <div className="w-2 h-2 rounded-full bg-accent-blue" />
+          <h2 className="text-lg font-semibold text-primary-text">Visibility</h2>
         </div>
-        <p className="text-sm text-[#94A3B8] mb-4">Toggle sections on/off on the public homepage.</p>
+        <p className="text-sm text-muted-text mb-4">Toggle sections on/off on the public homepage.</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {[
             { key: "home", label: "Page (entire home page)" },
@@ -295,15 +271,15 @@ export default function HomePageSettings() {
             { key: "homeStudioCapabilities", label: "Studio Capabilities" },
             { key: "homeTestimonials", label: "Testimonials" },
           ].map(({ key, label }) => (
-            <label key={key} className="flex items-center gap-3 p-3 rounded-lg bg-[#0F172A] border border-white/5 cursor-pointer hover:border-white/10 transition-colors">
+            <label key={key} className="flex items-center gap-3 p-3 rounded-lg bg-primary-bg border border-primary-text/5 cursor-pointer hover:border-primary-text/10 transition-colors">
               <input
                 type="checkbox"
                 checked={visibility[key as keyof PageVisibility] ?? true}
                 onChange={(e) => setVisibility((prev) => ({ ...prev, [key]: e.target.checked }))}
                 className="sr-only peer"
               />
-              <div className="w-9 h-5 bg-white/10 rounded-full peer-checked:bg-[#3B82F6] peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all relative flex-shrink-0"></div>
-              <span className="text-sm text-[#F8FAFC]">{label}</span>
+              <div className="w-9 h-5 bg-white/10 rounded-full peer-checked:bg-accent-blue peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all relative flex-shrink-0"></div>
+              <span className="text-sm text-primary-text">{label}</span>
             </label>
           ))}
         </div>
@@ -313,7 +289,7 @@ export default function HomePageSettings() {
 
       <div className="flex items-center justify-between py-4">
         <div>{successMessage && <span className="text-emerald-400 text-sm">{successMessage}</span>}</div>
-        <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 bg-[#3B82F6] hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
+        <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 bg-accent-blue hover:bg-accent-blue/90 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
           {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
           Save Home Page Settings
         </button>

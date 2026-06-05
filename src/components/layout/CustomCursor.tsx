@@ -8,6 +8,8 @@ import { useEffect, useRef, useState } from "react";
  * - Disables itself when prefers-reduced-motion is set
  * - Uses a single rAF loop with early-exit when idle
  * - Uses transform3d for GPU compositing (no layout thrash)
+ * - Uses mix-blend-mode: difference so it inverts the colour beneath it
+ *   and stays visible against any background, in any theme
  */
 export function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
@@ -80,18 +82,16 @@ export function CustomCursor() {
 
     const onMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (target.closest("a, button, input, textarea, select, [role='button']")) {
-        circleRef.current?.classList.add("scale-[1.5]", "bg-white/10", "border-white/30");
-        dotInnerRef.current?.classList.add("opacity-50", "scale-75");
-      }
+      if (!target.closest("a, button, input, textarea, select, [role='button']")) return;
+      circleRef.current?.classList.add("scale-[1.5]");
+      dotInnerRef.current?.classList.add("opacity-50", "scale-75");
     };
-    
+
     const onMouseOut = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (target.closest("a, button, input, textarea, select, [role='button']")) {
-        circleRef.current?.classList.remove("scale-[1.5]", "bg-white/10", "border-white/30");
-        dotInnerRef.current?.classList.remove("opacity-50", "scale-75");
-      }
+      if (!target.closest("a, button, input, textarea, select, [role='button']")) return;
+      circleRef.current?.classList.remove("scale-[1.5]");
+      dotInnerRef.current?.classList.remove("opacity-50", "scale-75");
     };
 
     document.addEventListener("mouseover", onMouseOver, { passive: true });
@@ -116,20 +116,20 @@ export function CustomCursor() {
       {/* Outer ring – GPU-composited translation */}
       <div
         ref={outerRef}
-        className="fixed top-0 left-0 w-6 h-6 pointer-events-none z-[9998] will-change-transform"
-        style={{ transform: "translate3d(-100px, -100px, 0)", contain: "layout style" }}
+        className="fixed top-0 left-0 w-6 h-6 pointer-events-none z-[9998] will-change-transform mix-blend-difference"
+        style={{ transform: "translate3d(-100px, -100px, 0)" }}
       >
-        <div 
+        <div
           ref={circleRef}
-          className="w-full h-full border-2 border-muted-text/50 rounded-full transition-transform duration-200 ease-out"
+          className="w-full h-full border-2 border-white rounded-full transition-transform duration-200 ease-out"
         />
       </div>
 
       {/* Inner dot */}
       <div
         ref={dotRef}
-        className="fixed top-0 left-0 w-1.5 h-1.5 pointer-events-none z-[9999] will-change-transform"
-        style={{ transform: "translate3d(-100px, -100px, 0)", contain: "layout style" }}
+        className="fixed top-0 left-0 w-1.5 h-1.5 pointer-events-none z-[9999] will-change-transform mix-blend-difference"
+        style={{ transform: "translate3d(-100px, -100px, 0)" }}
       >
         <div
           ref={dotInnerRef}

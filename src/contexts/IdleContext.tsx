@@ -10,7 +10,7 @@ interface IdleContextValue {
 
 const IdleContext = createContext<IdleContextValue>({ isIdle: false, isHeroVisible: true });
 
-const IDLE_TIMEOUT = 10_000;
+const IDLE_TIMEOUT = 5_000;
 
 export function IdleProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();

@@ -59,21 +59,21 @@ export function ServiceForm({
   }
 
   const inputClass =
-    "w-full bg-[#0F172A] border border-white/10 rounded-lg px-4 py-3 text-[#F8FAFC] placeholder-white/30 focus:outline-none focus:border-[#3B82F6] transition-colors text-sm";
+    "w-full bg-primary-bg border border-primary-text/10 rounded-lg px-4 py-3 text-primary-text placeholder-primary-text/30 focus:outline-none focus:border-accent-blue transition-colors text-sm";
 
   return (
     <form
       onSubmit={handleSubmit(handleFormSubmit)}
-      className="flex flex-col gap-6 bg-[#1E293B] p-6 lg:p-8 rounded-xl border border-white/5"
+      className="flex flex-col gap-6 bg-secondary-surface p-6 lg:p-8 rounded-xl border border-primary-text/5"
     >
-      <h2 className="text-xl font-bold text-[#F8FAFC]">
+      <h2 className="text-xl font-bold text-primary-text">
         {initialData ? "Edit Service" : "New Service"}
       </h2>
 
       {/* Title & Subtitle */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">Title *</label>
+          <label className="text-sm font-medium text-primary-text">Title *</label>
           <input
             {...register("title", { required: "Title is required" })}
             placeholder="Marketing Strategy"
@@ -84,7 +84,7 @@ export function ServiceForm({
           )}
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">Subtitle / Category Tag</label>
+          <label className="text-sm font-medium text-primary-text">Subtitle / Category Tag</label>
           <input
             {...register("subtitle")}
             placeholder="e.g. Foundation, Paid Media, Social"
@@ -95,28 +95,28 @@ export function ServiceForm({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">Map Label</label>
+          <label className="text-sm font-medium text-primary-text">Map Label</label>
           <input
             {...register("label")}
             placeholder="e.g. Content"
             className={inputClass}
           />
-          <p className="text-xs text-[#94A3B8]">Short text for the capability map</p>
+          <p className="text-xs text-muted-text">Short text for the capability map</p>
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-[#F8FAFC]">Lucide Icon Name</label>
+          <label className="text-sm font-medium text-primary-text">Lucide Icon Name</label>
           <input
             {...register("icon_name")}
             placeholder="e.g. PlaySquare"
             className={inputClass}
           />
-          <p className="text-xs text-[#94A3B8]">Used if icon image is not uploaded</p>
+          <p className="text-xs text-muted-text">Used if icon image is not uploaded</p>
         </div>
       </div>
 
       {/* Description */}
       <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium text-[#F8FAFC]">
+        <label className="text-sm font-medium text-primary-text">
           Description *
         </label>
         <textarea
@@ -134,14 +134,14 @@ export function ServiceForm({
 
       {/* Order */}
       <div className="flex flex-col gap-2 max-w-xs">
-        <label className="text-sm font-medium text-[#F8FAFC]">Display Order</label>
+        <label className="text-sm font-medium text-primary-text">Display Order</label>
         <input
           type="number"
           {...register("order", { valueAsNumber: true })}
           placeholder="0"
           className={inputClass}
         />
-        <p className="text-xs text-[#94A3B8]">Lower numbers appear first. Services with the same order are sorted by creation date.</p>
+        <p className="text-xs text-muted-text">Lower numbers appear first. Services with the same order are sorted by creation date.</p>
       </div>
 
       {/* Icon Upload */}
@@ -153,18 +153,18 @@ export function ServiceForm({
       <input type="hidden" {...register("icon_url")} />
 
       {/* Actions */}
-      <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/5">
+      <div className="flex items-center justify-end gap-3 pt-4 border-t border-primary-text/5">
         <button
           type="button"
           onClick={onCancel}
-          className="px-5 py-2.5 text-sm font-medium text-[#94A3B8] hover:text-white bg-white/5 hover:bg-white/10 rounded-lg transition-all"
+          className="px-5 py-2.5 text-sm font-medium text-muted-text hover:text-primary-text bg-primary-text/5 hover:bg-primary-text/10 rounded-lg transition-all"
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-5 py-2.5 text-sm font-medium text-white bg-[#3B82F6] hover:bg-blue-600 rounded-lg transition-all flex items-center gap-2 disabled:opacity-60"
+          className="px-5 py-2.5 text-sm font-medium text-white bg-accent-blue hover:bg-accent-blue/90 rounded-lg transition-all flex items-center gap-2 disabled:opacity-60"
         >
           {isSubmitting && <Loader2 size={16} className="animate-spin" />}
           {initialData ? "Update" : "Create"}
