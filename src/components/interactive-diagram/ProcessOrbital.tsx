@@ -137,8 +137,8 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
 
             {/* Orbital rings */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="w-[62%] h-[62%] rounded-full border border-primary-text/10" />
-              <div className="absolute w-[74%] h-[74%] rounded-full border border-primary-text/10 border-dashed animate-[spin_60s_linear_infinite]" />
+              <div className="w-[62%] h-[62%] rounded-full border border-primary-text/15" />
+              <div className="absolute w-[74%] h-[74%] rounded-full border border-primary-text/15 border-dashed animate-[spin_60s_linear_infinite]" />
             </div>
 
             {/* SVG Connection Paths (Center to Nodes) */}
@@ -155,9 +155,9 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
                     y1="50"
                     x2={50 + xPct}
                     y2={50 + yPct}
-                    stroke={isActive ? "rgba(212, 175, 55, 0.5)" : "currentColor"}
+                    stroke={isActive ? "var(--color-accent-gold-var)" : "currentColor"}
                     strokeWidth={isActive ? 0.3 : 0.15}
-                    className={`transition-colors duration-500 ${isActive ? "" : "text-primary-text/5"}`}
+                    className={`transition-colors duration-500 ${isActive ? "opacity-60" : "text-primary-text/10"}`}
                   />
                 );
               })}
@@ -169,7 +169,7 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
                 r="32"
                 fill="none"
                 stroke="currentColor"
-                className="text-primary-text/5"
+                className="text-primary-text/10"
                 strokeWidth="0.15"
               />
 
@@ -179,9 +179,10 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
                 cy="50"
                 r="32"
                 fill="none"
-                stroke="rgba(212, 175, 55, 0.8)"
+                stroke="var(--color-accent-gold-var)"
                 strokeWidth="0.4"
-                className="drop-shadow-[0_0_8px_rgba(212,175,55,0.5)]"
+                className="opacity-80"
+                style={{ filter: "drop-shadow(0 0 8px rgba(var(--color-accent-gold-rgb), 0.5))" }}
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: activeIndex / processData.length }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}
@@ -190,7 +191,7 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
             </svg>
 
             {/* Central Information Core */}
-            <div className="absolute z-10 w-[45%] h-[45%] rounded-full border border-white/10 bg-[#0a0f1c]/90 backdrop-blur-xl flex items-center justify-center shadow-[0_0_50px_rgba(212,175,55,0.1)] p-4 sm:p-8 text-center overflow-hidden">
+            <div className="absolute z-10 w-[45%] h-[45%] rounded-full border border-primary-text/10 bg-secondary-surface/90 backdrop-blur-xl flex items-center justify-center p-4 sm:p-8 text-center overflow-hidden" style={{ boxShadow: "0 0 50px rgba(var(--color-accent-gold-rgb), 0.1)" }}>
               <div className="absolute inset-0 bg-gradient-to-b from-accent-gold/5 to-transparent pointer-events-none" />
 
               <AnimatePresence mode="wait">
@@ -228,18 +229,18 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
                   <motion.button
                     className={`w-10 h-10 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full border flex items-center justify-center transition-colors duration-300 relative group
                     ${isActive
-                        ? "bg-accent-gold/10 border-accent-gold shadow-[0_0_30px_rgba(212,175,55,0.3)]"
-                        : "bg-[#0a0f1c] border-white/10 hover:border-white/30"}`}
+                        ? "bg-accent-gold/10 border-accent-gold shadow-glow-gold"
+                        : "bg-secondary-surface border-primary-text/10 hover:border-primary-text/30"}`}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <span className={`font-bold font-heading text-sm sm:text-base lg:text-lg ${isActive ? "text-accent-gold" : "text-white/50"}`}>
+                    <span className={`font-bold font-heading text-sm sm:text-base lg:text-lg ${isActive ? "text-accent-gold" : "text-primary-text/60"}`}>
                       {item.num}
                     </span>
 
                     {/* Floating Title (always visible, or visible on hover/active) */}
                     <div className={`absolute top-full mt-2 sm:mt-4 whitespace-nowrap text-[9px] sm:text-xs lg:text-sm font-bold tracking-wider uppercase transition-[opacity,transform] duration-300
-                    ${isActive ? "text-primary-text opacity-100 translate-y-0" : "text-primary-text/30 opacity-50 group-hover:opacity-100 -translate-y-1"}`}>
+                    ${isActive ? "text-primary-text opacity-100 translate-y-0" : "text-muted-text opacity-70 group-hover:opacity-100 -translate-y-1"}`}>
                       {item.title}
                     </div>
 
@@ -292,7 +293,7 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
                     }}
                     exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)", transition: { duration: 0.3 } }}
                     transition={{ duration: 0.4, type: "spring", stiffness: 200, damping: 20 }}
-                    className="absolute inset-0 rounded-2xl overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-[#0a0f1c]"
+                    className="absolute inset-0 rounded-2xl overflow-hidden border border-primary-text/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-secondary-surface"
                   >
                     {nodeData.imageUrl && (
                       <Image
