@@ -88,7 +88,7 @@ export interface Lead {
   name: string;
   email: string;
   company: string;
-  service: string;
+  services: string[];
   projectDetails: string;
   createdAt?: Timestamp;
 }

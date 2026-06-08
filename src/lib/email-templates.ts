@@ -2,7 +2,7 @@ interface LeadData {
   name: string;
   email: string;
   company: string;
-  service: string;
+  services: string[];
   projectDetails: string;
 }
 
@@ -55,7 +55,7 @@ export function internalNotificationTemplate(lead: LeadData): string {
                 <tr>
                   <td style="padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
                     <span style="font-size:12px; text-transform:uppercase; letter-spacing:1px; color:#94A3B8; display:block; margin-bottom:4px;">Service Interest</span>
-                    <span style="font-size:16px; color:#F8FAFC; font-weight:500;">${lead.service}</span>
+                    <span style="font-size:16px; color:#F8FAFC; font-weight:500;">${lead.services.join(", ")}</span>
                   </td>
                 </tr>
                 <tr>

@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getServices, getSiteSettings } from "@/lib/firestore";
 import type { Service, SiteSettings } from "@/types";
@@ -47,10 +46,6 @@ export const Footer = () => {
   }, []);
 
   const show = (key: string) => settings?.visibility?.[key as keyof typeof settings.visibility] ?? true;
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   return (
     <>
@@ -160,17 +155,6 @@ export const Footer = () => {
         </div>
       </div>
     </footer>
-
-    {/* Scroll to Top Button — bottom-right of page */}
-    <div className="absolute bottom-6 right-6">
-      <button
-        onClick={scrollToTop}
-        className="w-10 h-10 rounded-full bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/10 flex items-center justify-center text-neutral-400 hover:text-white transition-all duration-300 active:scale-95"
-        aria-label="Scroll to top"
-      >
-        <ArrowUp size={16} />
-      </button>
-    </div>
     </>
   );
 };

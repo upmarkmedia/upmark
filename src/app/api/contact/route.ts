@@ -31,11 +31,24 @@ export async function POST(req: Request) {
     const body = await req.json();
 
     // ─── 1. Parse & Validate ────────────────────────────────────
-    const { name, email, company, service, project } = body;
+    const { name, email, company, services, project } = body;
 
-    if (!name || !email || !service || !project) {
+    let parsedServices: string[] = [];
+    try {
+      parsedServices = JSON.parse(services);
+      if (!Array.isArray(parsedServices) || parsedServices.length === 0) {
+        throw new Error("empty");
+      }
+    } catch {
       return Response.json(
-        { error: "Missing required fields: name, email, service, project" },
+        { error: "Please select at least one service" },
+        { status: 400 }
+      );
+    }
+
+    if (!name || !email || !project) {
+      return Response.json(
+        { error: "Missing required fields: name, email, project" },
         { status: 400 }
       );
     }
@@ -49,11 +62,23 @@ export async function POST(req: Request) {
       );
     }
 
+    const serviceLabelMap: Record<string, string> = {
+      "content-engine": "Content Engine",
+      "marketing-strategy": "Marketing Strategy",
+      "production-post": "Production & Post",
+      "packaging-design": "Packaging Design",
+      "performance-marketing": "Performance Marketing",
+      "social-media": "Social Media Management",
+      "seo-lead-gen": "SEO & Lead Generation",
+    };
+
+    const serviceLabels = parsedServices.map((s) => serviceLabelMap[s] || s);
+
     const leadData = {
       name: String(name).trim(),
       email: String(email).trim().toLowerCase(),
       company: String(company || "").trim(),
-      service: String(service).trim(),
+      services: serviceLabels,
       projectDetails: String(project).trim(),
     };
 
@@ -72,7 +97,7 @@ export async function POST(req: Request) {
       const result = await resend.emails.send({
         from: FROM_EMAIL,
         to: NOTIFICATION_EMAIL,
-        subject: `🚀 New Lead: ${leadData.name} — ${leadData.service}`,
+        subject: `🚀 New Lead: ${leadData.name} — ${leadData.services.join(", ")}`,
         html: internalNotificationTemplate(leadData),
       });
       console.log("[Contact API] Internal notification sent:", JSON.stringify(result));

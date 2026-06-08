@@ -140,7 +140,7 @@ export default function LeadsPage() {
                     </div>
                     <div className="flex items-center gap-2 text-muted-text">
                       <Briefcase size={14} className="shrink-0 text-accent-gold" />
-                      <span className="truncate">{lead.service}</span>
+                      <span className="truncate">{(lead.services || []).join(", ")}</span>
                     </div>
                     <div className="flex items-center gap-2 text-muted-text">
                       <Calendar size={14} className="shrink-0 text-muted-text" />
