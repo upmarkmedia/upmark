@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
-import { ArrowUpRight, PlayCircle } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { HorizontalCarousel } from "@/components/ui/HorizontalCarousel";
 import { PreviewDialog } from "@/components/ui/PreviewDialog";
 import { TestimonialsCarousel } from "@/components/sections/TestimonialsCarousel";
@@ -54,12 +53,7 @@ export default function WorkPage() {
   const [selectedCs, setSelectedCs] = useState<WorkItem | null>(null);
   const [pfPreviewOpen, setPfPreviewOpen] = useState(false);
   const [selectedPf, setSelectedPf] = useState<WorkItem | null>(null);
-  const [initialLoad, setInitialLoad] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setInitialLoad(false), 2000);
-    return () => clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     async function fetchData() {
@@ -165,7 +159,7 @@ export default function WorkPage() {
           title={portfolioSection.title}
           subtitle={portfolioSection.subtitle}
         >
-          {caseStudies.map((cs, index) => (
+          {caseStudies.map((cs) => (
             <div
               key={cs.id || cs.title}
               onClick={() => { setSelectedCs(cs); setCsPreviewOpen(true); }}
@@ -179,22 +173,22 @@ export default function WorkPage() {
                   className="h-full w-auto object-cover group-hover:scale-[1.03] transition-transform duration-500"
                 />
                 
-                <div className={`absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-20 pointer-events-none transition-opacity duration-500 group-hover:animate-none ${initialLoad ? "opacity-100" : "opacity-0 group-hover:!opacity-100"} ${!initialLoad ? "animate-[staggeredPopup_20s_infinite]" : ""}`} style={{ animationDelay: `${index * 3}s` }}></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-                <div className={`absolute top-3 left-3 z-30 transition-opacity duration-500 group-hover:animate-none ${initialLoad ? "opacity-100" : "opacity-0 group-hover:!opacity-100"} ${!initialLoad ? "animate-[staggeredPopup_20s_infinite]" : ""}`} style={{ animationDelay: `${index * 3}s` }}>
-                   <div className="px-3 py-1 bg-black/60 rounded-full text-[10px] text-primary-text uppercase tracking-widest font-semibold border border-primary-text/10">
+                <div className="absolute top-3 left-3 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                   <div className="px-3 py-1 bg-black/60 rounded-full text-[10px] text-white uppercase tracking-widest font-semibold border border-white/10">
                      {cs.tag || cs.category}
                    </div>
                 </div>
 
                 {/* Content Overlay */}
-                <div className={`absolute bottom-0 left-0 right-0 p-5 z-30 transition-all duration-500 group-hover:animate-none ${initialLoad ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0 group-hover:!translate-y-0 group-hover:!opacity-100"} ${!initialLoad ? "animate-[staggeredPopup_20s_infinite]" : ""}`} style={{ animationDelay: `${index * 3}s` }}>
-                  <h3 className="text-xl sm:text-2xl font-black text-primary-text">{cs.title}</h3>
+                <div className="absolute bottom-0 left-0 right-0 p-5 z-30 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                  <h3 className="text-xl sm:text-2xl font-bold text-white">{cs.title}</h3>
                   {cs.client && (
-                    <div className="text-sm font-semibold text-accent-blue pb-3 border-b border-primary-text/10 uppercase tracking-wider">{cs.client}</div>
+                    <div className="text-sm font-semibold text-blue-400 pb-3 border-b border-white/10 uppercase tracking-wider">{cs.client}</div>
                   )}
-                  <p className="text-primary-text/90 font-light text-sm line-clamp-2 mt-1 whitespace-pre-wrap">{cs.description}</p>
-                  <div className="inline-flex items-center gap-2 text-accent-blue font-semibold text-sm group-hover:gap-3 transition-[gap] mt-3">
+                  <p className="text-white/80 font-light text-sm line-clamp-2 mt-1 whitespace-pre-wrap">{cs.description}</p>
+                  <div className="inline-flex items-center gap-2 text-blue-400 font-semibold text-sm group-hover:gap-3 transition-[gap] mt-3">
                     View Details <ArrowUpRight size={16} />
                   </div>
                 </div>
@@ -213,7 +207,7 @@ export default function WorkPage() {
           title={productionSection.title}
           subtitle={productionSection.subtitle}
         >
-          {portfolioItems.map((item, index) => (
+          {portfolioItems.map((item) => (
             <div
               key={item.id || item.title}
               onClick={() => { setSelectedPf(item); setPfPreviewOpen(true); }}
@@ -230,24 +224,24 @@ export default function WorkPage() {
                     className="h-full w-auto object-cover group-hover:scale-[1.03] transition-transform duration-500"
                   />
 
-                  <div className={`absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-20 pointer-events-none transition-opacity duration-500 group-hover:animate-none ${initialLoad ? "opacity-100" : "opacity-0 group-hover:!opacity-100"} ${!initialLoad ? "animate-[staggeredPopup_20s_infinite]" : ""}`} style={{ animationDelay: `${index * 3}s` }}></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-                  <div className={`absolute top-3 left-3 z-30 transition-opacity duration-500 group-hover:animate-none ${initialLoad ? "opacity-100" : "opacity-0 group-hover:!opacity-100"} ${!initialLoad ? "animate-[staggeredPopup_20s_infinite]" : ""}`} style={{ animationDelay: `${index * 3}s` }}>
-                     <div className="px-3 py-1 bg-black/60 rounded-full text-[10px] text-primary-text uppercase tracking-widest font-semibold border border-primary-text/10 backdrop-blur-md">
+                  <div className="absolute top-3 left-3 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                     <div className="px-3 py-1 bg-black/60 rounded-full text-[10px] text-white uppercase tracking-widest font-semibold border border-white/10 backdrop-blur-md">
                        {item.tag || item.category}
                      </div>
                   </div>
 
-                  <div className={`absolute bottom-0 left-0 right-0 p-5 z-30 transition-all duration-500 group-hover:animate-none ${initialLoad ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0 group-hover:!translate-y-0 group-hover:!opacity-100"} ${!initialLoad ? "animate-[staggeredPopup_20s_infinite]" : ""}`} style={{ animationDelay: `${index * 3}s` }}>
+                  <div className="absolute bottom-0 left-0 right-0 p-5 z-30 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
                     <div className="flex items-center gap-2 mb-2">
-                       <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-primary-text/10 text-primary-text/90">
+                       <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-white/10 text-white/90">
                          Gallery
                        </span>
-                       {item.duration && <span className="text-[10px] text-primary-text/70 font-mono tracking-widest">{item.duration}</span>}
+                       {item.duration && <span className="text-[10px] text-white/70 font-mono tracking-widest">{item.duration}</span>}
                     </div>
-                    <h3 className="text-base sm:text-lg font-bold text-primary-text">{item.title}</h3>
+                    <h3 className="text-base sm:text-lg font-bold text-white">{item.title}</h3>
                     {item.client && (
-                      <div className="text-sm font-semibold text-accent-blue mt-1 uppercase tracking-wider">{item.client}</div>
+                      <div className="text-sm font-semibold text-blue-400 mt-1 uppercase tracking-wider">{item.client}</div>
                     )}
                   </div>
                 </div>

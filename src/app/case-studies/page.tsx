@@ -26,22 +26,25 @@ export default async function CaseStudiesPage() {
         </div>
 
         {/* CTA Area */}
-        <section className="mt-10 py-16 border-t border-primary-text/10 flex flex-col items-center justify-center text-center">
-           <h2 className="text-2xl sm:text-3xl md:text-5xl font-black font-heading text-primary-text mb-6 sm:mb-8">Ready to compound your growth?</h2>
-           <p className="text-muted-text text-base sm:text-lg max-w-xl mb-8 sm:mb-10 font-light">Let&apos;s discuss how Upmark can build a complete marketing system for your business.</p>
-           <div className="flex flex-col sm:flex-row items-center gap-4">
-              {show("contact") && (
-                <Link href="/contact" className="group flex items-center justify-center gap-2 bg-accent-blue text-white px-8 py-4 rounded-lg font-semibold text-base overflow-hidden transition-[transform] hover:scale-[1.02] shadow-[0_0_30px_-10px_rgba(59,130,246,0.6)]">
-                 Start a Project <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-               </Link>
-              )}
-              {show("services") && (
-                <Link href="/services" className="group flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-semibold text-base text-primary-text bg-primary-text/5 border border-primary-text/10 hover:bg-primary-text/10 hover:border-primary-text/20 transition-colors duration-200">
-                 View our services <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-               </Link>
-              )}
-           </div>
-        </section>
+        <div className="mt-16 sm:mt-24 text-center relative max-w-4xl mx-auto w-full">
+          <div className="absolute inset-0 bg-accent-blue/15 blur-[40px] sm:blur-[60px] rounded-full -z-10"></div>
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-black font-heading text-primary-text tracking-tight mb-6 sm:mb-8">Ready to compound your growth?</h2>
+          <p className="text-base sm:text-xl text-muted-text mb-8 sm:mb-12 font-light max-w-2xl mx-auto">
+            Let&apos;s discuss how Upmark can build a complete marketing system for your business.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+            {show("contact") && (
+              <Link href="/contact" className="bg-white text-black px-6 py-4 sm:px-10 sm:py-5 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors flex items-center gap-3 w-full sm:w-auto justify-center">
+                Start a Project <ArrowRight size={20} />
+              </Link>
+            )}
+            {show("services") && (
+              <Link href="/services" className="px-6 py-4 sm:px-10 sm:py-5 rounded-full font-bold text-lg border border-primary-text/20 text-primary-text hover:bg-primary-text/5 transition-colors w-full sm:w-auto justify-center hover:border-primary-text/40">
+                View our services
+              </Link>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

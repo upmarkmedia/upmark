@@ -53,12 +53,12 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="border-t border-primary-text/5 bg-primary-bg relative overflow-hidden">
-      {/* Marquee Accent Strip — reduced duplicates from 6 → 4 */}
-      <div className="relative overflow-hidden py-4 border-b border-primary-text/5">
+    <footer className="border-t border-white/5 bg-[#0a0a0a] relative overflow-hidden">
+      {/* Marquee Accent Strip — subtle background texture */}
+      <div className="relative overflow-hidden py-4 border-b border-white/5">
         <div className="flex whitespace-nowrap animate-[marquee_30s_linear_infinite]" style={{ willChange: "transform" }}>
           {Array.from({ length: 4 }).map((_, i) => (
-            <span key={i} className="text-[11px] uppercase tracking-[0.3em] text-primary-text/[0.06] font-heading font-black mx-4">
+            <span key={i} className="text-[13px] uppercase tracking-[0.3em] text-neutral-100/[0.06] font-heading font-black mx-4">
               {marqueeText}
             </span>
           ))}
@@ -69,19 +69,19 @@ export const Footer = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-10 sm:mb-16">
           <div className="lg:col-span-1">
             <Link href="/" className="mb-4 sm:mb-6 inline-block">
-              <Image src={(settings?.theme === "editorial" && settings?.editorialLogoUrl) ? settings.editorialLogoUrl : (settings?.globalLogoUrl || "/upmark-wordmark.png")} alt="Upmark" width={200} height={200} className="h-12 sm:h-14 w-auto object-contain" />
+              <Image src={settings?.globalLogoUrl || "/upmark-wordmark.png"} alt="Upmark" width={200} height={200} className="h-12 sm:h-14 w-auto object-contain" />
             </Link>
-            <p className="text-muted-text/80 text-xs sm:text-sm leading-relaxed max-w-xs">
+            <p className="text-neutral-500 text-xs sm:text-sm leading-relaxed max-w-xs">
               Integrated marketing that moves markets.
             </p>
           </div>
           
           <div>
-            <h4 className="text-primary-text font-bold font-heading mb-4 sm:mb-6 tracking-wide text-sm sm:text-base">Services</h4>
-            <ul className="flex flex-col gap-2 sm:gap-3">
+            <h4 className="text-neutral-100 font-bold font-heading mb-4 sm:mb-6 uppercase text-xs tracking-[0.2em]">Services</h4>
+            <ul className="flex flex-col space-y-4">
               {services.map((service) => (
                 <li key={service.id}>
-                  <Link href={`/services#${service.id}`} className="text-muted-text hover:text-accent-blue transition-colors text-xs sm:text-sm">
+                  <Link href={`/services#${service.id}`} className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">
                     {service.title}
                   </Link>
                 </li>
@@ -90,24 +90,24 @@ export const Footer = () => {
           </div>
           
           <div>
-            <h4 className="text-primary-text font-bold font-heading mb-4 sm:mb-6 tracking-wide text-sm sm:text-base">Company</h4>
-            <ul className="flex flex-col gap-2 sm:gap-3">
-              {show("about") && <li><Link href="/about" className="text-muted-text hover:text-accent-blue transition-colors text-xs sm:text-sm">About Us</Link></li>}
-              {show("work") && <li><Link href="/work" className="text-muted-text hover:text-accent-blue transition-colors text-xs sm:text-sm">Portfolio</Link></li>}
-              {show("caseStudies") && <li><Link href="/case-studies" className="text-muted-text hover:text-accent-blue transition-colors text-xs sm:text-sm">Case Studies</Link></li>}
-              {show("work") && <li><Link href="/work#testimonials" className="text-muted-text hover:text-accent-blue transition-colors text-xs sm:text-sm">Testimonials</Link></li>}
-              {show("contact") && <li><Link href="/contact" className="text-muted-text hover:text-accent-blue transition-colors text-xs sm:text-sm">Contact</Link></li>}
-              <li><Link href="/privacy" className="text-muted-text hover:text-accent-blue transition-colors text-xs sm:text-sm">Privacy Policy</Link></li>
+            <h4 className="text-neutral-100 font-bold font-heading mb-4 sm:mb-6 uppercase text-xs tracking-[0.2em]">Company</h4>
+            <ul className="flex flex-col space-y-4">
+              {show("about") && <li><Link href="/about" className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">About Us</Link></li>}
+              {show("work") && <li><Link href="/work" className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">Portfolio</Link></li>}
+              {show("caseStudies") && <li><Link href="/case-studies" className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">Case Studies</Link></li>}
+              {show("work") && <li><Link href="/work#testimonials" className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">Testimonials</Link></li>}
+              {show("contact") && <li><Link href="/contact" className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">Contact</Link></li>}
+              <li><Link href="/privacy" className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">Privacy Policy</Link></li>
             </ul>
           </div>
           
           <div>
-            <h4 className="text-primary-text font-bold font-heading mb-4 sm:mb-6 tracking-wide text-sm sm:text-base">Connect</h4>
-            <ul className="flex flex-col gap-2 sm:gap-3">
+            <h4 className="text-neutral-100 font-bold font-heading mb-4 sm:mb-6 uppercase text-xs tracking-[0.2em]">Connect</h4>
+            <ul className="flex flex-col space-y-4">
               {(settings?.socialTwitter || !settings) && (
                 <li>
-                  <a href={settings?.socialTwitter || "https://x.com/upmarkmedia"} target="_blank" rel="noopener noreferrer" className="group/social flex items-center gap-2 text-muted-text hover:text-accent-blue transition-colors text-sm duration-200">
-                    <span className="p-1.5 rounded-lg bg-transparent group-hover/social:bg-accent-blue/10 transition-colors duration-200">
+                  <a href={settings?.socialTwitter || "https://x.com/upmarkmedia"} target="_blank" rel="noopener noreferrer" className="group/social flex items-center gap-2 text-neutral-400 hover:text-white transition-colors duration-300 text-sm">
+                    <span className="p-1.5 rounded-lg bg-transparent group-hover/social:bg-white/10 transition-colors duration-300">
                       <TwitterIcon size={16} />
                     </span>
                     Twitter / X
@@ -116,8 +116,8 @@ export const Footer = () => {
               )}
               {(settings?.socialLinkedin || !settings) && (
                 <li>
-                  <a href={settings?.socialLinkedin || "https://linkedin.com/company/upmark"} target="_blank" rel="noopener noreferrer" className="group/social flex items-center gap-2 text-muted-text hover:text-accent-blue transition-colors text-sm duration-200">
-                    <span className="p-1.5 rounded-lg bg-transparent group-hover/social:bg-accent-blue/10 transition-colors duration-200">
+                  <a href={settings?.socialLinkedin || "https://linkedin.com/company/upmark"} target="_blank" rel="noopener noreferrer" className="group/social flex items-center gap-2 text-neutral-400 hover:text-white transition-colors duration-300 text-sm">
+                    <span className="p-1.5 rounded-lg bg-transparent group-hover/social:bg-white/10 transition-colors duration-300">
                       <LinkedinIcon size={16} />
                     </span>
                     LinkedIn
@@ -126,8 +126,8 @@ export const Footer = () => {
               )}
               {(settings?.socialInstagram || !settings) && (
                 <li>
-                  <a href={settings?.socialInstagram || "https://www.instagram.com/upmarkmedia.in"} target="_blank" rel="noopener noreferrer" className="group/social flex items-center gap-2 text-muted-text hover:text-accent-blue transition-colors text-sm duration-200">
-                    <span className="p-1.5 rounded-lg bg-transparent group-hover/social:bg-accent-blue/10 transition-colors duration-200">
+                  <a href={settings?.socialInstagram || "https://www.instagram.com/upmarkmedia.in"} target="_blank" rel="noopener noreferrer" className="group/social flex items-center gap-2 text-neutral-400 hover:text-white transition-colors duration-300 text-sm">
+                    <span className="p-1.5 rounded-lg bg-transparent group-hover/social:bg-white/10 transition-colors duration-300">
                       <InstagramIcon size={16} />
                     </span>
                     Instagram
@@ -135,8 +135,9 @@ export const Footer = () => {
                 </li>
               )}
               {(settings?.contactEmail || !settings) && (
-                <li className="pt-2 mt-2 border-t border-primary-text/5">
-                  <a href={`mailto:${settings?.contactEmail || "connect@upmarkmedia.in"}`} className="text-muted-text hover:text-accent-blue transition-colors text-sm font-medium">
+                <li className="pt-2 mt-2 border-t border-white/10">
+                  <p className="text-neutral-100 font-bold font-heading uppercase text-xs tracking-[0.2em] mb-4">Get in touch</p>
+                  <a href={`mailto:${settings?.contactEmail || "connect@upmarkmedia.in"}`} className="text-neutral-400 hover:text-white hover:underline hover:underline-offset-4 transition-colors duration-300 text-sm font-medium">
                     {settings?.contactEmail || "connect@upmarkmedia.in"}
                   </a>
                 </li>
@@ -145,18 +146,18 @@ export const Footer = () => {
           </div>
         </div>
         
-        <div className="pt-6 sm:pt-8 border-t border-primary-text/5 flex flex-col sm:flex-row justify-between items-center gap-4 safe-bottom">
-          <p className="text-muted-text/60 text-xs text-center md:text-left">
+        <div className="pt-6 sm:pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 safe-bottom">
+          <p className="text-neutral-500 text-xs text-center md:text-left">
             © 2026 Upmark. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
-            <Link href="/privacy" className="text-muted-text/60 hover:text-primary-text transition-colors text-xs">Privacy Policy</Link>
-            <Link href="/terms" className="text-muted-text/60 hover:text-primary-text transition-colors text-xs">Terms of Service</Link>
+            <Link href="/privacy" className="text-neutral-500 hover:text-white transition-colors duration-300 text-xs">Privacy Policy</Link>
+            <Link href="/terms" className="text-neutral-500 hover:text-white transition-colors duration-300 text-xs">Terms of Service</Link>
             
-            {/* Scroll to Top Button — plain button, no framer-motion for perf */}
+            {/* Scroll to Top Button — glassmorphic */}
             <button
               onClick={scrollToTop}
-              className="w-10 h-10 rounded-full border border-primary-text/10 hover:border-accent-blue/50 bg-primary-text/5 hover:bg-accent-blue/10 flex items-center justify-center text-muted-text hover:text-accent-blue transition-colors duration-200 active:scale-95"
+              className="w-10 h-10 rounded-full bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/10 flex items-center justify-center text-neutral-400 hover:text-white transition-all duration-300 active:scale-95"
               aria-label="Scroll to top"
             >
               <ArrowUp size={16} />

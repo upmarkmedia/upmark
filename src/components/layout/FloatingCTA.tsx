@@ -12,6 +12,7 @@ export const FloatingCTA = () => {
   const pathname = usePathname();
   const { isIdle, isHeroVisible } = useIdle();
   const [showContact, setShowContact] = useState(true);
+  const [footerVisible, setFooterVisible] = useState(false);
 
   useEffect(() => {
     getSiteSettings().then(data => {
@@ -20,6 +21,18 @@ export const FloatingCTA = () => {
       }
     }).catch(console.error);
   }, []);
+
+  useEffect(() => {
+    const check = () => {
+      const footer = document.querySelector("footer");
+      if (!footer) return;
+      setFooterVisible(footer.getBoundingClientRect().top < window.innerHeight);
+    };
+
+    window.addEventListener("scroll", check, { passive: true });
+    check();
+    return () => window.removeEventListener("scroll", check);
+  }, []);
   
   // Don't show CTA on contact page since they are already there, or if contact page is hidden
   if (pathname === "/contact" || !showContact) return null;
@@ -27,9 +40,9 @@ export const FloatingCTA = () => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: isIdle && isHeroVisible ? 0 : 1, y: 0 }}
+      animate={{ opacity: isIdle && isHeroVisible || footerVisible ? 0 : 1, y: 0 }}
       transition={{ delay: isIdle && isHeroVisible ? 0 : 1, duration: 0.7 }}
-      className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 safe-bottom ${isIdle && isHeroVisible ? "pointer-events-none" : "pointer-events-auto"}`}
+      className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 safe-bottom ${(isIdle && isHeroVisible) || footerVisible ? "pointer-events-none" : "pointer-events-auto"}`}
       style={{ contain: "layout style" }}
     >
       <Link href="/contact" className="group">

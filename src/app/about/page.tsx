@@ -126,22 +126,22 @@ export default async function AboutPage() {
 
       {/* ─── CTA Section ─── */}
       <section className="container mx-auto px-4 sm:px-6">
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-accent-blue/10 to-accent-gold/5 border border-primary-text/5 p-8 sm:p-14 text-center">
-          <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-accent-blue/10 blur-[80px] pointer-events-none rounded-full"></div>
-          <div className="relative z-10">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black font-heading text-primary-text tracking-tight mb-4" dangerouslySetInnerHTML={{ __html: ctaTitle }} />
-            <p className="text-muted-text text-base sm:text-lg max-w-xl font-light mx-auto mb-8">
-              {ctaDescription}
-            </p>
-            {show("contact") && (
+        <div className="mt-16 sm:mt-24 text-center relative max-w-4xl mx-auto">
+          <div className="absolute inset-0 bg-accent-blue/15 blur-[40px] sm:blur-[60px] rounded-full -z-10"></div>
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-black font-heading text-primary-text tracking-tight mb-6 sm:mb-8" dangerouslySetInnerHTML={{ __html: ctaTitle }} />
+          <p className="text-base sm:text-xl text-muted-text mb-8 sm:mb-12 font-light max-w-2xl mx-auto">
+            {ctaDescription}
+          </p>
+          {show("contact") && (
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center px-8 py-4 rounded-lg font-semibold text-sm sm:text-base text-primary-text bg-accent-blue hover:bg-blue-600 transition-colors"
+                className="px-6 py-4 sm:px-10 sm:py-5 rounded-full font-bold text-lg border border-primary-text/20 text-primary-text hover:bg-primary-text/5 transition-colors w-full sm:w-auto justify-center hover:border-primary-text/40"
               >
                 Start a conversation
               </Link>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </section>
     </div>

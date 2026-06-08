@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CAPABILITIES_DATA } from "./services-data";
 import { ArrowRight } from "lucide-react";
@@ -19,7 +19,11 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
 
   useEffect(() => {
     getSiteSettings().then(data => {
-      if (data?.globalLogoUrl) setLogoUrl(data.globalLogoUrl);
+      if (data?.theme === "editorial" && data?.editorialLogoUrl) {
+        setLogoUrl(data.editorialLogoUrl);
+      } else if (data?.globalLogoUrl) {
+        setLogoUrl(data.globalLogoUrl);
+      }
     }).catch(console.error);
 
     const handleHashChange = () => {
@@ -53,6 +57,43 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
       window.removeEventListener('hashchange', handleHashChange);
       history.pushState = originalPushState;
       history.replaceState = originalReplaceState;
+    };
+  }, [data]);
+
+  const lastInteractionTime = useRef(Date.now());
+
+  const handleInteraction = useCallback(() => {
+    lastInteractionTime.current = Date.now();
+  }, []);
+
+  // Autoplay: cycle through capabilities after 5s of inactivity
+  useEffect(() => {
+    if (data.length === 0) return;
+
+    let idleTimeout: NodeJS.Timeout;
+    let autoplayInterval: NodeJS.Timeout;
+
+    const startAutoplay = () => {
+      autoplayInterval = setInterval(() => {
+        setActiveId(prev => {
+          const currentIndex = data.findIndex(s => s.id === prev);
+          const nextIndex = (currentIndex + 1) % data.length;
+          return data[nextIndex].id || "";
+        });
+      }, 3000);
+    };
+
+    const resetAutoplay = () => {
+      clearInterval(autoplayInterval);
+      clearTimeout(idleTimeout);
+      idleTimeout = setTimeout(startAutoplay, 5000);
+    };
+
+    resetAutoplay();
+
+    return () => {
+      clearInterval(autoplayInterval);
+      clearTimeout(idleTimeout);
     };
   }, [data]);
 
@@ -110,8 +151,8 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
                 r={r}
                 fill="none"
                 stroke="currentColor"
-                className="text-primary-text/5"
-                strokeWidth="0.2"
+                className="text-primary-text/10"
+                strokeWidth="0.25"
               />
             ))}
 
@@ -132,7 +173,7 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
                   transition={{ duration: 1.2, ease: "easeInOut" }}
-                  className={`transition-colors duration-500 ${isActive ? "" : "text-primary-text/5"}`}
+                  className={`transition-colors duration-500 ${isActive ? "" : "text-primary-text/10"}`}
                 />
               );
             })}
@@ -150,9 +191,9 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
           </svg>
 
           {/* Center Logo */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 lg:w-44 lg:h-44 rounded-full bg-[#03060c]/80 border border-white/5 backdrop-blur-md flex items-center justify-center shadow-[0_0_80px_rgba(59,130,246,0.15)] z-10">
-            <div className="absolute inset-0 rounded-full border border-accent-blue/10 animate-[spin_10s_linear_infinite]" />
-            <div className="absolute inset-4 rounded-full border border-white/5 animate-[spin_15s_linear_infinite_reverse]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 lg:w-44 lg:h-44 rounded-full bg-primary-bg border border-primary-text/15 backdrop-blur-md flex items-center justify-center shadow-[0_4px_40px_rgba(0,0,0,0.1)] z-10">
+            <div className="absolute inset-0 rounded-full border border-accent-blue/15 animate-[spin_10s_linear_infinite]" />
+            <div className="absolute inset-4 rounded-full border border-primary-text/10 animate-[spin_15s_linear_infinite_reverse]" />
             <Image src={logoUrl} alt="Upmark" width={100} height={100} className="w-20 lg:w-28 h-auto z-10 object-contain" />
           </div>
 
@@ -166,14 +207,14 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
                 key={svc.id}
                 className="absolute z-20"
                 style={getPosStyles(i, data.length)}
-                onMouseEnter={() => setActiveId(svc.id || "")}
-                onClick={() => setActiveId(svc.id || "")}
+                onMouseEnter={() => { handleInteraction(); setActiveId(svc.id || ""); }}
+                onClick={() => { handleInteraction(); setActiveId(svc.id || ""); }}
               >
                 <motion.button
                   className={`w-16 h-16 sm:w-18 sm:h-18 lg:w-20 lg:h-20 rounded-full border flex flex-col items-center justify-center gap-0.5 transition-colors duration-300 cursor-pointer focus-visible:outline-none
                     ${isActive
-                      ? "bg-[#0d1525] border-accent-blue shadow-[0_0_28px_rgba(59,130,246,0.45)]"
-                      : "bg-[#080d17] border-white/10 hover:border-white/30 hover:bg-white/5"
+                      ? "bg-accent-blue/15 border-accent-blue shadow-[0_0_28px_rgba(79,70,229,0.35)]"
+                      : "bg-primary-bg border-primary-text/20 shadow-[0_2px_12px_rgba(0,0,0,0.08)] hover:border-primary-text/40 hover:bg-primary-text/5"
                     }`}
                   whileHover={{ scale: 1.14 }}
                   whileTap={{ scale: 0.94 }}
@@ -185,16 +226,16 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
                     <img 
                       src={svc.icon_url} 
                       alt={svc.title} 
-                      className={`w-4 h-4 lg:w-6 lg:h-6 object-contain transition-all duration-300 ${isActive ? "opacity-100" : "opacity-40"}`} 
+                      className={`w-4 h-4 lg:w-6 lg:h-6 object-contain transition-all duration-300 ${isActive ? "opacity-100" : "opacity-50"}`} 
                     />
                   ) : (
                     <IconComponent
                       size={14}
-                      className={`lg:w-6 lg:h-6 transition-colors duration-300 ${isActive ? "text-accent-blue" : "text-white/35"}`}
+                      className={`lg:w-6 lg:h-6 transition-colors duration-300 ${isActive ? "text-accent-blue" : "text-primary-text/55"}`}
                     />
                   )}
                   <span
-                    className={`text-[7px] lg:text-[9px] font-bold tracking-wider uppercase text-center leading-tight px-1 transition-colors duration-300 ${isActive ? "text-white" : "text-white/35"
+                    className={`text-[7px] lg:text-[9px] font-bold tracking-wider uppercase text-center leading-tight px-1 transition-colors duration-300 ${isActive ? "text-accent-blue" : "text-primary-text/65"
                       }`}
                   >
                     {svc.label}
@@ -265,7 +306,7 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
             {data.map((svc) => (
               <button
                 key={svc.id}
-                onClick={() => setActiveId(svc.id || "")}
+                onClick={() => { handleInteraction(); setActiveId(svc.id || ""); }}
                 className={`rounded-full transition-[width] duration-300 focus-visible:outline-none ${svc.id === activeId
                   ? "w-6 h-2 bg-accent-blue"
                   : "w-2 h-2 bg-primary-text/20 hover:bg-primary-text/40"
