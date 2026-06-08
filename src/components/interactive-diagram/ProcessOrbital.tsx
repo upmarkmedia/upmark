@@ -133,7 +133,7 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
 
         {/* Left Column: Orbital Layout */}
         <div className="flex flex-col items-center justify-center overflow-visible relative">
-          <div className="relative w-[340px] h-[340px] sm:w-[500px] sm:h-[500px] lg:w-[700px] lg:h-[700px] flex items-center justify-center">
+          <div className="relative w-[420px] h-[420px] sm:w-[500px] sm:h-[500px] lg:w-[700px] lg:h-[700px] flex items-center justify-center">
 
             {/* Orbital rings */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -253,7 +253,7 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
           </div>
 
           {/* Mobile Description Box (Hidden on Desktop) */}
-          <div className="md:hidden mt-12 px-6 max-w-sm text-center min-h-[120px]">
+          <div className="md:hidden mt-16 px-6 max-w-sm text-center min-h-[120px]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeNode}
@@ -271,7 +271,7 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
 
         {/* Right Column: Stacked Images and CTA */}
         <div className="flex flex-col justify-center items-center space-y-12 w-full max-w-lg mx-auto lg:mt-32">
-          <div className="relative w-full aspect-square max-w-[400px]">
+          <div className="hidden md:block relative w-full aspect-square max-w-[350px] lg:max-w-[400px]">
             <AnimatePresence>
               {hoverHistory.map((historyItem, index) => {
                 const nodeData = processData.find(p => p.id === historyItem.id);
@@ -315,16 +315,16 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full">
+          <div className="flex flex-row items-center justify-center gap-3 w-full">
             {showServices && (
-              <Link href="/services" className="group relative w-full sm:w-auto flex items-center justify-center gap-3 bg-accent-blue text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base overflow-hidden transition-[transform] hover:scale-[1.02] active:scale-95 shadow-[0_0_30px_-10px_rgba(59,130,246,0.6)]">
+              <Link href="/services" className="group relative flex items-center justify-center gap-3 bg-accent-blue text-white px-5 py-3 rounded-lg font-semibold text-sm overflow-hidden transition-[transform] hover:scale-[1.02] active:scale-95 shadow-[0_0_30px_-10px_rgba(59,130,246,0.6)]">
                 <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-600 to-accent-blue opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <span className="relative z-10 flex items-center gap-2">Our Services </span>
+                <span className="relative z-10">Our Services</span>
               </Link>
             )}
 
             {showWork && (
-              <Link href="/work" className="group w-full sm:w-auto flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-primary-text bg-primary-text/5 border border-primary-text/10 hover:bg-primary-text/10 hover:border-primary-text/20 transition-colors duration-200">
+              <Link href="/work" className="group flex items-center justify-center px-5 py-3 rounded-lg font-semibold text-sm text-primary-text bg-primary-text/5 border border-primary-text/10 hover:bg-primary-text/10 hover:border-primary-text/20 transition-colors duration-200">
                 View our work
               </Link>
             )}

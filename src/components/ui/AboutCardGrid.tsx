@@ -167,15 +167,15 @@ function AboutDetailModal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative w-full max-w-4xl max-h-[90vh] bg-[#0F172A] rounded-2xl sm:rounded-3xl border border-white/10 overflow-hidden shadow-2xl"
+            className="relative w-full max-w-4xl max-h-[90vh] bg-primary-bg rounded-2xl sm:rounded-3xl border border-primary-text/10 overflow-hidden shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/50 border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-black/70 transition-colors"
+              className="absolute top-4 right-4 z-20 w-12 h-12 rounded-full bg-primary-text/20 border border-primary-text/10 flex items-center justify-center text-primary-text/80 hover:text-primary-text hover:bg-primary-text/30 transition-colors"
               aria-label="Close"
             >
-              <X size={18} />
+              <X size={20} />
             </button>
 
             <div className="flex flex-col md:flex-row max-h-[90vh]">

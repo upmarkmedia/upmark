@@ -39,7 +39,7 @@ export default async function AboutPage() {
   if (!pageVisible) return null;
 
   return (
-    <div className="min-h-screen pt-20 sm:pt-24 md:pt-32 pb-8 sm:pb-12">
+    <div className="min-h-screen pt-28 sm:pt-24 md:pt-32 pb-8 sm:pb-12">
       {/* ─── About Section ─── */}
       <section className="container mx-auto px-4 sm:px-6 mb-16 sm:mb-24">
         <div className="flex flex-col lg:flex-row gap-10 sm:gap-12 lg:gap-16 text-primary-text items-center">
@@ -55,14 +55,15 @@ export default async function AboutPage() {
                 <p key={i}>{paragraph}</p>
               ))}
             </div>
-            <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+            <div className="flex flex-row items-center justify-center gap-3 w-full">
               {show("services") && (
-                <Link href="/services" className="group flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-primary-text border border-primary-text/20 hover:border-accent-blue hover:bg-accent-blue/5 transition-[border-color,background-color] w-full sm:w-auto">
-                  Explore our services
+                <Link href="/services" className="group relative flex items-center justify-center gap-3 bg-accent-blue text-white px-5 py-3 rounded-lg font-semibold text-sm overflow-hidden transition-[transform] hover:scale-[1.02] active:scale-95 shadow-[0_0_30px_-10px_rgba(59,130,246,0.6)]">
+                  <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-600 to-accent-blue opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <span className="relative z-10">Our Services</span>
                 </Link>
               )}
               {show("contact") && (
-                <Link href="/contact" className="group flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base text-primary-text bg-accent-blue/10 border border-accent-blue/30 hover:bg-accent-blue/20 hover:border-accent-blue/50 transition-[border-color,background-color] w-full sm:w-auto">
+                <Link href="/contact" className="group flex items-center justify-center px-5 py-3 rounded-lg font-semibold text-sm text-primary-text bg-primary-text/5 border border-primary-text/10 hover:bg-primary-text/10 hover:border-primary-text/20 transition-colors duration-200">
                   Get in touch
                 </Link>
               )}
@@ -136,9 +137,10 @@ export default async function AboutPage() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
               <Link
                 href="/contact"
-                className="px-6 py-4 sm:px-10 sm:py-5 rounded-full font-bold text-lg border border-primary-text/20 text-primary-text hover:bg-primary-text/5 transition-colors w-full sm:w-auto justify-center hover:border-primary-text/40"
+                className="group relative px-6 py-4 sm:px-10 sm:py-5 rounded-full font-bold text-lg bg-accent-blue text-white transition-all justify-center hover:scale-[1.02] active:scale-95 shadow-[0_0_40px_-10px_rgba(59,130,246,0.6)] hover:shadow-[0_0_50px_-10px_rgba(59,130,246,0.8)]"
               >
-                Start a conversation
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-600 to-accent-blue opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <span className="relative z-10">Start a conversation</span>
               </Link>
             </div>
           )}

@@ -53,7 +53,8 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="border-t border-white/5 bg-[#0a0a0a] relative overflow-hidden">
+    <>
+    <footer className="border-t border-white/5 bg-[#0a0a0a] relative">
       {/* Marquee Accent Strip — subtle background texture */}
       <div className="relative overflow-hidden py-4 border-b border-white/5">
         <div className="flex whitespace-nowrap animate-[marquee_30s_linear_infinite]" style={{ willChange: "transform" }}>
@@ -65,7 +66,7 @@ export const Footer = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 pt-10 sm:pt-16 pb-6 sm:pb-10 max-w-6xl">
+      <div className="container mx-auto pl-10 pr-4 sm:px-8 pt-10 sm:pt-16 pb-6 sm:pb-10 max-w-6xl">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-10 sm:mb-16">
           <div className="lg:col-span-1">
             <Link href="/" className="mb-4 sm:mb-6 inline-block">
@@ -75,32 +76,34 @@ export const Footer = () => {
               Integrated marketing that moves markets.
             </p>
           </div>
-          
-          <div>
-            <h4 className="text-neutral-100 font-bold font-heading mb-4 sm:mb-6 uppercase text-xs tracking-[0.2em]">Services</h4>
-            <ul className="flex flex-col space-y-4">
-              {services.map((service) => (
-                <li key={service.id}>
-                  <Link href={`/services#${service.id}`} className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">
-                    {service.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+
+          <div className="grid grid-cols-2 gap-8 sm:gap-12 lg:col-span-2">
+            <div>
+              <h4 className="text-neutral-100 font-bold font-heading mb-4 sm:mb-6 uppercase text-xs tracking-[0.2em]">Services</h4>
+              <ul className="flex flex-col space-y-4">
+                {services.map((service) => (
+                  <li key={service.id}>
+                    <Link href={`/services#${service.id}`} className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">
+                      {service.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-neutral-100 font-bold font-heading mb-4 sm:mb-6 uppercase text-xs tracking-[0.2em]">Company</h4>
+              <ul className="flex flex-col space-y-4">
+                {show("about") && <li><Link href="/about" className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">About Us</Link></li>}
+                {show("work") && <li><Link href="/work" className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">Portfolio</Link></li>}
+                {show("caseStudies") && <li><Link href="/case-studies" className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">Case Studies</Link></li>}
+                {show("work") && <li><Link href="/work#testimonials" className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">Testimonials</Link></li>}
+                {show("contact") && <li><Link href="/contact" className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">Contact</Link></li>}
+                <li><Link href="/privacy" className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">Privacy Policy</Link></li>
+              </ul>
+            </div>
           </div>
-          
-          <div>
-            <h4 className="text-neutral-100 font-bold font-heading mb-4 sm:mb-6 uppercase text-xs tracking-[0.2em]">Company</h4>
-            <ul className="flex flex-col space-y-4">
-              {show("about") && <li><Link href="/about" className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">About Us</Link></li>}
-              {show("work") && <li><Link href="/work" className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">Portfolio</Link></li>}
-              {show("caseStudies") && <li><Link href="/case-studies" className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">Case Studies</Link></li>}
-              {show("work") && <li><Link href="/work#testimonials" className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">Testimonials</Link></li>}
-              {show("contact") && <li><Link href="/contact" className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">Contact</Link></li>}
-              <li><Link href="/privacy" className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">Privacy Policy</Link></li>
-            </ul>
-          </div>
-          
+
           <div>
             <h4 className="text-neutral-100 font-bold font-heading mb-4 sm:mb-6 uppercase text-xs tracking-[0.2em]">Connect</h4>
             <ul className="flex flex-col space-y-4">
@@ -153,18 +156,21 @@ export const Footer = () => {
           <div className="flex items-center gap-6">
             <Link href="/privacy" className="text-neutral-500 hover:text-white transition-colors duration-300 text-xs">Privacy Policy</Link>
             <Link href="/terms" className="text-neutral-500 hover:text-white transition-colors duration-300 text-xs">Terms of Service</Link>
-            
-            {/* Scroll to Top Button — glassmorphic */}
-            <button
-              onClick={scrollToTop}
-              className="w-10 h-10 rounded-full bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/10 flex items-center justify-center text-neutral-400 hover:text-white transition-all duration-300 active:scale-95"
-              aria-label="Scroll to top"
-            >
-              <ArrowUp size={16} />
-            </button>
           </div>
         </div>
       </div>
     </footer>
+
+    {/* Scroll to Top Button — bottom-right of page */}
+    <div className="absolute bottom-6 right-6">
+      <button
+        onClick={scrollToTop}
+        className="w-10 h-10 rounded-full bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/10 flex items-center justify-center text-neutral-400 hover:text-white transition-all duration-300 active:scale-95"
+        aria-label="Scroll to top"
+      >
+        <ArrowUp size={16} />
+      </button>
+    </div>
+    </>
   );
 };

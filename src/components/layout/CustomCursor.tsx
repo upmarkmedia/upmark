@@ -64,8 +64,8 @@ export function CustomCursor() {
       idleFrames++;
 
       if (idleFrames < 120) {
-        circleX += (mouseX - circleX) * 0.15;
-        circleY += (mouseY - circleY) * 0.15;
+        circleX += (mouseX - circleX) * 0.35;
+        circleY += (mouseY - circleY) * 0.35;
 
         if (dotRef.current) {
           dotRef.current.style.transform = `translate3d(calc(${mouseX}px - 50%), calc(${mouseY}px - 50%), 0)`;
@@ -121,7 +121,7 @@ export function CustomCursor() {
       >
         <div
           ref={circleRef}
-          className="w-full h-full border-2 border-white rounded-full transition-transform duration-200 ease-out"
+          className="w-full h-full border-2 border-white rounded-full transition-transform duration-75 ease-out"
         />
       </div>
 
@@ -133,7 +133,7 @@ export function CustomCursor() {
       >
         <div
           ref={dotInnerRef}
-          className="w-full h-full bg-white rounded-full transition-transform duration-200 ease-out"
+          className="w-full h-full bg-white rounded-full transition-transform duration-75 ease-out"
         />
       </div>
     </>

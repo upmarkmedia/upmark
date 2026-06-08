@@ -64,16 +64,16 @@ export default async function ServicesPage() {
           <p className="text-base sm:text-xl text-muted-text mb-8 sm:mb-12 font-light max-w-2xl mx-auto">
             Our case studies and portfolio aren't just proof of what we've made — they're evidence of how integrated thinking produces better outcomes.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+          <div className="flex flex-row items-center justify-center gap-4 sm:gap-6">
             <Link
               href="/work"
-              className="bg-white text-black px-6 py-4 sm:px-10 sm:py-5 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors flex items-center gap-3 w-full sm:w-auto justify-center"
+              className="bg-white text-black px-6 py-4 sm:px-10 sm:py-5 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 flex items-center gap-3 w-full sm:w-auto justify-center shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-black/30 hover:scale-105"
             >
               View our work <ArrowRight size={20} />
             </Link>
             <Link
               href="/contact"
-              className="px-6 py-4 sm:px-10 sm:py-5 rounded-full font-bold text-lg border border-primary-text/20 text-primary-text hover:bg-primary-text/5 transition-colors w-full sm:w-auto justify-center hover:border-primary-text/40"
+              className="px-6 py-4 sm:px-10 sm:py-5 rounded-full font-bold text-lg border-2 border-primary-text/30 text-primary-text hover:bg-primary-text hover:text-white transition-all duration-300 w-full sm:w-auto justify-center hover:shadow-lg hover:shadow-primary-text/20 hover:scale-105"
             >
               Contact Us
             </Link>

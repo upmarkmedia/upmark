@@ -125,7 +125,7 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
       <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16 max-w-6xl mx-auto px-4 sm:px-0">
 
         {/* Orbital */}
-        <div className="relative w-[340px] h-[340px] sm:w-[420px] sm:h-[420px] lg:w-[500px] lg:h-[500px] flex-shrink-0">
+        <div className="relative w-[380px] h-[380px] sm:w-[450px] sm:h-[450px] lg:w-[500px] lg:h-[500px] flex-shrink-0">
           {/* Ambient glow */}
           <div className="absolute inset-0 rounded-full bg-accent-blue/5 blur-[90px] pointer-events-none" />
 
