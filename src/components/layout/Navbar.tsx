@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
-import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useIdle } from "@/contexts/IdleContext";
 import { getSiteSettings } from "@/lib/firestore";
@@ -13,7 +13,7 @@ export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
-  const [mobileSubmenuOpen, setMobileSubmenuOpen] = useState<string | null>(null);
+
   const [logoUrl, setLogoUrl] = useState("/upmark-wordmark.png");
   const [isLight, setIsLight] = useState(false);
   const lastScrollY = useRef(0);
@@ -71,15 +71,7 @@ export const Navbar = () => {
   const navLinks = [
     { name: "Home", href: "/", show: show("home") },
     { name: "About Us", href: "/about", show: show("about") },
-    {
-      name: "Work",
-      href: "/work",
-      show: show("work"),
-      dropdownItems: [
-        { name: "Portfolio", href: "/work" },
-        { name: "Testimonials", href: "/work#testimonials" },
-      ],
-    },
+    { name: "Work", href: "/work", show: show("work") },
     { name: "Services", href: "/services", show: show("services") },
     { name: "Case Studies", href: "/case-studies", show: show("caseStudies") },
     { name: "Contact Us", href: "/contact", isCTA: true, show: show("contact") },
@@ -88,7 +80,6 @@ export const Navbar = () => {
   // Close mobile menu on route change
   useEffect(() => {
     setIsOpen(false);
-    setMobileSubmenuOpen(null);
   }, [pathname]);
 
   return (
@@ -113,7 +104,7 @@ export const Navbar = () => {
         {/* Desktop Nav - Right Side */}
         <nav className="hidden lg:flex items-center space-x-1 ml-auto">
           {navLinks.map((link) => {
-            const isActive = pathname === link.href || (link.dropdownItems && pathname.startsWith(link.href));
+            const isActive = pathname === link.href;
 
             if (link.isCTA) {
               return (
@@ -137,9 +128,6 @@ export const Navbar = () => {
                   }`}
                 >
                   {link.name}
-                  {link.dropdownItems && (
-                    <ChevronDown size={14} className="transition-transform duration-200 group-hover:rotate-180 opacity-70" />
-                  )}
                 </Link>
 
                 {/* Active Indicator */}
@@ -148,23 +136,6 @@ export const Navbar = () => {
                     layoutId="active-nav-indicator"
                     className="absolute bottom-0 left-3 right-3 h-[2px] bg-accent-blue rounded-t-full shadow-md"
                   />
-                )}
-
-                {/* Desktop Dropdown Menu */}
-                {link.dropdownItems && (
-                  <div className="absolute top-[120%] left-1/2 -translate-x-1/2 min-w-[220px] bg-primary-bg/95 backdrop-blur-xl border border-primary-text/10 rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:top-full transition-[opacity,visibility,top] duration-200 p-2.5 flex flex-col gap-1 z-50">
-                    <div className="absolute -top-4 left-0 right-0 h-6 bg-transparent" />
-                    {link.dropdownItems.map((item) => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        className="px-4 py-2.5 hover:bg-primary-text/10 rounded-xl text-sm text-primary-text/70 hover:text-primary-text transition-colors duration-150 flex items-center justify-between group/item"
-                      >
-                        {item.name}
-                        <ChevronRight size={14} className="opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-[opacity,transform] duration-150 text-accent-blue" />
-                      </Link>
-                    ))}
-                  </div>
                 )}
               </div>
             );
@@ -227,46 +198,6 @@ export const Navbar = () => {
                       >
                         {link.name}
                       </Link>
-                    ) : link.dropdownItems ? (
-                      <div className="flex flex-col items-end gap-2">
-                        <button
-                          onClick={() => setMobileSubmenuOpen(mobileSubmenuOpen === link.name ? null : link.name)}
-                          className={`group inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full border text-[16px] tracking-wide transition-all duration-300 shadow-[0_2px_10px_rgba(0,0,0,0.25)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.35)] ${
-                            mobileSubmenuOpen === link.name
-                              ? "border-accent-blue/40 bg-primary-bg/95 text-accent-blue shadow-[0_2px_16px_rgba(59,130,246,0.2)]"
-                              : "border-primary-text/15 bg-primary-bg/90 text-primary-text/80 hover:text-accent-blue hover:border-accent-blue/40"
-                          }`}
-                        >
-                          {link.name}
-                          <ChevronDown
-                            size={15}
-                            className={`transition-transform duration-300 opacity-60 ${
-                              mobileSubmenuOpen === link.name ? "rotate-180 text-accent-blue opacity-100" : ""
-                            }`}
-                          />
-                        </button>
-                        <AnimatePresence>
-                          {mobileSubmenuOpen === link.name && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.25, ease: [0.25, 0.4, 0, 1] }}
-                              className="overflow-hidden flex flex-col items-end gap-2"
-                            >
-                              {link.dropdownItems.map((item) => (
-                                <Link
-                                  key={item.href}
-                                  href={item.href}
-                                  className="px-4 py-2 rounded-full border border-primary-text/10 bg-primary-bg/85 text-[14px] text-primary-text/60 shadow-[0_1px_8px_rgba(0,0,0,0.2)] hover:text-accent-blue hover:border-accent-blue/30 hover:shadow-[0_2px_12px_rgba(0,0,0,0.3)] transition-all duration-200"
-                                >
-                                  {item.name}
-                                </Link>
-                              ))}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
                     ) : (
                       <Link
                         href={link.href}
