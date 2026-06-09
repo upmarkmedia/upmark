@@ -67,7 +67,7 @@ export default async function ServicesPage() {
           <div className="flex flex-row items-center justify-center gap-4 sm:gap-6">
             <Link
               href="/work"
-              className="bg-white text-black px-6 py-4 sm:px-10 sm:py-5 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 flex items-center gap-3 w-full sm:w-auto justify-center shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-black/30 hover:scale-105"
+              className="bg-white text-black px-6 py-4 sm:px-10 sm:py-5 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 flex items-center gap-3 w-full sm:w-auto justify-center shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-black/30 hover:scale-105 whitespace-nowrap"
             >
               View our work <ArrowRight size={20} />
             </Link>
