@@ -190,101 +190,97 @@ export const Navbar = () => {
           </AnimatePresence>
         </button>
 
-        {/* Mobile Subtle Dropdown */}
+        {/* Mobile Neon Glow Dropdown */}
         <AnimatePresence>
           {isOpen && (
             <>
               {/* Invisible Click-away Overlay */}
-              <div 
-                className="fixed inset-[-2000px] z-30 cursor-default" 
-                onClick={() => setIsOpen(false)} 
+              <div
+                className="fixed inset-[-2000px] z-30 cursor-default"
+                onClick={() => setIsOpen(false)}
               />
-              
-              {/* Dropdown Container — solid bg, no blur for mobile perf */}
+
+              {/* Dropdown Container — no background, pills float freely */}
               <motion.div
-                initial={{ opacity: 0, y: -15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-                className="absolute top-[110%] right-0 w-[280px] sm:w-[320px] rounded-bl-[40px] rounded-br-[20px] rounded-tl-[10px] z-40 overflow-hidden"
+                initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                className="absolute top-[110%] right-0 w-[260px] sm:w-[300px] z-40 pt-2 pb-4 flex flex-col items-end gap-3"
               >
-                {/* Solid dark gradient — no backdrop-blur on mobile for perf */}
-                <div className="absolute inset-0 bg-gradient-to-bl from-primary-bg/98 via-primary-bg/95 to-transparent -z-10" />
-                
-                {/* Links Container */}
-                <div className="flex flex-col items-end pt-4 pb-10 pr-8 sm:pr-10 pl-10 gap-6">
-                  {navLinks.map((link, i) => (
-                    <motion.div
-                      key={link.href}
-                      initial={{ opacity: 0, x: 8 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.03 + 0.08, duration: 0.2 }}
-                      className="w-full flex flex-col items-end"
-                    >
-                      {link.isCTA ? (
-                        <div className="mt-3">
-                          <Link
-                            href={link.href}
-                            className="inline-block px-6 py-2 rounded-full bg-accent-blue text-white text-[15px] font-medium shadow-md hover:shadow-lg transition-shadow"
-                          >
-                            {link.name}
-                          </Link>
-                        </div>
-                      ) : (
-                        <div className="w-full flex flex-col items-end">
-                          {link.dropdownItems ? (
-                            <>
-                              <button
-                                onClick={() => setMobileSubmenuOpen(mobileSubmenuOpen === link.name ? null : link.name)}
-                                className="text-[17px] tracking-wide text-primary-text/90 hover:text-primary-text transition-colors flex items-center justify-end gap-1.5 w-full py-2"
-                              >
-                                {link.name}
-                                <ChevronDown
-                                  size={16}
-                                  className={`transition-transform duration-200 opacity-70 ${
-                                    mobileSubmenuOpen === link.name ? "rotate-180 text-accent-blue" : ""
-                                  }`}
-                                />
-                              </button>
-                              <AnimatePresence>
-                                {mobileSubmenuOpen === link.name && (
-                                  <motion.div
-                                    initial={{ height: 0, opacity: 0 }}
-                                    animate={{ height: "auto", opacity: 1 }}
-                                    exit={{ height: 0, opacity: 0 }}
-                                    transition={{ duration: 0.2 }}
-                                    className="overflow-hidden w-full flex flex-col items-end mt-1"
-                                  >
-                                    <div className="flex flex-col items-end gap-2 pr-1 py-1 mr-1 border-r border-primary-text/10">
-                                      {link.dropdownItems.map((item) => (
-                                        <Link
-                                          key={item.href}
-                                          href={item.href}
-                                          className="text-[14px] text-primary-text/50 hover:text-primary-text transition-colors pr-2 py-2"
-                                        >
-                                          {item.name}
-                                        </Link>
-                                      ))}
-                                    </div>
-                                  </motion.div>
-                                )}
-                              </AnimatePresence>
-                            </>
-                          ) : (
-                            <Link
-                              href={link.href}
-                              className={`text-[17px] tracking-wide transition-colors py-2 ${
-                                pathname === link.href ? "text-primary-text font-semibold" : "text-primary-text/80 hover:text-primary-text"
-                              }`}
+                {navLinks.map((link, i) => (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, x: 16 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{
+                      delay: i * 0.04 + 0.08,
+                      duration: 0.3,
+                      ease: [0.25, 0.4, 0, 1],
+                    }}
+                    className="w-auto flex flex-col items-end"
+                  >
+                    {link.isCTA ? (
+                      <Link
+                        href={link.href}
+                        className="inline-flex items-center px-7 py-2.5 rounded-full bg-gradient-to-r from-accent-blue to-blue-500 text-white text-[15px] font-medium transition-all duration-300 shadow-[0_2px_12px_rgba(59,130,246,0.35),0_0_20px_rgba(59,130,246,0.15)] hover:shadow-[0_4px_20px_rgba(59,130,246,0.5),0_0_30px_rgba(59,130,246,0.25)]"
+                      >
+                        {link.name}
+                      </Link>
+                    ) : link.dropdownItems ? (
+                      <div className="flex flex-col items-end gap-2">
+                        <button
+                          onClick={() => setMobileSubmenuOpen(mobileSubmenuOpen === link.name ? null : link.name)}
+                          className={`group inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full border text-[16px] tracking-wide transition-all duration-300 shadow-[0_2px_10px_rgba(0,0,0,0.25)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.35)] ${
+                            mobileSubmenuOpen === link.name
+                              ? "border-accent-blue/40 bg-primary-bg/95 text-accent-blue shadow-[0_2px_16px_rgba(59,130,246,0.2)]"
+                              : "border-primary-text/15 bg-primary-bg/90 text-primary-text/80 hover:text-accent-blue hover:border-accent-blue/40"
+                          }`}
+                        >
+                          {link.name}
+                          <ChevronDown
+                            size={15}
+                            className={`transition-transform duration-300 opacity-60 ${
+                              mobileSubmenuOpen === link.name ? "rotate-180 text-accent-blue opacity-100" : ""
+                            }`}
+                          />
+                        </button>
+                        <AnimatePresence>
+                          {mobileSubmenuOpen === link.name && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.25, ease: [0.25, 0.4, 0, 1] }}
+                              className="overflow-hidden flex flex-col items-end gap-2"
                             >
-                              {link.name}
-                            </Link>
+                              {link.dropdownItems.map((item) => (
+                                <Link
+                                  key={item.href}
+                                  href={item.href}
+                                  className="px-4 py-2 rounded-full border border-primary-text/10 bg-primary-bg/85 text-[14px] text-primary-text/60 shadow-[0_1px_8px_rgba(0,0,0,0.2)] hover:text-accent-blue hover:border-accent-blue/30 hover:shadow-[0_2px_12px_rgba(0,0,0,0.3)] transition-all duration-200"
+                                >
+                                  {item.name}
+                                </Link>
+                              ))}
+                            </motion.div>
                           )}
-                        </div>
-                      )}
-                    </motion.div>
-                  ))}
-                </div>
+                        </AnimatePresence>
+                      </div>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className={`inline-flex items-center px-5 py-2.5 rounded-full border text-[16px] tracking-wide transition-all duration-300 shadow-[0_2px_10px_rgba(0,0,0,0.25)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.35)] ${
+                          pathname === link.href
+                            ? "border-accent-blue/40 bg-accent-blue/15 text-primary-text font-semibold shadow-[0_2px_14px_rgba(59,130,246,0.15)]"
+                            : "border-primary-text/15 bg-primary-bg/90 text-primary-text/80 hover:text-accent-blue hover:border-accent-blue/40"
+                        }`}
+                      >
+                        {link.name}
+                      </Link>
+                    )}
+                  </motion.div>
+                ))}
               </motion.div>
             </>
           )}

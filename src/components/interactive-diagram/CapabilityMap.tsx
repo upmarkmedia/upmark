@@ -9,6 +9,7 @@ import Link from "next/link";
 import * as LucideIcons from "lucide-react";
 import { getSiteSettings } from "@/lib/firestore";
 import type { Service } from "@/types";
+import { useMobileAutoplayPause } from "./useMobileAutoplayPause";
 
 export function CapabilityMap({ services = [] }: { services?: Service[] }) {
   // Use provided services or fallback to empty state
@@ -61,17 +62,19 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
   }, [data]);
 
   const lastInteractionTime = useRef(Date.now());
+  const { isMobile, isPaused, pauseAutoplay } = useMobileAutoplayPause();
 
   const handleInteraction = useCallback(() => {
     lastInteractionTime.current = Date.now();
-  }, []);
+    pauseAutoplay();
+  }, [pauseAutoplay]);
 
   // Autoplay: cycle through capabilities after 5s of inactivity
   useEffect(() => {
     if (data.length === 0) return;
 
-    let idleTimeout: NodeJS.Timeout;
-    let autoplayInterval: NodeJS.Timeout;
+    let idleTimeout: NodeJS.Timeout | null = null;
+    let autoplayInterval: NodeJS.Timeout | null = null;
 
     const startAutoplay = () => {
       autoplayInterval = setInterval(() => {
@@ -84,18 +87,23 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
     };
 
     const resetAutoplay = () => {
-      clearInterval(autoplayInterval);
-      clearTimeout(idleTimeout);
+      if (autoplayInterval) clearInterval(autoplayInterval);
+      if (idleTimeout) clearTimeout(idleTimeout);
       idleTimeout = setTimeout(startAutoplay, 5000);
     };
 
-    resetAutoplay();
+    if (!isPaused) {
+      resetAutoplay();
+    } else {
+      if (autoplayInterval) clearInterval(autoplayInterval);
+      if (idleTimeout) clearTimeout(idleTimeout);
+    }
 
     return () => {
-      clearInterval(autoplayInterval);
-      clearTimeout(idleTimeout);
+      if (autoplayInterval) clearInterval(autoplayInterval);
+      if (idleTimeout) clearTimeout(idleTimeout);
     };
-  }, [data]);
+  }, [data, isPaused]);
 
   const activeIndex = data.findIndex((s) => s.id === activeId);
   const active = data[activeIndex] || data[0];

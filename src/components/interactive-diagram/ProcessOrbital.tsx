@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { Lightbulb, Target, PenTool, Rocket, Settings, TrendingUp } from "lucide-react";
 import { PROCESS_DATA } from "./services-data";
 import { getSiteSettings } from "@/lib/firestore";
+import { useMobileAutoplayPause } from "./useMobileAutoplayPause";
 
 const DEFAULT_ICONS = [Lightbulb, Target, PenTool, Rocket, Settings, TrendingUp];
 
@@ -48,6 +49,7 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
   const [lastInteractionTime, setLastInteractionTime] = useState(Date.now());
   const [showServices, setShowServices] = useState(true);
   const [showWork, setShowWork] = useState(true);
+  const { isMobile, isPaused, pauseAutoplay } = useMobileAutoplayPause();
 
   useEffect(() => {
     getSiteSettings().then(data => {
@@ -80,25 +82,28 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
       }, 3000);
     };
 
-    idleTimeout = setTimeout(() => {
-      startAutoplay();
-    }, 5000);
+    if (!isPaused) {
+      idleTimeout = setTimeout(() => {
+        startAutoplay();
+      }, 5000);
+    }
 
     return () => {
       clearInterval(autoplayInterval);
       clearTimeout(idleTimeout);
     };
-  }, [lastInteractionTime, processData]);
+  }, [lastInteractionTime, processData, isPaused]);
 
-  const handleNodeHover = (id: string) => {
+  const handleNodeHover = useCallback((id: string) => {
     setLastInteractionTime(Date.now());
+    pauseAutoplay();
     setActiveNode(id);
     setHoverHistory((prev) => {
       if (prev[prev.length - 1]?.id === id) return prev;
       const newKey = hoverCountRef.current++;
       return [...prev, { id, key: newKey }].slice(-3);
     });
-  };
+  }, [pauseAutoplay]);
 
   const activeIndex = processData.findIndex((p) => p.id === activeNode);
   const activeData = processData[activeIndex !== -1 ? activeIndex : 0];
