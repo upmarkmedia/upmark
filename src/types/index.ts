@@ -134,12 +134,30 @@ export interface SeoPageConfig {
   keywords?: string;
 }
 
+export interface LegalPageSection {
+  title: string;
+  content: string;
+}
+
+export interface LegalPage {
+  lastUpdated: string;
+  sections: LegalPageSection[];
+}
+
 export interface WorkSection {
   label: string;
   title: string;
   subtitle: string;
   autoplayVideos?: boolean;
   detailFields?: string[];
+}
+
+export interface FooterContact {
+  id?: string;
+  name: string;
+  designation: string;
+  phone: string;
+  email: string;
 }
 
 export interface TeamMember {
@@ -201,6 +219,10 @@ export interface SiteSettings {
   // Home Page Assets
   homeAboutImageUrl?: string;
   heroVideoUrl?: string;
+  homeAboutEyebrow?: string;
+  homeAboutTitle?: string;
+  homeAboutSubtitle?: string;
+  homeAboutDescription?: string;
   // Contact & Socials
   contactEmail?: string;
   contactPhone?: string;
@@ -210,6 +232,11 @@ export interface SiteSettings {
   socialInstagram?: string;
   // Footer
   footerTagline?: string;
+  footerHeadingServices?: string;
+  footerHeadingCompany?: string;
+  footerHeadingConnect?: string;
+  footerHeadingGetInTouch?: string;
+  footerContacts?: FooterContact[];
   // Homepage section content
   featuredServiceIds?: string[];
   philosophyPointers?: PhilosophyPointer[];
@@ -238,6 +265,9 @@ export interface SiteSettings {
   ctaDescription?: string;
   teamMembers?: TeamMember[];
   investors?: Investor[];
+  // Legal pages
+  privacyContent?: LegalPage;
+  termsContent?: LegalPage;
   // SEO configuration
   seo?: Record<string, SeoPageConfig>;
   updatedAt?: Timestamp;

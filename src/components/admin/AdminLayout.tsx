@@ -20,6 +20,8 @@ import {
   Mail,
   Globe,
   Info,
+  Shield,
+  Scale,
 } from "lucide-react";
 import { useState, useEffect, type ReactNode } from "react";
 
@@ -30,6 +32,8 @@ const pageNavItems = [
   { href: "/admin/pages/services", label: "Services", icon: Briefcase },
   { href: "/admin/pages/case-studies", label: "Case Studies", icon: FileText },
   { href: "/admin/pages/contact", label: "Contact", icon: Mail },
+  { href: "/admin/pages/privacy", label: "Privacy Policy", icon: Shield },
+  { href: "/admin/pages/terms", label: "Terms of Service", icon: Scale },
   { href: "/admin/pages/settings", label: "Global Settings", icon: Globe },
 ];
 
