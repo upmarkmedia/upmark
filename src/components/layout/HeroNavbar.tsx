@@ -12,6 +12,7 @@ export const HeroNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [logoUrl, setLogoUrl] = useState("/upmark-wordmark.png");
   const [isLight, setIsLight] = useState(false);
+  const [settingsLoaded, setSettingsLoaded] = useState(false);
   const pathname = usePathname();
 
   const [visibility, setVisibility] = useState<Record<string, boolean>>({});
@@ -30,7 +31,7 @@ export const HeroNavbar = () => {
         if (data?.globalLogoUrl) setLogoUrl(data.globalLogoUrl);
       }
       if (data?.visibility) setVisibility(data.visibility as Record<string, boolean>);
-    }).catch(console.error);
+    }).catch(console.error).finally(() => setSettingsLoaded(true));
   }, []);
 
   const show = (key: string) => visibility[key] ?? true;
@@ -49,7 +50,7 @@ export const HeroNavbar = () => {
   }, [pathname]);
 
   return (
-    <div className="w-full relative z-30">
+    <div className={`w-full relative z-30 transition-opacity duration-0 ${settingsLoaded ? "opacity-100" : "opacity-0"}`}>
       <motion.div
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}

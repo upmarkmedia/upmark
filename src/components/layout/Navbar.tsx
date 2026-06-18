@@ -16,6 +16,7 @@ export const Navbar = () => {
 
   const [logoUrl, setLogoUrl] = useState("/upmark-wordmark.png");
   const [isLight, setIsLight] = useState(false);
+  const [settingsLoaded, setSettingsLoaded] = useState(false);
   const lastScrollY = useRef(0);
   const pathname = usePathname();
   const { isIdle, isHeroVisible } = useIdle();
@@ -36,7 +37,7 @@ export const Navbar = () => {
         if (data?.globalLogoUrl) setLogoUrl(data.globalLogoUrl);
       }
       if (data?.visibility) setVisibility(data.visibility as Record<string, boolean>);
-    }).catch(console.error);
+    }).catch(console.error).finally(() => setSettingsLoaded(true));
   }, []);
 
   const show = (key: string) => visibility[key] ?? true;
@@ -85,7 +86,7 @@ export const Navbar = () => {
   const isVisible = !(pathname === "/" && isHeroVisible);
 
   return (
-    <header className={`fixed top-0 w-full z-50 flex justify-center pt-3 sm:pt-6 px-3 sm:px-6 pointer-events-none transition-all duration-500 ${isVisible ? "opacity-100" : "opacity-0"} ${hidden ? '-translate-y-full' : 'translate-y-0'}`}>
+    <header className={`fixed top-0 w-full z-50 flex justify-center pt-3 sm:pt-6 px-3 sm:px-6 pointer-events-none transition-all duration-500 ${isVisible && settingsLoaded ? "opacity-100" : "opacity-0"} ${hidden ? '-translate-y-full' : 'translate-y-0'}`}>
       <motion.div
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
