@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { getSiteSettings, updateSiteSettings } from "@/lib/firestore";
-import { CloudinaryUploadWidget } from "@/components/admin/CloudinaryUploadWidget";
+import { R2UploadWidget } from "@/components/admin/R2UploadWidget";
 import { revalidatePathAction } from "@/app/actions";
 import {
   Save, Loader2, Globe, Image as ImageIcon, Link as LinkIcon, ChevronDown,
@@ -152,19 +152,19 @@ export default function GlobalSettingsPage() {
           <div>
             <label className="block text-sm font-medium text-primary-text mb-2">Global Logo (Default Theme)</label>
             <p className="text-sm text-muted-text mb-4">Upload the main logo used in the navbar, footer, and admin dashboard for the dark theme.</p>
-            <CloudinaryUploadWidget onUpload={(url) => setGlobalLogoUrl(url)} currentUrl={globalLogoUrl} label="Logo Image" />
+            <R2UploadWidget onUpload={(url) => setGlobalLogoUrl(url)} currentUrl={globalLogoUrl} label="Logo Image" />
           </div>
           {theme === "editorial" && (
             <div>
               <label className="block text-sm font-medium text-primary-text mb-2">Editorial Logo</label>
               <p className="text-sm text-muted-text mb-4">Upload the logo specifically used when the Editorial theme is active.</p>
-              <CloudinaryUploadWidget onUpload={(url) => setEditorialLogoUrl(url)} currentUrl={editorialLogoUrl} label="Editorial Logo Image" />
+              <R2UploadWidget onUpload={(url) => setEditorialLogoUrl(url)} currentUrl={editorialLogoUrl} label="Editorial Logo Image" />
             </div>
           )}
           <div>
             <label className="block text-sm font-medium text-primary-text mb-2">Open Graph Image (Social Share Image)</label>
             <p className="text-sm text-muted-text mb-4">This image appears when you share the website link on platforms like iMessage, Twitter, and LinkedIn. (Recommended size: 1200x630px)</p>
-            <CloudinaryUploadWidget onUpload={(url) => setGlobalOgImageUrl(url)} currentUrl={globalOgImageUrl} label="OG Image" />
+            <R2UploadWidget onUpload={(url) => setGlobalOgImageUrl(url)} currentUrl={globalOgImageUrl} label="OG Image" />
           </div>
         </div>
       </Section>

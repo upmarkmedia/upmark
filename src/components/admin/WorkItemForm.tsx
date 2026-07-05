@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { CloudinaryUploadWidget } from "./CloudinaryUploadWidget";
+import { R2UploadWidget } from "./R2UploadWidget";
 import { Loader2 } from "lucide-react";
 import type { WorkItem, WorkItemCategory } from "@/types";
 
@@ -270,7 +270,7 @@ export function WorkItemForm({
       </div>
 
       {/* Media Uploads */}
-      <CloudinaryUploadWidget
+      <R2UploadWidget
         onUpload={(url) => setValue("imageUrl", url)}
         currentUrl={imageUrl}
         label="Card Image / Thumbnail *"
@@ -279,7 +279,7 @@ export function WorkItemForm({
 
       {category !== "Production" && (
         <>
-          <CloudinaryUploadWidget
+          <R2UploadWidget
             onUpload={(url) => setValue("mediaUrl", url)}
             currentUrl={mediaUrl}
             label="Media Upload (Video)"
@@ -310,7 +310,7 @@ export function WorkItemForm({
               </div>
             ))}
             <div className="aspect-video">
-              <CloudinaryUploadWidget
+              <R2UploadWidget
                 onUpload={(url) => setValue("galleryUrls", [...galleryUrls, url])}
                 label="Add Media"
                 multiple={true}

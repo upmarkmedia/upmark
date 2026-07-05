@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm, useFieldArray } from "react-hook-form";
-import { CloudinaryUploadWidget } from "./CloudinaryUploadWidget";
+import { R2UploadWidget } from "./R2UploadWidget";
 import { Plus, Trash2, Loader2 } from "lucide-react";
 import type { CaseStudy, CaseStudyCategory } from "@/types";
 
@@ -358,7 +358,7 @@ export function CaseStudyForm({
       </div>
 
       {/* Media Upload (Video) */}
-      <CloudinaryUploadWidget
+      <R2UploadWidget
         onUpload={(url) => setValue("mediaUrl", url)}
         currentUrl={mediaUrl}
         label="Media Upload (Video)"
@@ -366,7 +366,7 @@ export function CaseStudyForm({
       <input type="hidden" {...register("mediaUrl")} />
 
       {/* Image Upload (Card thumbnail) */}
-      <CloudinaryUploadWidget
+      <R2UploadWidget
         onUpload={(url) => setValue("imageUrl", url)}
         currentUrl={imageUrl}
         label="Card Image / Thumbnail"

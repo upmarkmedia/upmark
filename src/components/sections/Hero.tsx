@@ -11,8 +11,8 @@ interface HeroProps {
 
 export const Hero = ({ videoUrl }: HeroProps) => {
   const { isIdle, isHeroVisible } = useIdle();
-  const defaultVideo = "https://res.cloudinary.com/demo/video/upload/q_auto:good,f_auto/v1614264627/docs/cld-video-default.mp4";
-  const defaultPoster = "https://res.cloudinary.com/demo/video/upload/so_0/v1614264627/video/cld-video-default-poster.jpg";
+  const defaultVideo = "";
+  const defaultPoster = "";
 
   const currentVideoUrl = videoUrl || defaultVideo;
 

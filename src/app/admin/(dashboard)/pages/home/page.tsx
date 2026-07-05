@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { getSiteSettings, updateSiteSettings, getServices } from "@/lib/firestore";
-import { CloudinaryUploadWidget } from "@/components/admin/CloudinaryUploadWidget";
+import { R2UploadWidget } from "@/components/admin/R2UploadWidget";
 import { SeoSection } from "@/components/admin/ui/SeoSection";
 import { revalidatePathAction } from "@/app/actions";
 import {
@@ -182,7 +182,7 @@ export default function HomePageSettings() {
         <div>
           <label className="block text-sm font-medium text-primary-text mb-2">Background Video</label>
           <p className="text-sm text-muted-text mb-4">Upload an MP4 or WebM video for the hero background.</p>
-          <CloudinaryUploadWidget onUpload={(url) => setHeroVideoUrl(url)} currentUrl={heroVideoUrl} label="Hero Background Video" fit="cover" height="h-[28rem]" />
+          <R2UploadWidget onUpload={(url) => setHeroVideoUrl(url)} currentUrl={heroVideoUrl} label="Hero Background Video" fit="cover" height="h-[28rem]" />
         </div>
       </Section>
 
@@ -209,7 +209,7 @@ export default function HomePageSettings() {
           <div>
             <label className="block text-sm font-medium text-primary-text mb-2">About Us Image</label>
             <p className="text-sm text-muted-text mb-4">Upload the image used in the Philosophy / About section on the homepage.</p>
-            <CloudinaryUploadWidget onUpload={(url) => setHomeAboutImageUrl(url)} currentUrl={homeAboutImageUrl} label="About Us Image" />
+            <R2UploadWidget onUpload={(url) => setHomeAboutImageUrl(url)} currentUrl={homeAboutImageUrl} label="About Us Image" />
           </div>
         </div>
       </Section>
@@ -312,7 +312,7 @@ export default function HomePageSettings() {
                 </div>
                 <div>
                   <label className="block text-xs text-muted-text mb-2">Step Image</label>
-                  <CloudinaryUploadWidget onUpload={(url) => { const arr = [...processSteps]; arr[i] = { ...arr[i], imageUrl: url }; setProcessSteps(arr); }} currentUrl={s.imageUrl} label="Upload Image" />
+                  <R2UploadWidget onUpload={(url) => { const arr = [...processSteps]; arr[i] = { ...arr[i], imageUrl: url }; setProcessSteps(arr); }} currentUrl={s.imageUrl} label="Upload Image" />
                 </div>
               </div>
             </div>
@@ -365,7 +365,7 @@ export default function HomePageSettings() {
                 </div>
                 <div>
                   <label className="block text-xs text-muted-text mb-1">Logo (optional)</label>
-                  <CloudinaryUploadWidget
+                  <R2UploadWidget
                     onUpload={(url) => { const arr = [...brandCarouselItems]; arr[i] = { ...arr[i], logoUrl: url }; setBrandCarouselItems(arr); }}
                     currentUrl={brand.logoUrl}
                     label="Upload Logo"

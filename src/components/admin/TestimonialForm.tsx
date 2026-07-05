@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { CloudinaryUploadWidget } from "./CloudinaryUploadWidget";
+import { R2UploadWidget } from "./R2UploadWidget";
 import { Loader2, Star } from "lucide-react";
 import type { Testimonial } from "@/types";
 
@@ -148,7 +148,7 @@ export function TestimonialForm({
       </div>
 
       {/* Image Upload */}
-      <CloudinaryUploadWidget
+      <R2UploadWidget
         onUpload={(url) => setValue("imageUrl", url)}
         currentUrl={imageUrl}
         label="Author Image"

@@ -77,7 +77,7 @@ export function SeoSection({
           </div>
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-medium text-primary-text">OG Image URL</label>
-            <input value={config.ogImage || ""} onChange={(e) => onChange("ogImage", e.target.value)} placeholder="https://res.cloudinary.com/... (1200x630 recommended)" className={inputClass} />
+            <input value={config.ogImage || ""} onChange={(e) => onChange("ogImage", e.target.value)} placeholder="https://pub-a71a6003788f4fc991bb79126b750fc0.r2.dev/... (1200x630 recommended)" className={inputClass} />
           </div>
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-medium text-primary-text">Keywords</label>

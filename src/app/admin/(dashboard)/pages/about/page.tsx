@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { getSiteSettings, updateSiteSettings } from "@/lib/firestore";
 import { SeoSection } from "@/components/admin/ui/SeoSection";
 import { revalidatePathAction } from "@/app/actions";
+import { uploadToR2 } from "@/lib/upload";
 import {
   Save, Loader2, ChevronDown, Plus, Trash2, Users, BadgeCheck,
   Info, GripVertical, FileText, Upload,
@@ -216,45 +217,26 @@ export default function AboutPageSettings() {
                   <div className="lg:w-[300px] flex-shrink-0 p-4">
                     <div className="relative w-full max-w-[280px] mx-auto">
                       <label className="text-xs font-medium text-muted-text mb-2 block">Card Preview</label>
-                      <div
-                        className="group relative bg-secondary-surface/40 border border-primary-text/10 rounded-xl overflow-hidden cursor-pointer transition-all duration-300 aspect-[3/4]"
-                        onClick={() => {
-                          if (!window.cloudinary) return;
-                          const widget = window.cloudinary.createUploadWidget(
-                            {
-                              cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
-                              uploadPreset: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET,
-                              sources: ["local", "url", "camera"],
-                              multiple: false,
-                              maxFileSize: 50000000,
-                              resourceType: "auto",
-                              styles: {
-                                palette: {
-                                  window: "#1E293B",
-                                  sourceBg: "#0F172A",
-                                  windowBorder: "#3B82F6",
-                                  tabIcon: "#3B82F6",
-                                  inactiveTabIcon: "#94A3B8",
-                                  menuIcons: "#3B82F6",
-                                  link: "#3B82F6",
-                                  action: "#3B82F6",
-                                  inProgress: "#3B82F6",
-                                  complete: "#22C55E",
-                                  error: "#EF4444",
-                                  textDark: "#0F172A",
-                                  textLight: "#F8FAFC",
-                                },
-                              },
-                            },
-                            (error: unknown, result: { event: string; info: { secure_url: string } }) => {
-                              if (!error && result.event === "success") {
-                                updateMember("imageUrl", result.info.secure_url);
+                      <label
+                        className="group relative bg-secondary-surface/40 border border-primary-text/10 rounded-xl overflow-hidden cursor-pointer transition-all duration-300 aspect-[3/4] block"
+                      >
+                        <input 
+                          type="file" 
+                          className="hidden" 
+                          accept="image/*"
+                          onChange={async (e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              try {
+                                const url = await uploadToR2(file);
+                                updateMember("imageUrl", url);
+                              } catch (err) {
+                                console.error(err);
+                                alert("Upload failed");
                               }
                             }
-                          );
-                          widget.open();
-                        }}
-                      >
+                          }}
+                        />
                         {member.imageUrl ? (
                           /* eslint-disable-next-line @next/next/no-img-element */
                           <img
@@ -295,7 +277,7 @@ export default function AboutPageSettings() {
                           <h3 className="text-sm font-bold text-white truncate">{member.name || "Name"}</h3>
                           <p className="text-xs font-semibold text-blue-400 truncate">{member.specialty || "Specialty"}</p>
                         </div>
-                      </div>
+                      </label>
                     </div>
                   </div>
 
@@ -354,45 +336,26 @@ export default function AboutPageSettings() {
                   <div className="lg:w-[300px] flex-shrink-0 p-4">
                     <div className="relative w-full max-w-[280px] mx-auto">
                       <label className="text-xs font-medium text-muted-text mb-2 block">Card Preview</label>
-                      <div
-                        className="group relative bg-secondary-surface/40 border border-primary-text/10 rounded-xl overflow-hidden cursor-pointer transition-all duration-300 aspect-[3/4]"
-                        onClick={() => {
-                          if (!window.cloudinary) return;
-                          const widget = window.cloudinary.createUploadWidget(
-                            {
-                              cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
-                              uploadPreset: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET,
-                              sources: ["local", "url", "camera"],
-                              multiple: false,
-                              maxFileSize: 50000000,
-                              resourceType: "auto",
-                              styles: {
-                                palette: {
-                                  window: "#1E293B",
-                                  sourceBg: "#0F172A",
-                                  windowBorder: "#3B82F6",
-                                  tabIcon: "#3B82F6",
-                                  inactiveTabIcon: "#94A3B8",
-                                  menuIcons: "#3B82F6",
-                                  link: "#3B82F6",
-                                  action: "#3B82F6",
-                                  inProgress: "#3B82F6",
-                                  complete: "#22C55E",
-                                  error: "#EF4444",
-                                  textDark: "#0F172A",
-                                  textLight: "#F8FAFC",
-                                },
-                              },
-                            },
-                            (error: unknown, result: { event: string; info: { secure_url: string } }) => {
-                              if (!error && result.event === "success") {
-                                updateInvestor("imageUrl", result.info.secure_url);
+                      <label
+                        className="group relative bg-secondary-surface/40 border border-primary-text/10 rounded-xl overflow-hidden cursor-pointer transition-all duration-300 aspect-[3/4] block"
+                      >
+                        <input 
+                          type="file" 
+                          className="hidden" 
+                          accept="image/*"
+                          onChange={async (e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              try {
+                                const url = await uploadToR2(file);
+                                updateInvestor("imageUrl", url);
+                              } catch (err) {
+                                console.error(err);
+                                alert("Upload failed");
                               }
                             }
-                          );
-                          widget.open();
-                        }}
-                      >
+                          }}
+                        />
                         {investor.imageUrl ? (
                           /* eslint-disable-next-line @next/next/no-img-element */
                           <img
@@ -433,7 +396,7 @@ export default function AboutPageSettings() {
                           <h3 className="text-sm font-bold text-white truncate">{investor.name || "Name"}</h3>
                           <p className="text-xs font-semibold text-amber-400 truncate">{investor.specialty || "Specialty"}</p>
                         </div>
-                      </div>
+                      </label>
                     </div>
                   </div>
 

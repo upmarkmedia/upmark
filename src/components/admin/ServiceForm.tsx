@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { CloudinaryUploadWidget } from "./CloudinaryUploadWidget";
+import { R2UploadWidget } from "./R2UploadWidget";
 import { Loader2 } from "lucide-react";
 import type { Service } from "@/types";
 
@@ -145,7 +145,7 @@ export function ServiceForm({
       </div>
 
       {/* Icon Upload */}
-      <CloudinaryUploadWidget
+      <R2UploadWidget
         onUpload={(url) => setValue("icon_url", url)}
         currentUrl={iconUrl}
         label="Service Icon"

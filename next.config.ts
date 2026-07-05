@@ -23,6 +23,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "res.cloudinary.com",
       },
+      {
+        protocol: "https",
+        hostname: "pub-a71a6003788f4fc991bb79126b750fc0.r2.dev",
+      },
     ],
   },
 };
