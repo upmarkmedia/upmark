@@ -82,12 +82,12 @@ export const Hero = ({ videoUrl }: HeroProps) => {
               loop
               playsInline
               className="object-cover w-full h-full"
-              poster={!videoUrl ? defaultPoster : undefined}
+              poster={!videoUrl && defaultPoster ? defaultPoster : undefined}
               preload="metadata"
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
             >
-              <source src={currentVideoUrl} type="video/mp4" />
+              {currentVideoUrl ? <source src={currentVideoUrl} type="video/mp4" /> : null}
             </video>
           </div>
         </div>
