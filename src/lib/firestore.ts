@@ -47,9 +47,14 @@ export async function updateSiteSettings(
 const caseStudiesRef = collection(db, "case_studies");
 
 export async function getCaseStudies(): Promise<CaseStudy[]> {
-  const q = query(caseStudiesRef, orderBy("createdAt", "desc"));
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }) as CaseStudy);
+  try {
+    const q = query(caseStudiesRef, orderBy("createdAt", "desc"));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }) as CaseStudy);
+  } catch (error) {
+    console.error("Error fetching case studies:", error);
+    return [];
+  }
 }
 
 export async function getCaseStudyById(
@@ -93,9 +98,14 @@ export async function deleteCaseStudy(id: string): Promise<void> {
 const workRef = collection(db, "work");
 
 export async function getWorkItems(): Promise<WorkItem[]> {
-  const q = query(workRef, orderBy("createdAt", "desc"));
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }) as WorkItem);
+  try {
+    const q = query(workRef, orderBy("createdAt", "desc"));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }) as WorkItem);
+  } catch (error) {
+    console.error("Error fetching work items:", error);
+    return [];
+  }
 }
 
 export async function getWorkItemById(id: string): Promise<WorkItem | null> {
@@ -148,9 +158,14 @@ export async function batchUpdateWorkItems(
 const servicesRef = collection(db, "services");
 
 export async function getServices(): Promise<Service[]> {
-  const q = query(servicesRef, orderBy("createdAt", "desc"));
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }) as Service);
+  try {
+    const q = query(servicesRef, orderBy("createdAt", "desc"));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }) as Service);
+  } catch (error) {
+    console.error("Error fetching services:", error);
+    return [];
+  }
 }
 
 export async function getServiceById(id: string): Promise<Service | null> {
