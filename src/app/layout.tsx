@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Poppins, Inter } from "next/font/google";
 import "./globals.css";
 import { LayoutShell } from "@/components/layout/LayoutShell";
-import { getSiteSettings } from "@/lib/firestore";
+import { getAdminSiteSettings as getSiteSettings } from "@/lib/firebase-admin";
 
 export const dynamic = "force-dynamic";
 
@@ -71,7 +71,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const settings = await getSiteSettings();
-  const themeClass = settings?.theme === "editorial" ? "theme-editorial" : "dark";
+  const themeSetting = settings?.theme || "v1";
+  let themeClass = "theme-v1"; // default
+  if (themeSetting === "editorial" || themeSetting === "v2") themeClass = "theme-v2";
+  else if (themeSetting === "v3") themeClass = "theme-v3";
+  else if (themeSetting === "default" || themeSetting === "v1") themeClass = "theme-v1";
 
   return (
     <html lang="en" className={`${themeClass} overflow-x-clip`}>

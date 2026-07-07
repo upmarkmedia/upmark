@@ -1,7 +1,8 @@
 import { initializeApp, getApps, cert, type App } from "firebase-admin/app";
 import { getFirestore, type Firestore } from "firebase-admin/firestore";
+import type { SiteSettings } from "@/types";
 
-// Server-side Firebase Admin SDK — used in API routes only.
+// Server-side Firebase Admin SDK — used in API routes and server components.
 // This uses service account credentials (not exposed to the browser).
 // Initialization is lazy to avoid build-time errors with placeholder env vars.
 
@@ -29,4 +30,16 @@ export function getAdminDb(): Firestore {
   if (_db) return _db;
   _db = getFirestore(getAdminApp());
   return _db;
+}
+
+export async function getAdminSiteSettings(): Promise<SiteSettings | null> {
+  try {
+    const db = getAdminDb();
+    const snapshot = await db.collection("settings").doc("global").get();
+    if (!snapshot.exists) return null;
+    return snapshot.data() as SiteSettings;
+  } catch (error) {
+    console.error("Error fetching site settings (admin):", error);
+    return null;
+  }
 }

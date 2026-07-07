@@ -212,7 +212,7 @@ export interface PageVisibility {
 
 export interface SiteSettings {
   // Global Assets
-  theme?: "default" | "editorial";
+  theme?: "v1" | "v2" | "v3" | "default" | "editorial"; // Keeping legacy types temporarily for backward compatibility during runtime, but we'll migrate them.
   globalLogoUrl?: string;
   editorialLogoUrl?: string;
   globalOgImageUrl?: string;

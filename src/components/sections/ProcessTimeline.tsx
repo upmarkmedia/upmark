@@ -50,7 +50,7 @@ export const ProcessTimeline = ({ steps }: ProcessTimelineProps) => {
               <ScrollReveal key={step.id} delay={index * 0.05}>
                 <button
                   onClick={() => setActiveStep(index)}
-                  className={`group w-full text-left flex items-start gap-3 sm:gap-4 md:gap-6 p-3 sm:p-4 md:p-5 rounded-2xl transition-colors duration-300 relative ${
+                  className={`group w-full text-left flex items-start gap-3 sm:gap-4 md:gap-6 p-3 sm:p-4 md:p-5 rounded-sm transition-colors duration-300 relative ${
                     isActive
                       ? "bg-accent-blue/8 border border-accent-blue/20"
                       : "bg-transparent border border-transparent hover:bg-primary-text/[0.02] hover:border-primary-text/5"
@@ -60,7 +60,7 @@ export const ProcessTimeline = ({ steps }: ProcessTimelineProps) => {
                   <div
                     className={`relative z-10 flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-heading font-black text-sm transition-colors duration-300 ${
                       isActive
-                        ? "bg-accent-blue text-white shadow-[0_0_20px_rgba(59,130,246,0.4)]"
+                        ? "bg-accent-blue text-primary-text"
                         : "bg-secondary-surface border border-primary-text/10 text-primary-text/40 group-hover:text-primary-text/70 group-hover:border-primary-text/20"
                     }`}
                   >
@@ -109,7 +109,7 @@ export const ProcessTimeline = ({ steps }: ProcessTimelineProps) => {
 
       {/* Right: Dynamic Detail Panel */}
       <div className="lg:w-5/12 w-full lg:sticky lg:top-32">
-        <div className="relative w-full aspect-[4/3] sm:aspect-[4/5] rounded-[1.5rem] sm:rounded-[2rem] border border-primary-text/10 bg-secondary-surface/30 overflow-hidden">
+        <div className="relative w-full aspect-[4/3] sm:aspect-[4/5] rounded-sm border border-primary-text/10 bg-secondary-surface/30 overflow-hidden">
           {/* Background glow — reduced blur radii */}
           <div className="absolute -top-20 -right-20 w-64 h-64 bg-accent-blue/10 rounded-full blur-[50px] pointer-events-none" />
           <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-accent-gold/5 rounded-full blur-[50px] pointer-events-none" />

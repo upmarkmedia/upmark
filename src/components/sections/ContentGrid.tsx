@@ -29,7 +29,7 @@ export const ContentGrid = ({ items, columns = 3, type = "standard" }: ContentGr
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.4, delay: index * 0.06, ease: [0.25, 0.4, 0, 1] }}
-          className="group relative bg-secondary-surface/40 border border-primary-text/10 p-5 sm:p-8 md:p-10 rounded-2xl sm:rounded-[2rem] hover:border-accent-blue/40 transition-colors duration-300 overflow-hidden shadow-xl hover:shadow-[0_0_40px_rgba(59,130,246,0.1)]"
+          className="group relative bg-secondary-surface/40 border border-primary-text/10 p-5 sm:p-8 md:p-10 rounded-sm hover:border-accent-blue/40 transition-colors duration-300 overflow-hidden shadow-xl"
         >
           {/* Top Highlight Edge – kept lightweight (pure opacity toggle) */}
           <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-primary-text/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -47,7 +47,7 @@ export const ContentGrid = ({ items, columns = 3, type = "standard" }: ContentGr
           )}
           
           {type === "icon" && item.icon && (
-            <div className="w-16 h-16 bg-primary-bg/80 shadow-inner border border-primary-text/10 rounded-2xl flex items-center justify-center text-accent-blue mb-8 group-hover:bg-accent-blue/10 group-hover:border-accent-blue/30 transition-colors duration-300">
+            <div className="w-16 h-16 bg-primary-bg/80 shadow-inner border border-primary-text/10 rounded-sm flex items-center justify-center text-accent-blue mb-8 group-hover:bg-accent-blue/10 group-hover:border-accent-blue/30 transition-colors duration-300">
               {item.icon}
             </div>
           )}

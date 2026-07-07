@@ -1,8 +1,9 @@
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { getSiteSettings } from "@/lib/firestore";
+import { getAdminSiteSettings as getSiteSettings } from "@/lib/firebase-admin";
 import { AboutCardGrid } from "@/components/ui/AboutCardGrid";
+import { ParsedHeading } from "@/components/ui/ParsedHeading";
 
 export const metadata: Metadata = {
   title: "About Us | Upmark",
@@ -43,16 +44,15 @@ export default async function AboutPage() {
       {/* ─── About Section ─── */}
       <section className="container mx-auto px-4 sm:px-6 mb-16 sm:mb-24">
         <div className="text-primary-text">
-          <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-6 inline-flex items-center gap-4">
-            <span className="w-8 h-[1px] bg-accent-blue"></span>
-            {aboutEyebrow}
-          </span>
+           <span className="text-secondary-surface-dark font-extrabold tracking-[0.2em] uppercase text-xl mb-3">
+             {aboutEyebrow}
+           </span>
 
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading text-primary-text tracking-tight leading-tight mb-4" dangerouslySetInnerHTML={{ __html: aboutTitle }} />
-          <h2 className="text-xl sm:text-2xl md:text-3xl mt-4 mb-6 sm:mb-8 font-semibold" dangerouslySetInnerHTML={{ __html: aboutSubtitle }} />
+           <ParsedHeading text={aboutTitle} as="h1" className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading text-primary-text tracking-tight leading-tight mb-4 uppercase" />
+           <h2 className="text-xl sm:text-2xl md:text-3xl mt-4 mb-6 sm:mb-8 font-semibold" dangerouslySetInnerHTML={{ __html: aboutSubtitle }} />
 
           <div className="relative">
-            <div className="float-right ml-6 sm:ml-8 lg:ml-10 mb-4 w-[300px] sm:w-[400px] lg:w-[500px] relative aspect-square rounded-3xl overflow-hidden border border-primary-text/10 shadow-2xl">
+            <div className="float-right ml-6 sm:ml-8 lg:ml-10 mb-4 w-[300px] sm:w-[400px] lg:w-[500px] relative aspect-square rounded-sm overflow-hidden border border-primary-text/10 shadow-2xl">
               <div className="absolute inset-0 bg-gradient-to-tr from-accent-blue/10 to-accent-gold/5 rounded-full blur-[40px] sm:blur-[60px] pointer-events-none"></div>
               {aboutImageUrl.match(/\.(mp4|webm|ogg|mov)$/i) ? (
                 <video
@@ -84,13 +84,13 @@ export default async function AboutPage() {
 
           <div className="clear-both flex flex-row items-center justify-start gap-3 w-full">
             {show("services") && (
-              <Link href="/services" className="group relative flex items-center justify-center gap-3 bg-accent-blue text-white px-5 py-3 rounded-lg font-semibold text-sm overflow-hidden transition-[transform] hover:scale-[1.02] active:scale-95 shadow-[0_0_30px_-10px_rgba(59,130,246,0.6)]">
+              <Link href="/services" className="group relative flex items-center justify-center gap-3 bg-accent-blue text-white px-5 py-3 rounded-sm font-semibold text-sm overflow-hidden transition-[transform] hover:scale-[1.02] active:scale-95">
                 <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-600 to-accent-blue opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <span className="relative z-10">Our Services</span>
               </Link>
             )}
             {show("contact") && (
-              <Link href="/contact" className="group flex items-center justify-center px-5 py-3 rounded-lg font-semibold text-sm text-primary-text bg-primary-text/5 border border-primary-text/10 hover:bg-primary-text/10 hover:border-primary-text/20 transition-colors duration-200">
+              <Link href="/contact" className="group flex items-center justify-center px-5 py-3 rounded-sm font-semibold text-sm text-primary-text bg-primary-text/5 border border-primary-text/10 hover:bg-primary-text/10 hover:border-primary-text/20 transition-colors duration-200">
                 Get in touch
               </Link>
             )}
@@ -102,12 +102,10 @@ export default async function AboutPage() {
       {teamVisible && (
         <section id="team" className="container mx-auto px-4 sm:px-6 mb-16 sm:mb-24 scroll-mt-32">
           <div className="text-center mb-10 sm:mb-14">
-            <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-4 block inline-flex items-center gap-4">
-              <span className="w-8 h-[1px] bg-accent-blue"></span>
+            <span className="text-secondary-surface-dark font-extrabold tracking-[0.2em] uppercase text-xl mb-3">
               {teamEyebrow}
-              <span className="w-8 h-[1px] bg-accent-blue"></span>
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black font-heading text-primary-text tracking-tight mb-4" dangerouslySetInnerHTML={{ __html: teamTitle }} />
+            <ParsedHeading text={teamTitle} as="h2" className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading text-primary-text tracking-tight leading-tight mb-4 uppercase" />
             <p className="text-muted-text text-base sm:text-lg max-w-2xl font-light mx-auto">
               {teamDescription}
             </p>
@@ -121,12 +119,10 @@ export default async function AboutPage() {
       {investorsVisible && (
         <section id="investors" className="container mx-auto px-4 sm:px-6 mb-16 sm:mb-24 scroll-mt-32">
           <div className="text-center mb-10 sm:mb-14">
-            <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-4 block inline-flex items-center gap-4">
-              <span className="w-8 h-[1px] bg-accent-blue"></span>
+            <span className="text-secondary-surface-dark font-extrabold tracking-[0.2em] uppercase text-xl mb-3">
               {investorsEyebrow}
-              <span className="w-8 h-[1px] bg-accent-blue"></span>
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black font-heading text-primary-text tracking-tight mb-4" dangerouslySetInnerHTML={{ __html: investorsTitle }} />
+            <ParsedHeading text={investorsTitle} as="h2" className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading text-primary-text tracking-tight leading-tight mb-4 uppercase" />
             <p className="text-muted-text text-base sm:text-lg max-w-2xl font-light mx-auto">
               {investorsDescription}
             </p>
@@ -137,9 +133,9 @@ export default async function AboutPage() {
       )}
 
       {/* ─── CTA Section ─── */}
-      <section className="graphite-grid rounded-2xl sm:rounded-3xl my-16 sm:my-24 mx-4 sm:mx-6">
+      <section className="graphite-grid rounded-sm my-16 sm:my-24 mx-4 sm:mx-6">
         <div className="relative z-10 py-16 sm:py-24 text-center max-w-4xl mx-auto px-4">
-          <h2 className="text-3xl sm:text-4xl md:text-6xl font-black font-heading text-white tracking-tight mb-6 sm:mb-8" dangerouslySetInnerHTML={{ __html: ctaTitle }} />
+          <ParsedHeading text={ctaTitle} as="h2" className="text-3xl sm:text-4xl md:text-6xl font-black font-heading text-white tracking-tight mb-6 sm:mb-8 uppercase" highlight="white" />
           <p className="text-base sm:text-xl text-white/70 mb-8 sm:mb-12 font-light max-w-2xl mx-auto">
             {ctaDescription}
           </p>
@@ -147,9 +143,9 @@ export default async function AboutPage() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
               <Link
                 href="/contact"
-                className="group relative px-6 py-4 sm:px-10 sm:py-5 rounded-full font-bold text-lg bg-accent-blue text-white transition-all justify-center hover:scale-[1.02] active:scale-95 shadow-[0_0_40px_-10px_rgba(59,130,246,0.6)] hover:shadow-[0_0_50px_-10px_rgba(59,130,246,0.8)]"
+                className="group relative px-6 py-4 sm:px-10 sm:py-5 rounded-sm font-bold text-lg bg-accent-blue text-white transition-all justify-center hover:scale-[1.02] active:scale-95"
               >
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-600 to-accent-blue opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="absolute inset-0 rounded-sm bg-gradient-to-r from-blue-600 to-accent-blue opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <span className="relative z-10">Start a conversation</span>
               </Link>
             </div>

@@ -46,9 +46,10 @@ export const FloatingCTA = () => {
       style={{ contain: "layout style" }}
     >
       <Link href="/contact" className="group">
-        <div className="relative bg-gradient-to-r from-accent-blue via-blue-500 to-indigo-500 text-white font-semibold px-5 py-4 sm:px-8 sm:py-4 rounded-full flex items-center gap-2 sm:gap-3 overflow-hidden shadow-[0_8px_30px_-10px_rgba(59,130,246,0.7)] border border-white/20 transition-transform duration-200 group-hover:scale-[1.03]">
+        <div className="relative bg-accent-blue text-primary-text font-semibold px-5 py-4 sm:px-8 sm:py-4 rounded-sm flex items-center gap-2 sm:gap-3 overflow-hidden transition-transform duration-200 group-hover:scale-[1.03]">
           <Rocket size={18} className="relative z-10 sm:w-5 sm:h-5" />
           <span className="relative z-10 text-sm sm:text-base">Get started!</span>
+          <svg className="relative z-10 w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
         </div>
       </Link>
     </motion.div>

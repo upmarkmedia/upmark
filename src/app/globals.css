@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
-:root {
+:root, .theme-v1 {
+  /* v1: Dark Theme (Rich Black background) */
   --color-primary-bg-var: #0F172A;
   --color-secondary-surface-var: #1E293B;
   --color-accent-blue-var: #3B82F6;
@@ -10,7 +11,8 @@
   --color-muted-text-var: #94A3B8;
 }
 
-.theme-editorial {
+.theme-v2 {
+  /* v2: Editorial Theme (Light Ivory) */
   --color-primary-bg-var: #F5F3EF;
   --color-secondary-surface-var: #E7E2DA;
   --color-accent-blue-var: #4F46E5;
@@ -20,13 +22,43 @@
   --color-muted-text-var: #4C545E;
 }
 
+.theme-v3 {
+  /* v3: Hospitality Theme — Warm Ivory, Rich Black, Signal Yellow */
+  --color-primary-bg-var: #F5F1EB;
+  --color-secondary-surface-var: #DCD6CB;
+  --color-accent-blue-var: #F4C401;
+  --color-accent-gold-var: #F4C401;
+  --color-accent-gold-rgb: 244, 196, 1;
+  --color-primary-text-var: #0A0A0A;
+  --color-muted-text-var: #5C584F;
+
+  /* Slightly darker Soft Stone for better contrast on warm ivory */
+  --color-secondary-surface-dark-var: #B5AFA2;
+
+  /* Contrast sections (hero, footer, CTA blocks) */
+  --color-contrast-bg-var: #0A0A0A;
+  --color-contrast-bg-rgb: 10, 10, 10;
+  --color-contrast-text-var: #F5F1EB;
+
+  /* Button palette */
+  --color-btn-primary-bg: #0A0A0A;
+  --color-btn-primary-text: #F5F1EB;
+  --color-btn-accent-bg: #F4C401;
+  --color-btn-accent-text: #0A0A0A;
+  --color-btn-secondary-border: #DCD6CB;
+}
+
 @theme inline {
   --color-primary-bg: var(--color-primary-bg-var);
   --color-secondary-surface: var(--color-secondary-surface-var);
+  --color-secondary-surface-dark: var(--color-secondary-surface-dark-var);
   --color-accent-blue: var(--color-accent-blue-var);
   --color-accent-gold: var(--color-accent-gold-var);
   --color-primary-text: var(--color-primary-text-var);
   --color-muted-text: var(--color-muted-text-var);
+
+  --color-contrast-bg: var(--color-contrast-bg-var);
+  --color-contrast-text: var(--color-contrast-text-var);
 
   --font-heading: var(--font-poppins), sans-serif;
   --font-body: var(--font-inter), sans-serif;
@@ -56,10 +88,10 @@
 /* Custom utility for the cinematic glow */
 @layer utilities {
   .glow-blue {
-    filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.15));
+    filter: drop-shadow(0 0 15px rgba(var(--color-accent-gold-rgb), 0.15));
   }
   .glow-blue-lg {
-    filter: drop-shadow(0 0 25px rgba(59, 130, 246, 0.15));
+    filter: drop-shadow(0 0 25px rgba(var(--color-accent-gold-rgb), 0.15));
   }
   .glow-gold {
     filter: drop-shadow(0 0 15px rgba(var(--color-accent-gold-rgb), 0.15));
@@ -204,8 +236,8 @@ html {
 
 /* ─── Flicker animation for the unmute button ─── */
 @keyframes flicker {
-  0%, 100% { opacity: 1; box-shadow: 0 0 8px rgba(59, 130, 246, 0.3); }
-  50% { opacity: 0.6; box-shadow: 0 0 20px rgba(59, 130, 246, 0.7); }
+  0%, 100% { opacity: 1; box-shadow: 0 0 8px rgba(var(--color-accent-gold-rgb), 0.3); }
+  50% { opacity: 0.6; box-shadow: 0 0 20px rgba(var(--color-accent-gold-rgb), 0.7); }
 }
 .animate-flicker {
   animation: flicker 2s ease-in-out infinite;

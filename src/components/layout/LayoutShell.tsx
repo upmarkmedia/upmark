@@ -27,7 +27,7 @@ export function LayoutShell({ children }: { children: ReactNode }) {
     <IdleProvider>
       <CustomCursor />
       <Navbar />
-      <main className="flex-grow pb-28 md:pb-0">
+      <main className="flex-grow">
         <PageTransition>{children}</PageTransition>
       </main>
       <Footer />

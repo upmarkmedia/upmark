@@ -286,7 +286,7 @@ export function ServicesExplorer() {
       </div>
 
       {/* ── Mobile layout: accordion ── */}
-      <div className="flex md:hidden flex-col divide-y divide-white/8 border border-white/10 rounded-2xl overflow-hidden">
+      <div className="flex md:hidden flex-col divide-y divide-white/8 border border-white/10 rounded-sm overflow-hidden">
         {SERVICES.map((svc, i) => {
           const isActive = active === i;
           return (

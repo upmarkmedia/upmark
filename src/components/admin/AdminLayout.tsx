@@ -103,13 +103,17 @@ export function AdminLayout({ children }: { children: ReactNode }) {
   useEffect(() => {
     getSiteSettings()
       .then(settings => {
-        if (settings?.theme === "editorial") {
-          document.documentElement.classList.remove("dark");
-          document.documentElement.classList.add("theme-editorial");
+        const theme = settings?.theme || "v1";
+        document.documentElement.classList.remove("dark", "theme-editorial", "theme-v1", "theme-v2", "theme-v3");
+        
+        if (theme === "editorial" || theme === "v2") {
+          document.documentElement.classList.add("theme-v2");
+          if (settings?.editorialLogoUrl) setLogoUrl(settings.editorialLogoUrl);
+        } else if (theme === "v3") {
+          document.documentElement.classList.add("theme-v3");
           if (settings?.editorialLogoUrl) setLogoUrl(settings.editorialLogoUrl);
         } else {
-          document.documentElement.classList.remove("theme-editorial");
-          document.documentElement.classList.add("dark");
+          document.documentElement.classList.add("theme-v1");
           if (settings?.globalLogoUrl) setLogoUrl(settings.globalLogoUrl);
         }
       })

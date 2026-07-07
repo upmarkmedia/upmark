@@ -49,7 +49,7 @@ export const TestimonialsCarousel = ({ testimonials, maxItems = 3, section }: Te
     <section className="container mx-auto px-4 sm:px-6 relative z-10">
       <HorizontalCarousel
         label={section?.label || "CLIENT STORIES"}
-        title={section?.title || <>Don&apos;t just take <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-indigo-400">our word for it.</span></>}
+        title={section?.title || <>Don&apos;t just take <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-accent-gold">our word for it.</span></>}
       >
         {displayTestimonials.map((t) => (
           <div
@@ -57,7 +57,7 @@ export const TestimonialsCarousel = ({ testimonials, maxItems = 3, section }: Te
             onClick={() => openPreview(t)}
             className="snap-start flex-shrink-0 w-[320px] sm:w-[400px] md:w-[450px] cursor-pointer group"
           >
-            <div className="relative z-10 bg-secondary-surface/60 border border-primary-text/10 p-6 sm:p-8 rounded-2xl sm:rounded-3xl overflow-hidden h-full flex flex-col gap-6 hover:border-accent-blue/30 transition-[border-color,box-shadow] duration-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
+            <div className="relative z-10 bg-secondary-surface/60 border border-primary-text/10 p-6 sm:p-8 rounded-sm overflow-hidden h-full flex flex-col gap-6 hover:border-accent-blue/30 transition-[border-color] duration-300">
               <Quote size={32} className="text-primary-text/10 flex-shrink-0" />
               <p className="text-sm sm:text-base font-light text-primary-text leading-relaxed italic flex-grow line-clamp-5">
                 &quot;{t.quote}&quot;

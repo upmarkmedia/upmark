@@ -20,7 +20,8 @@ function LoginForm() {
 
   useEffect(() => {
     getSiteSettings().then(data => {
-      if (data?.theme === "editorial") {
+      const theme = data?.theme || "v1";
+      if (theme === "editorial" || theme === "v2" || theme === "v3") {
         if (data?.editorialLogoUrl) setLogoUrl(data.editorialLogoUrl);
       } else {
         if (data?.globalLogoUrl) setLogoUrl(data.globalLogoUrl);

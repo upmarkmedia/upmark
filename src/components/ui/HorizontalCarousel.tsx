@@ -59,14 +59,12 @@ export function HorizontalCarousel({
         <div className="flex items-end justify-between mb-8 sm:mb-10">
           <div>
             {label && (
-              <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-4 block inline-flex items-center gap-4">
-                <span className="w-8 h-[1px] bg-accent-blue"></span>
+              <span className="text-secondary-surface-dark font-extrabold tracking-[0.2em] uppercase text-xl mb-3">
                 {label}
-                <span className="w-8 h-[1px] bg-accent-blue"></span>
               </span>
             )}
             {title && (
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black font-heading text-primary-text tracking-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading text-primary-text tracking-tight leading-tight uppercase">
                 {title}
               </h2>
             )}

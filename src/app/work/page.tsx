@@ -146,14 +146,12 @@ export default function WorkPage() {
       {headerVisible && (
       <section className="container mx-auto px-4 sm:px-6 relative z-10 mb-16 sm:mb-20">
         <ScrollReveal className="text-center flex flex-col items-center">
-          <span className="text-accent-gold font-bold tracking-[0.2em] uppercase text-xs mb-4 block inline-flex items-center gap-4">
-             <span className="w-8 h-[1px] bg-accent-gold"></span>
-             OUR WORK
-             <span className="w-8 h-[1px] bg-accent-gold"></span>
-          </span>
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-black font-heading text-primary-text tracking-tight mb-4 sm:mb-6">
-             Results that speak <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-gold to-yellow-400">for themselves.</span>
-          </h1>
+           <span className="text-secondary-surface-dark font-extrabold tracking-[0.2em] uppercase text-xl mb-3">
+              OUR WORK
+           </span>
+           <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold font-heading text-primary-text tracking-tight leading-tight mb-4 sm:mb-6 uppercase">
+              Results that speak <span className="text-accent-gold">for themselves.</span>
+           </h1>
           <p className="text-muted-text text-base sm:text-xl max-w-2xl font-light">
              Real campaigns, real results. Each project below represents a complete marketing system built, launched and optimised by Upmark.
           </p>
@@ -175,7 +173,7 @@ export default function WorkPage() {
               onClick={() => { setSelectedCs(cs); setCsPreviewOpen(true); }}
               className="snap-start flex-shrink-0 cursor-pointer group"
             >
-              <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-secondary-surface/40 border border-primary-text/10 hover:border-accent-blue/30 transition-[border-color,box-shadow] duration-200 aspect-square w-[300px] sm:w-[420px] flex hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
+              <div className="relative rounded-sm overflow-hidden bg-secondary-surface/40 border border-primary-text/10 hover:border-accent-blue/30 transition-[border-color,box-shadow] duration-200 aspect-square w-[300px] sm:w-[420px] flex">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={cs.imageUrl || "/images/placeholder.png"}
@@ -223,7 +221,7 @@ export default function WorkPage() {
               onClick={() => { setSelectedPf(item); setPfPreviewOpen(true); }}
               className="snap-start flex-shrink-0 cursor-pointer group"
             >
-              <div className="relative rounded-2xl overflow-hidden bg-secondary-surface/40 border border-primary-text/10 hover:border-accent-blue/30 transition-[border-color]">
+              <div className="relative rounded-sm overflow-hidden bg-secondary-surface/40 border border-primary-text/10 hover:border-accent-blue/30 transition-[border-color]">
                 <div className="aspect-square w-[300px] sm:w-[420px] relative overflow-hidden flex">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors z-10"></div>
 

@@ -1,12 +1,15 @@
 import { Hero } from "@/components/sections/Hero";
-import { PlaySquare, CheckCircle2, ArrowRight } from "lucide-react";
+import { PlaySquare, CheckCircle2, ArrowRight, Send } from "lucide-react";
 import * as LucideIcons from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { getSiteSettings, getFeaturedTestimonials, getServices } from "@/lib/firestore";
+import { getAdminSiteSettings as getSiteSettings } from "@/lib/firebase-admin";
+import { getFeaturedTestimonials, getServices } from "@/lib/firestore";
 import { TestimonialsCarousel } from "@/components/sections/TestimonialsCarousel";
 import { BrandCarousel } from "@/components/sections/BrandCarousel";
 import { ProcessOrbital } from "@/components/interactive-diagram";
+import { ContactForm } from "@/components/forms/ContactForm";
+import { parseHighlighted } from "@/lib/parseHighlighted";
 
 // ─── Default content (fallbacks when admin hasn't configured) ────────
 
@@ -38,19 +41,6 @@ const DEFAULT_BRANDS = [
   { name: "Google" }, { name: "Meta" }, { name: "Shopify" }, { name: "Stripe" },
   { name: "Notion" }, { name: "Figma" }, { name: "Vercel" }, { name: "Slack" },
 ];
-
-function parseHighlighted(text: string, type: "gradient" | "gold"): React.ReactNode[] {
-  const parts = text.split(/\*\*(.+?)\*\*/g);
-  return parts.map((part, i) => {
-    if (i % 2 === 1) {
-      if (type === "gradient") {
-        return <span key={i} className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-indigo-400">{part}</span>;
-      }
-      return <span key={i} className="text-accent-gold">{part}</span>;
-    }
-    return <span key={i}>{part}</span>;
-  });
-}
 
 export default async function Home() {
   const [settings, testimonials, rawServices] = await Promise.all([
@@ -88,7 +78,6 @@ export default async function Home() {
   }));
   const studioCapabilities = settings?.studioCapabilities?.length ? settings.studioCapabilities : DEFAULT_STUDIO_CAPABILITIES;
   const brandCarouselItems = settings?.brandCarouselItems?.length ? settings.brandCarouselItems : DEFAULT_BRANDS;
-  const aboutImageUrl = settings?.homeAboutImageUrl || "/images/philosophy.png";
   const homeAboutEyebrow = settings?.homeAboutEyebrow || "ABOUT US";
   const homeAboutTitle = settings?.homeAboutTitle || "Most agencies only **create content** or run ads.";
   const homeAboutSubtitle = settings?.homeAboutSubtitle || "Upmark builds **complete marketing systems.**";
@@ -102,100 +91,81 @@ export default async function Home() {
   const studioCapVisible = show("homeStudioCapabilities") && studioCapabilities.length > 0;
   const testimonialsVisible = show("homeTestimonials") && testimonials.length > 0;
   const brandCarouselVisible = show("homeBrandCarousel") && brandCarouselItems.length > 0;
+  const contactVisible = show("homeContact");
 
   if (!pageVisible) return null;
 
   return (
-    <div className="flex flex-col pb-16 sm:pb-24 md:pb-28 relative">
+    <div className="flex flex-col relative">
       {/* Hero + Brand Carousel — flush, no gaps */}
       {heroVisible && <Hero videoUrl={settings?.heroVideoUrl} />}
       {brandCarouselVisible && <BrandCarousel brands={brandCarouselItems} />}
 
       {/* Remaining sections with gaps */}
-      <div className="flex flex-col gap-12 sm:gap-16 md:gap-24 pt-12 sm:pt-16 md:pt-24">
+      <div className="flex flex-col gap-12 sm:gap-16 md:gap-24 pt-4 sm:pt-16 md:pt-24">
       {/* About Section */}
       {aboutVisible && (
-      <section id="about" className="container mx-auto px-4 sm:px-6 scroll-mt-32">
-        <div className="flex flex-col lg:flex-row gap-10 sm:gap-12 lg:gap-16 mb-12 sm:mb-20 text-primary-text items-center">
-          {/* Left Side */}
-          <div className="lg:w-7/12 flex flex-col items-start pr-0 lg:pr-10">
-            <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-6 inline-flex items-center gap-4">
-              <span className="w-8 h-[1px] bg-accent-blue"></span>
-              {homeAboutEyebrow}
-            </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading text-primary-text tracking-tight leading-tight mb-6 sm:mb-4">
-              {parseHighlighted(homeAboutTitle, "gradient")}
-            </h2>
-            <h3 className="text-xl sm:text-2xl md:text-3xl mt-4 mb-6 sm:mb-8 font-semibold">
-              {parseHighlighted(homeAboutSubtitle, "gold")}
-            </h3>
-            <div className="flex flex-col gap-4 sm:gap-6 text-muted-text font-light text-base sm:text-lg mb-8 sm:mb-10">
-              {homeAboutDescription.split("\n\n").filter(Boolean).map((p, i) => (
-                <p key={i}>{p}</p>
-              ))}
+      <section id="about" className="container mx-auto px-4 sm:px-6 scroll-mt-32 overflow-hidden">
+        <div className="mb-6 sm:mb-20 text-primary-text">
+          <div className="flex flex-col lg:flex-row gap-4 sm:gap-12 lg:gap-16 items-start">
+            {/* Left: Heading */}
+            <div className="lg:w-1/2 flex flex-col items-start min-w-0">
+              <span className="text-secondary-surface-dark font-extrabold tracking-[0.2em] uppercase text-lg sm:text-xl mb-2 sm:mb-3">
+                {homeAboutEyebrow}
+              </span>
+              <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold font-heading text-primary-text tracking-tight leading-tight mb-3 sm:mb-4 uppercase break-words">
+                {parseHighlighted(homeAboutTitle, "gradient")}
+              </h2>
+              <h3 className="text-lg sm:text-2xl md:text-3xl mt-2 sm:mt-4 font-semibold">
+                {parseHighlighted(homeAboutSubtitle, "gold")}
+              </h3>
             </div>
-          </div>
-
-          {/* Right Side Visual */}
-          <div className="lg:w-5/12 w-full flex justify-center items-center relative min-h-[200px] sm:min-h-[400px]">
-            <div className="absolute inset-0 bg-gradient-to-tr from-accent-blue/10 to-accent-gold/5 rounded-full blur-[40px] sm:blur-[60px] pointer-events-none"></div>
-            <div className="relative w-full aspect-square max-w-[260px] sm:max-w-[450px] rounded-3xl overflow-hidden border border-primary-text/10 shadow-2xl">
-              {aboutImageUrl.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-                <video
-                  src={aboutImageUrl}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <Image
-                  src={aboutImageUrl}
-                  alt="Upmark strategy session — marketing team brainstorming around data-driven insights"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 40vw"
-                  priority
-                />
-              )}
+            {/* Right: Description */}
+            <div className="lg:w-1/2 flex flex-col gap-3 sm:gap-6 text-muted-text font-light text-sm sm:text-lg pt-0 lg:pt-14">
+              {homeAboutDescription.split("\n\n").filter(Boolean).map((p, i) => (
+                <p key={i} className={i > 0 ? "hidden sm:block" : ""}>{p}</p>
+              ))}
             </div>
           </div>
         </div>
 
         {/* Featured Services */}
         {show("services") && featuredServices.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5">
-          {featuredServices.map((s, i) => {
-            const hoverColors = [
-              "hover:bg-blue-500 hover:border-blue-500",
-              "hover:bg-violet-500 hover:border-violet-500",
-              "hover:bg-emerald-500 hover:border-emerald-500",
-              "hover:bg-amber-500 hover:border-amber-500",
-            ];
-            return (
-              <Link key={s.id || i} href={`/services#${s.id}`} className={`group p-6 sm:p-7 min-h-[220px] sm:min-h-[260px] rounded-3xl bg-secondary-surface/60 backdrop-blur-sm border border-primary-text/8 shadow-[0_4px_24px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)] ${hoverColors[i]} transition-all duration-500 ease-out relative overflow-hidden flex flex-col justify-between hover:scale-[1.02]`}>
+        <>
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-5">
+          {featuredServices.slice(0, 4).map((s, i) => (
+              <Link key={s.id || i} href={`/services#${s.id}`} className={`group p-4 sm:p-6 min-h-[140px] sm:min-h-[200px] rounded-sm border border-primary-text/8 transition-all duration-300 relative overflow-hidden flex flex-col justify-between ${i % 2 === 0 ? 'bg-secondary-surface hover:bg-accent-blue' : 'bg-primary-bg hover:bg-accent-blue'}`}>
                 <div className="relative z-10">
-                  <div className="w-12 h-12 rounded-2xl bg-accent-blue/10 text-accent-blue group-hover:bg-white/20 group-hover:text-white flex items-center justify-center mb-4 sm:mb-5 transition-all duration-300 group-hover:rotate-3 group-hover:scale-110">
-                    {s.icon && <s.icon size={22} />}
+                  <div className="mb-3 sm:mb-4">
+                    {s.icon && <s.icon size={32} strokeWidth={1.5} />}
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold font-heading text-primary-text group-hover:text-white mb-2 sm:mb-3 transition-colors duration-300">{s.title}</h3>
-                  <p className="text-muted-text/80 group-hover:text-white/75 text-sm sm:text-[15px] font-light leading-relaxed line-clamp-4 transition-colors duration-300">{s.description}</p>
-                </div>
-                <div className="flex items-center gap-2 mt-4 text-accent-blue group-hover:text-white text-sm font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-3 group-hover:translate-y-0 relative z-10">
-                  Learn more <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  <h3 className="text-xs sm:text-sm font-bold font-heading text-primary-text uppercase tracking-wider mb-1 sm:mb-1.5">{s.title}</h3>
+                  <p className="text-muted-text text-[12px] sm:text-[13px] font-light leading-relaxed line-clamp-2 sm:line-clamp-3">{s.description}</p>
                 </div>
               </Link>
-            );
-          })}
-          {/* Explore More Services arrow */}
-          <Link href="/services" className="group p-6 sm:p-7 min-h-[220px] sm:min-h-[260px] rounded-3xl bg-gradient-to-br from-accent-blue/8 to-accent-blue/4 border border-accent-blue/15 hover:bg-accent-blue hover:border-accent-blue transition-all duration-500 ease-out flex flex-col items-center justify-center gap-4 relative overflow-hidden hover:scale-[1.02] hover:shadow-[0_12px_40px_rgba(99,102,241,0.25)]">
-            <div className="w-14 h-14 rounded-full bg-accent-blue/15 text-accent-blue group-hover:bg-white/20 group-hover:text-white flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-45">
-              <ArrowRight size={24} />
+          ))}
+          {/* Explore More - full width on mobile, 5th column on desktop */}
+          <Link href="/services" className="hidden lg:flex group p-6 min-h-[200px] rounded-sm bg-secondary-surface hover:bg-accent-blue border border-primary-text/8 transition-all duration-300 relative overflow-hidden flex-col justify-between">
+            <div className="relative z-10">
+              <div className="mb-4">
+                <ArrowRight size={40} strokeWidth={1.5} />
+              </div>
+              <h3 className="text-sm font-bold font-heading text-primary-text uppercase tracking-wider mb-1.5">Explore More</h3>
+              <p className="text-muted-text text-[13px] font-light leading-relaxed">See all our services and how we can help your brand grow.</p>
             </div>
-            <span className="text-sm sm:text-base font-semibold text-accent-blue group-hover:text-white transition-colors duration-300">Explore More Services</span>
           </Link>
         </div>
+          {/* Explore More - visible only on mobile, full width */}
+          <Link href="/services" className="lg:hidden group p-4 min-h-[100px] rounded-sm bg-secondary-surface hover:bg-accent-blue border border-primary-text/8 transition-all duration-300 relative overflow-hidden flex flex-col justify-between mt-3">
+            <div className="relative z-10">
+              <div className="mb-3">
+                <ArrowRight size={32} strokeWidth={1.5} />
+              </div>
+              <h3 className="text-xs font-bold font-heading text-primary-text uppercase tracking-wider mb-1">Explore More</h3>
+              <p className="text-muted-text text-[12px] font-light leading-relaxed">See all our services and how we can help your brand grow.</p>
+            </div>
+          </Link>
+        </>
         )}
       </section>
       )}
@@ -211,19 +181,17 @@ export default async function Home() {
       {(contentStudioVisible || studioCapVisible) && (
       <section className="container mx-auto px-4 sm:px-6 relative z-10 content-visibility-auto">
         <div className="mb-10 sm:mb-20 text-center flex flex-col items-center">
-          <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-4 block inline-flex items-center gap-4">
-            <span className="w-8 h-[1px] bg-accent-blue"></span>
+          <span className="text-secondary-surface-dark font-extrabold tracking-[0.2em] uppercase text-xl mb-3">
             CONTENT THAT CONVERTS
-            <span className="w-8 h-[1px] bg-accent-blue"></span>
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-6xl font-black font-heading text-primary-text tracking-tight mb-4 sm:mb-6">Production <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-blue-400">Studio</span></h2>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading text-primary-text tracking-tight leading-tight mb-4 sm:mb-6 uppercase">Production <span className="text-accent-blue">Studio</span></h2>
           <p className="text-muted-text text-base sm:text-xl max-w-2xl font-light">Our production team creates across every format — from viral reels to cinematic brand films. All in-house. All on-brand.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
           <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
             {contentStudioVisible && contentItems.map((item) => (
-              <div key={item.id} className="p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-secondary-surface/40 border border-primary-text/5 text-center flex flex-col items-center">
+              <div key={item.id} className="p-5 sm:p-8 rounded-sm bg-secondary-surface/40 border border-primary-text/5 text-center flex flex-col items-center">
                 <div className="text-accent-blue font-bold text-xs uppercase tracking-widest mb-3">{item.subtitle}</div>
                 <h3 className="text-xl sm:text-2xl font-bold text-primary-text mb-2 sm:mb-3">{item.title}</h3>
                 <p className="text-muted-text font-light text-base">{item.description}</p>
@@ -233,8 +201,8 @@ export default async function Home() {
 
           {/* Studio Capabilities feature block */}
           {studioCapVisible && (
-          <div className="lg:col-span-1 p-6 sm:p-10 rounded-2xl sm:rounded-3xl bg-accent-blue/5 border border-accent-blue/20 flex flex-col justify-center">
-            <div className="w-12 h-12 rounded-xl bg-accent-blue/20 text-accent-blue flex items-center justify-center mb-6"><PlaySquare size={24} /></div>
+          <div className="lg:col-span-1 p-6 sm:p-10 rounded-sm bg-accent-blue/5 border border-accent-blue/20 flex flex-col justify-center">
+            <div className="w-12 h-12 rounded-sm bg-accent-blue/20 text-accent-blue flex items-center justify-center mb-6"><PlaySquare size={24} /></div>
             <h3 className="text-xl sm:text-2xl font-black text-primary-text mb-4 sm:mb-6">Studio Capabilities</h3>
             <p className="text-muted-text mb-6 sm:mb-8 text-base">Professional production infrastructure available to every Upmark client.</p>
 
@@ -256,6 +224,29 @@ export default async function Home() {
       {testimonialsVisible && <TestimonialsCarousel testimonials={testimonials} />}
 
       </div>
+
+      {/* Contact Section — flush, no gaps */}
+      {contactVisible && (
+      <section id="contact" className="bg-accent-blue scroll-mt-32 overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 py-10 sm:py-24 md:py-32">
+          <div className="flex flex-col lg:flex-row gap-6 sm:gap-12 lg:gap-16 items-start">
+            {/* Left: Heading */}
+            <div className="lg:w-1/2 flex flex-col items-start min-w-0 self-center">
+              <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold font-heading text-[#0A0A0A] tracking-tight leading-tight mb-4 sm:mb-4 uppercase break-words">
+                LET&apos;S <span className="text-white">CREATE</span><br />SOMETHING <span className="text-white">GREAT</span>
+              </h2>
+              <p className="text-[#0A0A0A]/80 text-sm sm:text-xl md:text-2xl max-w-lg font-semibold">
+                Have a project in mind? We&apos;d love to hear about it. Fill out the form and our team will get back to you within 24 hours.
+              </p>
+            </div>
+            {/* Right: Contact Form */}
+            <div className="lg:w-1/2 w-full pt-0 lg:pt-14">
+              <ContactForm variant="yellow" />
+            </div>
+          </div>
+        </div>
+      </section>
+      )}
     </div>
   );
 }

@@ -68,7 +68,7 @@ export const Hero = ({ videoUrl }: HeroProps) => {
       <div>
         {/* Aspect ratio: taller on mobile, wider on desktop */}
         <div className="relative w-full aspect-[16/9] sm:aspect-[21/9]">
-          <div className="absolute inset-0 z-0 bg-primary-bg overflow-hidden">
+          <div className="absolute inset-0 z-0 bg-contrast-bg overflow-hidden">
             {/* Ambient glow */}
             <div className="absolute inset-0 opacity-30 mix-blend-screen pointer-events-none">
               <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-accent-blue/15 blur-[80px]" />

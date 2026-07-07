@@ -35,7 +35,7 @@ export default function GlobalSettingsPage() {
 
   const [globalLogoUrl, setGlobalLogoUrl] = useState("");
   const [editorialLogoUrl, setEditorialLogoUrl] = useState("");
-  const [theme, setTheme] = useState<"default" | "editorial">("default");
+  const [theme, setTheme] = useState<"v1" | "v2" | "v3" | "default" | "editorial">("v1");
   const [globalOgImageUrl, setGlobalOgImageUrl] = useState("");
   
   const [socialTwitter, setSocialTwitter] = useState("");
@@ -56,7 +56,7 @@ export default function GlobalSettingsPage() {
         if (data) {
           setGlobalLogoUrl(data.globalLogoUrl || "");
           setEditorialLogoUrl(data.editorialLogoUrl || "");
-          setTheme(data.theme || "default");
+          setTheme(data.theme || "v1");
           setGlobalOgImageUrl(data.globalOgImageUrl || "");
           setSocialTwitter(data.socialTwitter || "");
           setSocialLinkedin(data.socialLinkedin || "");
@@ -142,11 +142,12 @@ export default function GlobalSettingsPage() {
             <p className="text-sm text-muted-text mb-4">Choose the primary visual theme for the public website and admin dashboard.</p>
             <select
               value={theme}
-              onChange={(e) => setTheme(e.target.value as "default" | "editorial")}
+              onChange={(e) => setTheme(e.target.value as any)}
               className={inputClass}
             >
-              <option value="default">Default Dark Tech</option>
-              <option value="editorial">Editorial (Light)</option>
+              <option value="v1">v1 - Dark Mode (Rich Black)</option>
+              <option value="v2">v2 - Light Mode (Editorial Ivory)</option>
+              <option value="v3">v3 - Hospitality (Warm Ivory & Signal Yellow)</option>
             </select>
           </div>
           <div>

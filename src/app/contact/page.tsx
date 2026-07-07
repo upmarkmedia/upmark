@@ -1,6 +1,6 @@
 import { ContactForm } from "@/components/forms/ContactForm";
 import { Metadata } from "next";
-import { getSiteSettings } from "@/lib/firestore";
+import { getAdminSiteSettings as getSiteSettings } from "@/lib/firebase-admin";
 import { Mail, Phone, MapPin } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -33,13 +33,11 @@ export default async function ContactPage() {
 
             {(infoVisible || formVisible) && (
             <div className="text-center mb-6 sm:mb-8 relative z-10">
-               <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-2 block inline-flex items-center gap-4">
-                  <span className="w-8 h-[1px] bg-accent-blue"></span>
+               <span className="text-secondary-surface-dark font-extrabold tracking-[0.2em] uppercase text-xl mb-3">
                   LET&apos;S TALK
-                  <span className="w-8 h-[1px] bg-accent-blue"></span>
                </span>
-               <h1 className="text-2xl sm:text-3xl md:text-5xl font-black font-heading text-primary-text tracking-tight mb-3 sm:mb-4">
-                  Ready to <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-blue-400">Grow?</span>
+               <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading text-primary-text tracking-tight leading-tight mb-4 uppercase">
+                  Ready to <span className="text-accent-blue">Grow?</span>
                </h1>
                <p className="text-muted-text text-sm sm:text-lg max-w-2xl font-light mx-auto">
                   Tell us about your project and we&apos;ll get back to you within 24 hours.
@@ -55,7 +53,7 @@ export default async function ContactPage() {
 
                   {/* What happens next — mobile only */}
                   {infoVisible && (
-                  <div className="lg:hidden mt-8 p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-accent-blue/10 to-accent-blue/5 border border-accent-blue/20">
+                  <div className="lg:hidden mt-8 p-5 sm:p-6 rounded-sm bg-gradient-to-br from-accent-blue/10 to-accent-blue/5 border border-accent-blue/20">
                      <h3 className="text-primary-text font-bold mb-4 text-base">What happens next?</h3>
                      <ul className="flex flex-col gap-3">
                         <li className="flex items-center gap-3">
@@ -83,7 +81,7 @@ export default async function ContactPage() {
                {/* Info Column */}
                {infoVisible && (
                <div className="lg:w-1/3 flex flex-col gap-4 sm:gap-6 order-2 lg:order-1">
-                  <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-accent-blue/10 to-accent-blue/5 border border-accent-blue/20 flex flex-col gap-5">
+                   <div className="p-5 sm:p-6 rounded-sm bg-gradient-to-br from-accent-blue/10 to-accent-blue/5 border border-accent-blue/20 flex flex-col gap-5">
                       <div className="flex items-start gap-4">
                          <div className="w-10 h-10 rounded-full bg-accent-blue/15 flex items-center justify-center flex-shrink-0">
                            <Mail size={18} className="text-accent-blue" />

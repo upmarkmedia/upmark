@@ -72,7 +72,6 @@ export default function HomePageSettings() {
   const [successMessage, setSuccessMessage] = useState("");
 
   const [heroVideoUrl, setHeroVideoUrl] = useState("");
-  const [homeAboutImageUrl, setHomeAboutImageUrl] = useState("");
   const [homeAboutEyebrow, setHomeAboutEyebrow] = useState("ABOUT US");
   const [homeAboutTitle, setHomeAboutTitle] = useState("Most agencies only create content or run ads.");
   const [homeAboutSubtitle, setHomeAboutSubtitle] = useState("Upmark builds complete marketing systems.");
@@ -94,7 +93,6 @@ export default function HomePageSettings() {
         setAllServices(services.sort((a, b) => (a.order || 0) - (b.order || 0)));
         if (data) {
           setHeroVideoUrl(data.heroVideoUrl || "");
-          setHomeAboutImageUrl(data.homeAboutImageUrl || "");
           setHomeAboutEyebrow(data.homeAboutEyebrow || "ABOUT US");
           setHomeAboutTitle(data.homeAboutTitle || "Most agencies only create content or run ads.");
           setHomeAboutSubtitle(data.homeAboutSubtitle || "Upmark builds complete marketing systems.");
@@ -127,7 +125,6 @@ export default function HomePageSettings() {
     try {
       await updateSiteSettings({
         heroVideoUrl,
-        homeAboutImageUrl,
         homeAboutEyebrow,
         homeAboutTitle,
         homeAboutSubtitle,
@@ -205,11 +202,6 @@ export default function HomePageSettings() {
           <div>
             <label className="block text-sm font-medium text-primary-text mb-2">Description</label>
             <textarea value={homeAboutDescription} onChange={(e) => setHomeAboutDescription(e.target.value)} placeholder="Body text (use blank lines for paragraph breaks)" className={`${inputClass} resize-none`} rows={5} />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-primary-text mb-2">About Us Image</label>
-            <p className="text-sm text-muted-text mb-4">Upload the image used in the Philosophy / About section on the homepage.</p>
-            <R2UploadWidget onUpload={(url) => setHomeAboutImageUrl(url)} currentUrl={homeAboutImageUrl} label="About Us Image" />
           </div>
         </div>
       </Section>
@@ -398,6 +390,7 @@ export default function HomePageSettings() {
             { key: "homeStudioCapabilities", label: "Studio Capabilities" },
             { key: "homeTestimonials", label: "Testimonials" },
             { key: "homeBrandCarousel", label: "Brand Carousel" },
+            { key: "homeContact", label: "Contact Form" },
           ].map(({ key, label }) => (
             <label key={key} className="flex items-center gap-3 p-3 rounded-lg bg-primary-bg border border-primary-text/5 cursor-pointer hover:border-primary-text/10 transition-colors">
               <input

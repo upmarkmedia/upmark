@@ -2,7 +2,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { CapabilityMap } from "@/components/interactive-diagram";
-import { getServices, getSiteSettings } from "@/lib/firestore";
+import { getAdminSiteSettings as getSiteSettings } from "@/lib/firebase-admin";
+import { getServices } from "@/lib/firestore";
 
 export const metadata: Metadata = {
   title: "Services | Upmark — Full-Stack Marketing Services",
@@ -39,12 +40,11 @@ export default async function ServicesPage() {
       <section className="container mx-auto px-4 sm:px-6 relative z-10">
         {headerVisible && (
         <div className="mb-12 sm:mb-20">
-          <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-4 block flex items-center gap-4">
-            <span className="w-8 h-[1px] bg-accent-blue"></span>
+          <span className="text-secondary-surface-dark font-extrabold tracking-[0.2em] uppercase text-xl mb-3">
             WHAT WE DO
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-6xl font-black font-heading text-primary-text tracking-tight mb-4 sm:mb-6">
-            One agency. <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-blue-400">Every capability.</span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading text-primary-text tracking-tight leading-tight mb-4 sm:mb-6 uppercase">
+            One agency. <span className="text-accent-blue">Every capability.</span>
           </h2>
           <p className="text-muted-text text-base sm:text-xl max-w-2xl font-light">
             From strategy to production to distribution, we cover the full marketing spectrum so you never need another vendor.
@@ -56,7 +56,7 @@ export default async function ServicesPage() {
 
         {/* Global CTA at the bottom */}
         {ctaVisible && (
-        <section className="graphite-grid rounded-2xl sm:rounded-3xl my-16 sm:my-24 mx-4 sm:mx-6">
+        <section className="graphite-grid rounded-sm my-16 sm:my-24 mx-4 sm:mx-6">
           <div className="relative z-10 py-16 sm:py-24 text-center max-w-4xl mx-auto px-4">
             <h2 className="text-3xl sm:text-4xl md:text-6xl font-black font-heading text-white tracking-tight mb-6 sm:mb-8">
               See the thinking in <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-purple-400">action!</span>
@@ -67,13 +67,13 @@ export default async function ServicesPage() {
             <div className="flex flex-row items-center justify-center gap-4 sm:gap-6">
               <Link
                 href="/work"
-                className="bg-white text-black px-6 py-4 sm:px-10 sm:py-5 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 flex items-center gap-3 w-full sm:w-auto justify-center shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-black/30 hover:scale-105 whitespace-nowrap"
+                className="bg-white text-black px-6 py-4 sm:px-10 sm:py-5 rounded-sm font-bold text-lg hover:bg-gray-100 transition-all duration-300 flex items-center gap-3 w-full sm:w-auto justify-center whitespace-nowrap"
               >
                 View our work <ArrowRight size={20} />
               </Link>
               <Link
                 href="/contact"
-                className="px-6 py-4 sm:px-10 sm:py-5 rounded-full font-bold text-lg border-2 border-white/30 text-white hover:bg-white hover:text-black transition-all duration-300 w-full sm:w-auto justify-center hover:shadow-lg hover:shadow-white/20 hover:scale-105"
+                className="px-6 py-4 sm:px-10 sm:py-5 rounded-sm font-bold text-lg border-2 border-white/30 text-white hover:bg-white hover:text-black transition-all duration-300 w-full sm:w-auto justify-center"
               >
                 Contact Us
               </Link>

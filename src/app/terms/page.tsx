@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { getSiteSettings } from "@/lib/firestore";
+import { getAdminSiteSettings as getSiteSettings } from "@/lib/firebase-admin";
 import type { LegalPageSection } from "@/types";
 
 export const metadata: Metadata = {
@@ -65,11 +65,10 @@ export default async function TermsOfServicePage() {
     <div className="pt-24 sm:pt-32 pb-16 sm:pb-32">
       <section className="container mx-auto px-4 sm:px-6 max-w-4xl relative z-10">
         <div className="mb-10 sm:mb-16">
-          <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-4 block flex items-center gap-4">
-            <span className="w-8 h-[1px] bg-accent-blue"></span>
+          <span className="text-secondary-surface-dark font-extrabold tracking-[0.2em] uppercase text-xl mb-3">
             LEGAL
           </span>
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-black font-heading text-primary-text tracking-tight mb-4 sm:mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold font-heading text-primary-text tracking-tight leading-tight mb-4 sm:mb-6 uppercase">
             Terms of Service
           </h1>
           <p className="text-muted-text text-base sm:text-lg font-light">
@@ -92,7 +91,7 @@ export default async function TermsOfServicePage() {
             <p className="text-muted-text leading-relaxed">
               If you have any questions about these Terms of Service, please contact us:
             </p>
-            <div className="bg-secondary-surface/30 border border-primary-text/10 rounded-2xl p-6 space-y-2">
+            <div className="bg-secondary-surface/30 border border-primary-text/10 rounded-sm p-6 space-y-2">
               <p className="text-primary-text font-medium">Upmark Media</p>
               <p className="text-muted-text text-sm">Email: <a href={`mailto:${email}`} className="text-accent-blue hover:underline">{email}</a></p>
               <p className="text-muted-text text-sm">Address: {address}</p>

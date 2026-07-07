@@ -78,7 +78,7 @@ function AboutCard({
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group relative bg-secondary-surface/40 border border-primary-text/5 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)] max-w-sm"
+      className="group relative bg-secondary-surface/40 border border-primary-text/5 rounded-sm overflow-hidden cursor-pointer transition-all duration-300 w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)] max-w-sm"
     >
       <div className="relative h-[300px] sm:h-[420px] overflow-hidden">
         {item.imageUrl ? (

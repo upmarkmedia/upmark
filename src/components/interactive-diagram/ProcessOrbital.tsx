@@ -125,13 +125,11 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
     <div className="graphite-grid py-20 md:py-32 px-4">
       <div className="relative z-10 w-full max-w-7xl mx-auto">
       <div className="text-center mb-0">
-        <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-4 flex items-center justify-center gap-4">
-          <span className="w-8 h-[1px] bg-accent-blue"></span>
+        <span className="text-secondary-surface-dark font-extrabold tracking-[0.2em] uppercase text-xl mb-3">
           HOW WE WORK
-          <span className="w-8 h-[1px] bg-accent-blue"></span>
         </span>
-        <h2 className="text-3xl md:text-5xl font-black font-heading text-white">
-          Our <span className="text-white">6-Step Process</span>
+        <h2 className="text-3xl md:text-5xl font-extrabold font-heading text-white tracking-tight leading-tight uppercase">
+          Our <span className="text-accent-blue">6-Step</span> Process
         </h2>
       </div>
 
@@ -323,8 +321,7 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
           {/* CTA Buttons */}
           <div className="flex flex-row items-center justify-center gap-3 w-full">
             {showServices && (
-              <Link href="/services" className="group relative flex items-center justify-center gap-3 bg-accent-blue text-white px-5 py-3 rounded-lg font-semibold text-sm overflow-hidden transition-[transform] hover:scale-[1.02] active:scale-95 shadow-[0_0_30px_-10px_rgba(59,130,246,0.6)]">
-                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-600 to-accent-blue opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <Link href="/services" className="group relative flex items-center justify-center gap-3 bg-accent-blue text-white px-5 py-3 rounded-lg font-semibold text-sm overflow-hidden transition-all hover:bg-[#0A0A0A] hover:text-white active:scale-95 shadow-[0_0_30px_-10px_rgba(59,130,246,0.6)]">
                 <span className="relative z-10">Our Services</span>
               </Link>
             )}

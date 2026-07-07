@@ -19,14 +19,19 @@ export const HeroNavbar = () => {
 
   useEffect(() => {
     getSiteSettings().then(data => {
-      if (data?.theme === "editorial") {
-        document.documentElement.classList.remove("dark");
-        document.documentElement.classList.add("theme-editorial");
+      const theme = data?.theme || "v1";
+      document.documentElement.classList.remove("dark", "theme-editorial", "theme-v1", "theme-v2", "theme-v3");
+      
+      if (theme === "editorial" || theme === "v2") {
+        document.documentElement.classList.add("theme-v2");
         setIsLight(true);
         if (data?.editorialLogoUrl) setLogoUrl(data.editorialLogoUrl);
+      } else if (theme === "v3") {
+        document.documentElement.classList.add("theme-v3");
+        setIsLight(true); // v3 has Warm Ivory background, so it behaves like a "light" theme for the navbar (dark text)
+        if (data?.editorialLogoUrl) setLogoUrl(data.editorialLogoUrl); // Reusing editorial dark logo for v3 light background
       } else {
-        document.documentElement.classList.remove("theme-editorial");
-        document.documentElement.classList.add("dark");
+        document.documentElement.classList.add("theme-v1");
         setIsLight(false);
         if (data?.globalLogoUrl) setLogoUrl(data.globalLogoUrl);
       }
@@ -76,9 +81,10 @@ export const HeroNavbar = () => {
                 <div key={link.href} className="pl-4 ml-2">
                   <Link
                     href={link.href}
-                    className="group relative inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-accent-blue text-white text-sm font-medium overflow-hidden transition-transform duration-200 hover:scale-105 hover:shadow-lg border border-primary-text/10"
+                    className="group relative inline-flex items-center gap-2 px-6 py-2.5 rounded-sm bg-accent-blue text-primary-text text-sm font-semibold overflow-hidden transition-transform duration-200 hover:scale-105"
                   >
                     <span className="relative z-10">{link.name}</span>
+                    <svg className="relative z-10 w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                   </Link>
                 </div>
               );
@@ -88,7 +94,7 @@ export const HeroNavbar = () => {
               <div key={link.href} className="relative group px-3 py-2">
                 <Link
                   href={link.href}
-                  className={`text-sm font-medium transition-colors duration-200 flex items-center gap-1.5 ${
+                  className={`text-sm font-medium transition-colors duration-200 flex items-center gap-1.5 uppercase tracking-wide ${
                     isActive ? "text-primary-text" : "text-primary-text/70 hover:text-primary-text"
                   }`}
                 >
@@ -156,16 +162,17 @@ export const HeroNavbar = () => {
                     {link.isCTA ? (
                       <Link
                         href={link.href}
-                        className="inline-flex items-center px-7 py-2.5 rounded-full bg-gradient-to-r from-accent-blue to-blue-500 text-white text-[15px] font-medium transition-all duration-300 shadow-[0_2px_12px_rgba(59,130,246,0.35),0_0_20px_rgba(59,130,246,0.15)] hover:shadow-[0_4px_20px_rgba(59,130,246,0.5),0_0_30px_rgba(59,130,246,0.25)]"
+                        className="inline-flex items-center gap-2 px-7 py-2.5 rounded-sm bg-accent-blue text-primary-text text-[15px] font-semibold transition-all duration-300 hover:scale-105"
                       >
                         {link.name}
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                       </Link>
                     ) : (
                       <Link
                         href={link.href}
-                        className={`inline-flex items-center px-5 py-2.5 rounded-full border text-[16px] tracking-wide transition-all duration-300 shadow-[0_2px_10px_rgba(0,0,0,0.25)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.35)] ${
+                        className={`inline-flex items-center px-5 py-2.5 rounded-full border text-[14px] tracking-wider uppercase transition-all duration-300 ${
                           pathname === link.href
-                            ? "border-primary-text/15 bg-primary-bg/90 text-primary-text font-semibold ring-2 ring-inset ring-accent-blue/60 shadow-[0_2px_14px_rgba(59,130,246,0.15)]"
+                            ? "border-primary-text/15 bg-primary-bg/90 text-primary-text font-semibold ring-2 ring-inset ring-accent-blue/60"
                             : "border-primary-text/15 bg-primary-bg/90 text-primary-text/80 hover:text-accent-blue hover:border-accent-blue/40"
                         }`}
                       >

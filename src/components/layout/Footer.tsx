@@ -49,7 +49,7 @@ export const Footer = () => {
 
   return (
     <>
-    <footer className="border-t border-white/5 bg-[#0a0a0a] relative">
+    <footer className="border-t border-white/5 bg-contrast-bg relative">
       {/* Marquee Accent Strip — subtle background texture */}
       <div className="relative overflow-hidden py-4 border-b border-white/5">
         <div className="flex whitespace-nowrap animate-[marquee_40s_linear_infinite]" style={{ willChange: "transform", width: "max-content" }}>
@@ -114,7 +114,7 @@ export const Footer = () => {
               {(settings?.socialTwitter || !settings) && (
                 <li>
                   <a href={settings?.socialTwitter || "https://x.com/upmarkmedia"} target="_blank" rel="noopener noreferrer" className="group/social flex items-center gap-2 text-neutral-400 hover:text-white transition-colors duration-300 text-sm">
-                    <span className="p-1.5 rounded-lg bg-transparent group-hover/social:bg-white/10 transition-colors duration-300">
+                    <span className="p-1.5 rounded-sm bg-transparent group-hover/social:bg-accent-blue/10 transition-colors duration-300">
                       <TwitterIcon size={16} />
                     </span>
                     Twitter / X
@@ -124,7 +124,7 @@ export const Footer = () => {
               {(settings?.socialLinkedin || !settings) && (
                 <li>
                   <a href={settings?.socialLinkedin || "https://linkedin.com/company/upmark"} target="_blank" rel="noopener noreferrer" className="group/social flex items-center gap-2 text-neutral-400 hover:text-white transition-colors duration-300 text-sm">
-                    <span className="p-1.5 rounded-lg bg-transparent group-hover/social:bg-white/10 transition-colors duration-300">
+                    <span className="p-1.5 rounded-sm bg-transparent group-hover/social:bg-accent-blue/10 transition-colors duration-300">
                       <LinkedinIcon size={16} />
                     </span>
                     LinkedIn
@@ -134,7 +134,7 @@ export const Footer = () => {
               {(settings?.socialInstagram || !settings) && (
                 <li>
                   <a href={settings?.socialInstagram || "https://www.instagram.com/upmarkmedia.in"} target="_blank" rel="noopener noreferrer" className="group/social flex items-center gap-2 text-neutral-400 hover:text-white transition-colors duration-300 text-sm">
-                    <span className="p-1.5 rounded-lg bg-transparent group-hover/social:bg-white/10 transition-colors duration-300">
+                    <span className="p-1.5 rounded-sm bg-transparent group-hover/social:bg-accent-blue/10 transition-colors duration-300">
                       <InstagramIcon size={16} />
                     </span>
                     Instagram

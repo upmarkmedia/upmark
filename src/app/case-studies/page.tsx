@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { getSiteSettings } from "@/lib/firestore";
+import { getAdminSiteSettings as getSiteSettings } from "@/lib/firebase-admin";
 
 export const metadata: Metadata = {
   title: "Case Studies | Upmark — Real Results, Real Growth",
@@ -18,15 +18,14 @@ export default async function CaseStudiesPage() {
       <div className="container mx-auto px-4 sm:px-6 flex flex-col gap-16 sm:gap-24 md:gap-32">
         {/* Coming Soon */}
         <div className="max-w-4xl pt-4 sm:pt-10">
-          <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-xs mb-4 block flex items-center gap-4">
-             <span className="w-8 h-[1px] bg-accent-blue"></span>
-             CASE STUDIES
+          <span className="text-secondary-surface-dark font-extrabold tracking-[0.2em] uppercase text-xl mb-3">
+              CASE STUDIES
           </span>
-          <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold font-heading text-primary-text mb-4 sm:mb-6 tracking-tight">content coming soon...</h1>
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-extrabold font-heading text-primary-text mb-4 sm:mb-6 tracking-tight uppercase">content coming soon...</h1>
         </div>
 
         {/* CTA Area */}
-        <section className="graphite-grid rounded-2xl sm:rounded-3xl mx-4 sm:mx-6">
+        <section className="graphite-grid rounded-sm mx-4 sm:mx-6">
           <div className="relative z-10 py-16 sm:py-24 text-center max-w-4xl mx-auto px-4">
             <h2 className="text-3xl sm:text-4xl md:text-6xl font-black font-heading text-white tracking-tight mb-6 sm:mb-8">Ready to compound your growth?</h2>
             <p className="text-base sm:text-xl text-white/70 mb-8 sm:mb-12 font-light max-w-2xl mx-auto">
@@ -34,12 +33,12 @@ export default async function CaseStudiesPage() {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
               {show("contact") && (
-                <Link href="/contact" className="bg-white text-black px-6 py-4 sm:px-10 sm:py-5 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors flex items-center gap-3 w-full sm:w-auto justify-center">
+                <Link href="/contact" className="bg-white text-black px-6 py-4 sm:px-10 sm:py-5 rounded-sm font-bold text-lg hover:bg-gray-100 transition-colors flex items-center gap-3 w-full sm:w-auto justify-center">
                   Start a Project <ArrowRight size={20} />
                 </Link>
               )}
               {show("services") && (
-                <Link href="/services" className="px-6 py-4 sm:px-10 sm:py-5 rounded-full font-bold text-lg border border-white/30 text-white hover:bg-white hover:text-black transition-colors w-full sm:w-auto justify-center hover:border-white/40">
+                <Link href="/services" className="px-6 py-4 sm:px-10 sm:py-5 rounded-sm font-bold text-lg border border-white/30 text-white hover:bg-white hover:text-black transition-colors w-full sm:w-auto justify-center hover:border-white/40">
                   View our services
                 </Link>
               )}

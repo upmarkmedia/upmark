@@ -163,6 +163,7 @@ export default function AboutPageSettings() {
             <div className="flex flex-col gap-3">
               <input value={aboutEyebrow} onChange={(e) => setAboutEyebrow(e.target.value)} placeholder='Eyebrow label (e.g. "ABOUT US")' className={inputClass} />
               <input value={aboutTitle} onChange={(e) => setAboutTitle(e.target.value)} placeholder='Title (e.g. "Most agencies only...")' className={inputClass} />
+              <p className="text-xs text-muted-text">Wrap text in **double asterisks** to highlight in yellow, e.g. **RUN ADS**</p>
               <input value={aboutSubtitle} onChange={(e) => setAboutSubtitle(e.target.value)} placeholder='Subtitle (e.g. "Upmark builds...")' className={inputClass} />
               <textarea value={aboutDescription} onChange={(e) => setAboutDescription(e.target.value)} placeholder="Description (separate paragraphs with a blank line)" className={`${inputClass} resize-none`} rows={4} />
             </div>
@@ -172,6 +173,7 @@ export default function AboutPageSettings() {
             <div className="flex flex-col gap-3">
               <input value={teamEyebrow} onChange={(e) => setTeamEyebrow(e.target.value)} placeholder='Eyebrow label (e.g. "MEET THE TEAM")' className={inputClass} />
               <input value={teamTitle} onChange={(e) => setTeamTitle(e.target.value)} placeholder='Title (e.g. "The people behind the work")' className={inputClass} />
+              <p className="text-xs text-muted-text">Wrap text in **double asterisks** to highlight in yellow</p>
               <textarea value={teamDescription} onChange={(e) => setTeamDescription(e.target.value)} placeholder="Section description" className={`${inputClass} resize-none`} rows={2} />
             </div>
           </div>
@@ -180,6 +182,7 @@ export default function AboutPageSettings() {
             <div className="flex flex-col gap-3">
               <input value={investorsEyebrow} onChange={(e) => setInvestorsEyebrow(e.target.value)} placeholder='Eyebrow label (e.g. "OUR INVESTORS")' className={inputClass} />
               <input value={investorsTitle} onChange={(e) => setInvestorsTitle(e.target.value)} placeholder='Title (e.g. "Backed by visionaries")' className={inputClass} />
+              <p className="text-xs text-muted-text">Wrap text in **double asterisks** to highlight in yellow</p>
               <textarea value={investorsDescription} onChange={(e) => setInvestorsDescription(e.target.value)} placeholder="Section description" className={`${inputClass} resize-none`} rows={2} />
             </div>
           </div>

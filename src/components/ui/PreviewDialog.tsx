@@ -122,7 +122,7 @@ export function PreviewDialog({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative w-auto max-w-[95vw] md:max-w-[90vw] max-h-[95vh] bg-primary-bg rounded-2xl sm:rounded-3xl border border-primary-text/10 overflow-hidden shadow-2xl flex flex-col"
+            className="relative w-auto max-w-[95vw] md:max-w-[90vw] max-h-[95vh] bg-primary-bg rounded-sm border border-primary-text/10 overflow-hidden shadow-2xl flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -175,7 +175,7 @@ export function PreviewDialog({
                   <div className="w-[100vw] sm:w-[800px] max-w-full p-6 sm:p-8 md:p-10 pb-0">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {galleryUrls.map((url, idx) => (
-                        <div key={idx} className="relative aspect-video bg-primary-text/10 rounded-lg overflow-hidden border border-primary-text/10">
+                        <div key={idx} className="relative aspect-video bg-primary-text/10 rounded-sm overflow-hidden border border-primary-text/10">
                           {url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
                             <video src={url} controls playsInline className="w-full h-full object-contain bg-black" />
                           ) : (
