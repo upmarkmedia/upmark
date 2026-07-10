@@ -21,10 +21,12 @@ function LoginForm() {
   useEffect(() => {
     getSiteSettings().then(data => {
       const theme = data?.theme || "v1";
-      if (theme === "editorial" || theme === "v2" || theme === "v3") {
-        if (data?.editorialLogoUrl) setLogoUrl(data.editorialLogoUrl);
+      if (theme === "editorial" || theme === "v2") {
+        setLogoUrl(data?.navbarLogoV2 || data?.editorialLogoUrl || "/upmark-wordmark.png");
+      } else if (theme === "v3") {
+        setLogoUrl(data?.navbarLogoV3 || data?.editorialLogoUrl || "/upmark-wordmark.png");
       } else {
-        if (data?.globalLogoUrl) setLogoUrl(data.globalLogoUrl);
+        setLogoUrl(data?.navbarLogoV1 || data?.globalLogoUrl || "/upmark-wordmark.png");
       }
     }).catch(console.error);
   }, []);

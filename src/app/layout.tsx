@@ -22,11 +22,20 @@ const inter = Inter({
 
 export async function generateMetadata(): Promise<Metadata> {
   let ogImageUrl = "/images/og-image.png";
+  let faviconUrl = "/favicon.ico";
   try {
     const settings = await getSiteSettings();
     if (settings?.globalOgImageUrl) ogImageUrl = settings.globalOgImageUrl;
+    const theme = settings?.theme || "v1";
+    if (theme === "editorial" || theme === "v2") {
+      if (settings?.faviconV2) faviconUrl = settings.faviconV2;
+    } else if (theme === "v3") {
+      if (settings?.faviconV3) faviconUrl = settings.faviconV3;
+    } else {
+      if (settings?.faviconV1) faviconUrl = settings.faviconV1;
+    }
   } catch (error) {
-    console.error("Failed to load globalOgImageUrl:", error);
+    console.error("Failed to load settings:", error);
   }
 
   return {
@@ -35,6 +44,9 @@ export async function generateMetadata(): Promise<Metadata> {
     description: "Upmark is an integrated marketing agency combining strategy, performance marketing, content production and execution into one growth engine. We build complete marketing systems that scale.",
     keywords: ["marketing agency", "performance marketing", "content production", "brand strategy", "digital marketing", "SEO", "social media management", "Upmark"],
     authors: [{ name: "Upmark Media" }],
+    icons: {
+      icon: faviconUrl,
+    },
     openGraph: {
       title: "Upmark Media | Integrated Marketing That Moves Markets",
       description: "Strategy, performance marketing, content and execution — unified. We build complete marketing systems that scale.",

@@ -108,13 +108,13 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         
         if (theme === "editorial" || theme === "v2") {
           document.documentElement.classList.add("theme-v2");
-          if (settings?.editorialLogoUrl) setLogoUrl(settings.editorialLogoUrl);
+          setLogoUrl(settings?.navbarLogoV2 || settings?.editorialLogoUrl || "/upmark-wordmark.png");
         } else if (theme === "v3") {
           document.documentElement.classList.add("theme-v3");
-          if (settings?.editorialLogoUrl) setLogoUrl(settings.editorialLogoUrl);
+          setLogoUrl(settings?.navbarLogoV3 || settings?.editorialLogoUrl || "/upmark-wordmark.png");
         } else {
           document.documentElement.classList.add("theme-v1");
-          if (settings?.globalLogoUrl) setLogoUrl(settings.globalLogoUrl);
+          setLogoUrl(settings?.navbarLogoV1 || settings?.globalLogoUrl || "/upmark-wordmark.png");
         }
       })
       .catch(console.error);

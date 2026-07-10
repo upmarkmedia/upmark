@@ -215,6 +215,14 @@ export interface SiteSettings {
   theme?: "v1" | "v2" | "v3" | "default" | "editorial"; // Keeping legacy types temporarily for backward compatibility during runtime, but we'll migrate them.
   globalLogoUrl?: string;
   editorialLogoUrl?: string;
+  // Per-theme navbar logos
+  navbarLogoV1?: string;
+  navbarLogoV2?: string;
+  navbarLogoV3?: string;
+  // Per-theme favicons
+  faviconV1?: string;
+  faviconV2?: string;
+  faviconV3?: string;
   globalOgImageUrl?: string;
   // Home Page Assets
   homeAboutImageUrl?: string;

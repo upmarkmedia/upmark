@@ -36,6 +36,12 @@ export default function GlobalSettingsPage() {
   const [globalLogoUrl, setGlobalLogoUrl] = useState("");
   const [editorialLogoUrl, setEditorialLogoUrl] = useState("");
   const [theme, setTheme] = useState<"v1" | "v2" | "v3" | "default" | "editorial">("v1");
+  const [navbarLogoV1, setNavbarLogoV1] = useState("");
+  const [navbarLogoV2, setNavbarLogoV2] = useState("");
+  const [navbarLogoV3, setNavbarLogoV3] = useState("");
+  const [faviconV1, setFaviconV1] = useState("");
+  const [faviconV2, setFaviconV2] = useState("");
+  const [faviconV3, setFaviconV3] = useState("");
   const [globalOgImageUrl, setGlobalOgImageUrl] = useState("");
   
   const [socialTwitter, setSocialTwitter] = useState("");
@@ -57,6 +63,12 @@ export default function GlobalSettingsPage() {
           setGlobalLogoUrl(data.globalLogoUrl || "");
           setEditorialLogoUrl(data.editorialLogoUrl || "");
           setTheme(data.theme || "v1");
+          setNavbarLogoV1(data.navbarLogoV1 || "");
+          setNavbarLogoV2(data.navbarLogoV2 || "");
+          setNavbarLogoV3(data.navbarLogoV3 || "");
+          setFaviconV1(data.faviconV1 || "");
+          setFaviconV2(data.faviconV2 || "");
+          setFaviconV3(data.faviconV3 || "");
           setGlobalOgImageUrl(data.globalOgImageUrl || "");
           setSocialTwitter(data.socialTwitter || "");
           setSocialLinkedin(data.socialLinkedin || "");
@@ -86,6 +98,12 @@ export default function GlobalSettingsPage() {
         theme,
         globalLogoUrl,
         editorialLogoUrl,
+        navbarLogoV1,
+        navbarLogoV2,
+        navbarLogoV3,
+        faviconV1,
+        faviconV2,
+        faviconV3,
         globalOgImageUrl,
         socialTwitter,
         socialLinkedin,
@@ -150,19 +168,61 @@ export default function GlobalSettingsPage() {
               <option value="v3">v3 - Hospitality (Warm Ivory & Signal Yellow)</option>
             </select>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-primary-text mb-2">Global Logo (Default Theme)</label>
-            <p className="text-sm text-muted-text mb-4">Upload the main logo used in the navbar, footer, and admin dashboard for the dark theme.</p>
-            <R2UploadWidget onUpload={(url) => setGlobalLogoUrl(url)} currentUrl={globalLogoUrl} label="Logo Image" />
+
+          <div className="pt-4 border-t border-primary-text/5">
+            <p className="text-sm font-medium text-primary-text mb-1">Footer Logo</p>
+            <p className="text-xs text-muted-text mb-3">Shared across all themes for the footer.</p>
+            <R2UploadWidget onUpload={(url) => setGlobalLogoUrl(url)} currentUrl={globalLogoUrl} label="Footer Logo" />
           </div>
-          {theme === "editorial" && (
+
+          <div className="pt-4 border-t border-primary-text/5 space-y-6">
             <div>
-              <label className="block text-sm font-medium text-primary-text mb-2">Editorial Logo</label>
-              <p className="text-sm text-muted-text mb-4">Upload the logo specifically used when the Editorial theme is active.</p>
-              <R2UploadWidget onUpload={(url) => setEditorialLogoUrl(url)} currentUrl={editorialLogoUrl} label="Editorial Logo Image" />
+              <h3 className="text-sm font-semibold text-primary-text uppercase tracking-wider mb-1">v1 - Dark Mode</h3>
+              <p className="text-xs text-muted-text mb-3">Navbar logo and favicon for the dark theme.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs text-muted-text mb-1">Navbar Logo</label>
+                  <R2UploadWidget onUpload={(url) => setNavbarLogoV1(url)} currentUrl={navbarLogoV1} label="v1 Navbar Logo" />
+                </div>
+                <div>
+                  <label className="block text-xs text-muted-text mb-1">Favicon</label>
+                  <R2UploadWidget onUpload={(url) => setFaviconV1(url)} currentUrl={faviconV1} label="v1 Favicon" />
+                </div>
+              </div>
             </div>
-          )}
-          <div>
+
+            <div>
+              <h3 className="text-sm font-semibold text-primary-text uppercase tracking-wider mb-1">v2 - Light Mode</h3>
+              <p className="text-xs text-muted-text mb-3">Navbar logo and favicon for the editorial light theme.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs text-muted-text mb-1">Navbar Logo</label>
+                  <R2UploadWidget onUpload={(url) => setNavbarLogoV2(url)} currentUrl={navbarLogoV2} label="v2 Navbar Logo" />
+                </div>
+                <div>
+                  <label className="block text-xs text-muted-text mb-1">Favicon</label>
+                  <R2UploadWidget onUpload={(url) => setFaviconV2(url)} currentUrl={faviconV2} label="v2 Favicon" />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-semibold text-primary-text uppercase tracking-wider mb-1">v3 - Hospitality</h3>
+              <p className="text-xs text-muted-text mb-3">Navbar logo and favicon for the hospitality theme.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs text-muted-text mb-1">Navbar Logo</label>
+                  <R2UploadWidget onUpload={(url) => setNavbarLogoV3(url)} currentUrl={navbarLogoV3} label="v3 Navbar Logo" />
+                </div>
+                <div>
+                  <label className="block text-xs text-muted-text mb-1">Favicon</label>
+                  <R2UploadWidget onUpload={(url) => setFaviconV3(url)} currentUrl={faviconV3} label="v3 Favicon" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-4 border-t border-primary-text/5">
             <label className="block text-sm font-medium text-primary-text mb-2">Open Graph Image (Social Share Image)</label>
             <p className="text-sm text-muted-text mb-4">This image appears when you share the website link on platforms like iMessage, Twitter, and LinkedIn. (Recommended size: 1200x630px)</p>
             <R2UploadWidget onUpload={(url) => setGlobalOgImageUrl(url)} currentUrl={globalOgImageUrl} label="OG Image" />

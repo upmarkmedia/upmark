@@ -31,15 +31,15 @@ export const Navbar = () => {
       if (theme === "editorial" || theme === "v2") {
         document.documentElement.classList.add("theme-v2");
         setIsLight(true);
-        if (data?.editorialLogoUrl) setLogoUrl(data.editorialLogoUrl);
+        setLogoUrl(data?.navbarLogoV2 || data?.editorialLogoUrl || "/upmark-wordmark.png");
       } else if (theme === "v3") {
         document.documentElement.classList.add("theme-v3");
-        setIsLight(true); 
-        if (data?.editorialLogoUrl) setLogoUrl(data.editorialLogoUrl); 
+        setIsLight(true);
+        setLogoUrl(data?.navbarLogoV3 || data?.editorialLogoUrl || "/upmark-wordmark.png");
       } else {
         document.documentElement.classList.add("theme-v1");
         setIsLight(false);
-        if (data?.globalLogoUrl) setLogoUrl(data.globalLogoUrl);
+        setLogoUrl(data?.navbarLogoV1 || data?.globalLogoUrl || "/upmark-wordmark.png");
       }
       if (data?.visibility) setVisibility(data.visibility as Record<string, boolean>);
     }).catch(console.error).finally(() => setSettingsLoaded(true));
