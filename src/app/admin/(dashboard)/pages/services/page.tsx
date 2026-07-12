@@ -44,6 +44,13 @@ export default function ServicesPage() {
   const [visibility, setVisibility] = useState<PageVisibility>({});
   const [visSaving, setVisSaving] = useState(false);
   const [visSuccess, setVisSuccess] = useState("");
+  const [contactSaving, setContactSaving] = useState(false);
+  const [contactSuccess, setContactSuccess] = useState("");
+  const [servicesContact, setServicesContact] = useState({
+    heading: "",
+    headingHighlight: "",
+    subtitle: "",
+  });
 
   useEffect(() => {
     getSiteSettings().then((data) => {
@@ -51,6 +58,11 @@ export default function ServicesPage() {
         setSeo({ ...SERVICES_SEO_DEFAULTS, ...data.seo.services });
       }
       if (data?.visibility) setVisibility(data.visibility);
+      if (data?.servicesContact) setServicesContact({
+        heading: data.servicesContact.heading ?? "",
+        headingHighlight: data.servicesContact.headingHighlight ?? "",
+        subtitle: data.servicesContact.subtitle ?? "",
+      });
     }).catch(() => {});
   }, []);
 
@@ -85,6 +97,21 @@ export default function ServicesPage() {
       alert("Failed to save visibility.");
     } finally {
       setVisSaving(false);
+    }
+  };
+
+  const handleContactSave = async () => {
+    setContactSaving(true);
+    setContactSuccess("");
+    try {
+      await updateSiteSettings({ servicesContact });
+      await revalidatePathAction("/services");
+      setContactSuccess("Contact section saved.");
+      setTimeout(() => setContactSuccess(""), 3000);
+    } catch {
+      alert("Failed to save contact section.");
+    } finally {
+      setContactSaving(false);
     }
   };
 
@@ -227,6 +254,54 @@ export default function ServicesPage() {
           <button onClick={handleVisSave} disabled={visSaving} className="flex items-center gap-2 bg-accent-blue hover:bg-accent-blue/90 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
             {visSaving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
             Save Visibility
+          </button>
+        </div>
+      </div>
+
+      {/* ─── Contact Section Content ────────────── */}
+      <div className="bg-secondary-surface border border-primary-text/10 rounded-2xl p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-2 h-2 rounded-full bg-accent-gold" />
+          <h2 className="text-lg font-semibold text-primary-text">Contact Section</h2>
+        </div>
+        <p className="text-sm text-muted-text mb-4">Customise the heading and subtitle of the contact section at the bottom of the services page.</p>
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-primary-text mb-1">Heading (first line)</label>
+            <input
+              type="text"
+              value={servicesContact.heading}
+              onChange={(e) => setServicesContact((prev) => ({ ...prev, heading: e.target.value }))}
+              placeholder="LET'S"
+              className="w-full px-4 py-2.5 bg-primary-bg border border-primary-text/10 rounded-lg text-sm text-primary-text placeholder:text-muted-text/50 focus:outline-none focus:border-accent-blue transition-colors"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-primary-text mb-1">Heading highlight word (shown in white)</label>
+            <input
+              type="text"
+              value={servicesContact.headingHighlight}
+              onChange={(e) => setServicesContact((prev) => ({ ...prev, headingHighlight: e.target.value }))}
+              placeholder="CREATE"
+              className="w-full px-4 py-2.5 bg-primary-bg border border-primary-text/10 rounded-lg text-sm text-primary-text placeholder:text-muted-text/50 focus:outline-none focus:border-accent-blue transition-colors"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-primary-text mb-1">Subtitle</label>
+            <textarea
+              value={servicesContact.subtitle}
+              onChange={(e) => setServicesContact((prev) => ({ ...prev, subtitle: e.target.value }))}
+              placeholder="Have a project in mind? We'd love to hear about it..."
+              rows={3}
+              className="w-full px-4 py-2.5 bg-primary-bg border border-primary-text/10 rounded-lg text-sm text-primary-text placeholder:text-muted-text/50 focus:outline-none focus:border-accent-blue transition-colors resize-none"
+            />
+          </div>
+        </div>
+        <div className="flex items-center justify-end gap-3 mt-4">
+          {contactSuccess && <span className="text-emerald-400 text-sm">{contactSuccess}</span>}
+          <button onClick={handleContactSave} disabled={contactSaving} className="flex items-center gap-2 bg-accent-blue hover:bg-accent-blue/90 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50">
+            {contactSaving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
+            Save Contact Section
           </button>
         </div>
       </div>

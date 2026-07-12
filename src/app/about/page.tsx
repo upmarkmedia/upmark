@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { getAdminSiteSettings as getSiteSettings } from "@/lib/firebase-admin";
+import { getSiteSettings } from "@/lib/firestore";
 import { AboutCardGrid } from "@/components/ui/AboutCardGrid";
 import { ParsedHeading } from "@/components/ui/ParsedHeading";
 

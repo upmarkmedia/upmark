@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
 
 :root, .theme-v1 {
   /* v1: Dark Theme (Rich Black background) */
@@ -46,6 +49,37 @@
   --color-btn-accent-bg: #F4C401;
   --color-btn-accent-text: #0A0A0A;
   --color-btn-secondary-border: #DCD6CB;
+}
+
+/* v3 Dark Mode — toggled only inside the admin panel (scoped to .theme-v3-dark).
+   Public-facing site is unaffected because it never renders this class. */
+.theme-v3 .theme-v3-dark {
+  /* Rich Black (bg) */
+  --color-primary-bg-var: #0A0A0A;
+  /* Muted (surface) */
+  --color-secondary-surface-var: #5C584F;
+  /* Dark Stone Variant (borders/secondary surfaces) */
+  --color-secondary-surface-dark-var: #B5AFA2;
+  /* Warm Ivory (primary text) */
+  --color-primary-text-var: #F5F1EB;
+  /* Soft Stone (muted text) */
+  --color-muted-text-var: #DCD6CB;
+  /* Signal Yellow (accent) */
+  --color-accent-blue-var: #F4C401;
+  --color-accent-gold-var: #F4C401;
+  --color-accent-gold-rgb: 244, 196, 1;
+
+  /* Contrast sections (light sections within dark layout) */
+  --color-contrast-bg-var: #F5F1EB;
+  --color-contrast-bg-rgb: 245, 241, 235;
+  --color-contrast-text-var: #0A0A0A;
+
+  /* Button palette */
+  --color-btn-primary-bg: #F4C401;
+  --color-btn-primary-text: #0A0A0A;
+  --color-btn-accent-bg: #5C584F;
+  --color-btn-accent-text: #F5F1EB;
+  --color-btn-secondary-border: #B5AFA2;
 }
 
 @theme inline {
@@ -259,6 +293,11 @@ html {
   100% { transform: translateY(0); }
 }
 
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
 .animate-marquee-x {
   animation: marquee-x var(--marquee-duration, 30s) linear infinite;
 }
@@ -283,41 +322,8 @@ html {
 /* ─── Graphite Grid Background ─── */
 .graphite-grid {
   position: relative;
-  background: #1a1d24;
+  background: #000000;
   overflow: hidden;
-}
-
-.graphite-grid::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    repeating-linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.06) 0px,
-      rgba(255, 255, 255, 0.06) 1px,
-      transparent 1px,
-      transparent 72px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      rgba(255, 255, 255, 0.06) 0px,
-      rgba(255, 255, 255, 0.06) 1px,
-      transparent 1px,
-      transparent 72px
-    );
-  pointer-events: none;
-  z-index: 0;
-}
-
-.graphite-grid::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(26, 29, 36, 0.6) 100%);
-  pointer-events: none;
-  z-index: 1;
 }
 
 /* ─── Low-end device / battery saver: kill animations entirely ─── */
@@ -327,4 +333,47 @@ html {
   .animate-\[marquee_30s_linear_infinite\] {
     animation: none !important;
   }
+}
+
+/* ─── Testimonials Swiper ─── */
+.testimonial-swiper {
+  overflow: hidden !important;
+}
+.testimonial-swiper .swiper-wrapper {
+  overflow: visible;
+}
+.testimonial-swiper .swiper-slide {
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+.testimonial-swiper .swiper-slide-active {
+  transform: scale(1);
+  opacity: 1;
+}
+.testimonial-swiper .swiper-slide-prev,
+.testimonial-swiper .swiper-slide-next {
+  transform: scale(0.95);
+  opacity: 0.5;
+}
+.testimonial-swiper .swiper-slide-prev-prev,
+.testimonial-swiper .swiper-slide-next-next {
+  transform: scale(0.9);
+  opacity: 0.3;
+}
+
+.testimonial-pagination {
+  position: relative !important;
+  z-index: 10;
+}
+.testimonial-pagination .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+.testimonial-pagination .swiper-pagination-bullet-active {
+  background: #1a1a1a;
+  width: 28px;
+  border-radius: 5px;
+  opacity: 1;
 }

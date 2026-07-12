@@ -3,7 +3,6 @@
 import { useRef, useState, useEffect } from "react";
 import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 import { useIdle } from "@/contexts/IdleContext";
-import { HeroNavbar } from "@/components/layout/HeroNavbar";
 
 interface HeroProps {
   videoUrl?: string | null;
@@ -63,8 +62,6 @@ export const Hero = ({ videoUrl }: HeroProps) => {
 
   return (
     <section className="relative w-full">
-      {/* HeroNavbar sits in the whitespace above the video */}
-      <HeroNavbar />
       <div>
         {/* Aspect ratio: taller on mobile, wider on desktop */}
         <div className="relative w-full aspect-[16/9] sm:aspect-[21/9]">

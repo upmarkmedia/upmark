@@ -12,6 +12,7 @@ interface TestimonialFormData {
   order: number;
   featured: boolean;
   imageUrl: string;
+  profileUrl: string;
 }
 
 interface TestimonialFormProps {
@@ -39,6 +40,7 @@ export function TestimonialForm({
       order: initialData?.order ?? 0,
       featured: initialData?.featured ?? false,
       imageUrl: initialData?.imageUrl || "",
+      profileUrl: initialData?.profileUrl || "",
     },
   });
 
@@ -46,14 +48,16 @@ export function TestimonialForm({
   const imageUrl = watch("imageUrl");
 
   async function handleFormSubmit(data: TestimonialFormData) {
-    await onSubmit({
+    const payload: Record<string, unknown> = {
       quote: data.quote,
       name: data.name,
       role: data.role,
       order: data.order,
       featured: data.featured,
       imageUrl: data.imageUrl,
-    });
+    };
+    if (data.profileUrl) payload.profileUrl = data.profileUrl;
+    await onSubmit(payload as Omit<Testimonial, "id" | "createdAt" | "updatedAt">);
   }
 
   const inputClass =
@@ -154,6 +158,17 @@ export function TestimonialForm({
         label="Author Image"
       />
       <input type="hidden" {...register("imageUrl")} />
+
+      {/* Profile URL */}
+      <div className="flex flex-col gap-2">
+        <label className="text-sm font-medium text-primary-text">Profile URL (optional)</label>
+        <input
+          {...register("profileUrl")}
+          placeholder="https://linkedin.com/in/example"
+          className={inputClass}
+        />
+        <p className="text-xs text-muted-text">Link to the author's LinkedIn, portfolio, or website. Clicking the author photo opens this link.</p>
+      </div>
 
       {/* Actions */}
       <div className="flex items-center justify-end gap-3 pt-4 border-t border-primary-text/5">

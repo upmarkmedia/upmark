@@ -11,6 +11,7 @@ import { RowSkeleton } from "@/components/admin/ui/Skeleton";
 import { FormModal } from "@/components/admin/ui/FormModal";
 import { useCollection } from "@/hooks/useCollection";
 import { revalidatePathAction } from "@/app/actions";
+import { DEFAULT_TESTIMONIALS } from "@/components/sections/TestimonialsCarousel";
 import {
   Plus, Pencil, Trash2, X, FileText, RefreshCw, Save, Loader2, Film, MessageSquareQuote, Star, Quote, Search, ArrowUp, ArrowDown,
 } from "lucide-react";
@@ -164,7 +165,19 @@ export default function WorkPageSettings() {
     setTestimonialsLoading(true);
     try {
       const data = await getTestimonials();
-      setTestimonials(data);
+      if (data.length === 0) {
+        const seeded: Testimonial[] = [];
+        for (const t of DEFAULT_TESTIMONIALS) {
+          const payload: Record<string, unknown> = { quote: t.quote, name: t.name, role: t.role };
+          if (t.featured !== undefined) payload.featured = t.featured;
+          if (t.order !== undefined) payload.order = t.order;
+          const id = await createTestimonial(payload as Omit<Testimonial, "id" | "createdAt" | "updatedAt">);
+          seeded.push({ ...t, id });
+        }
+        setTestimonials(seeded);
+      } else {
+        setTestimonials(data);
+      }
     } catch (err) {
       console.error("Failed to fetch testimonials:", err);
     } finally {

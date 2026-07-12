@@ -2,8 +2,6 @@
 
 import Image from "next/image";
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { CAPABILITIES_DATA } from "./services-data";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import * as LucideIcons from "lucide-react";
@@ -12,9 +10,8 @@ import type { Service } from "@/types";
 import { useMobileAutoplayPause } from "./useMobileAutoplayPause";
 
 export function CapabilityMap({ services = [] }: { services?: Service[] }) {
-  // Use provided services or fallback to empty state
   const data = services.length > 0 ? services : [];
-  
+
   const [activeId, setActiveId] = useState(data[0]?.id || "");
   const [logoUrl, setLogoUrl] = useState("/upmark-wordmark.png");
 
@@ -37,13 +34,10 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
       }
     };
 
-    // Check on mount
     handleHashChange();
 
-    // Listen for hash changes
     window.addEventListener('hashchange', handleHashChange);
-    
-    // Fallback for Next.js soft navigation (in case hashchange doesn't fire)
+
     const originalPushState = history.pushState;
     const originalReplaceState = history.replaceState;
 
@@ -72,7 +66,6 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
     pauseAutoplay();
   }, [pauseAutoplay]);
 
-  // Autoplay: cycle through capabilities after 5s of inactivity
   useEffect(() => {
     if (data.length === 0) return;
 
@@ -110,16 +103,16 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
 
   const activeIndex = data.findIndex((s) => s.id === activeId);
   const active = data[activeIndex] || data[0];
-  
+
   if (!active) return null;
 
   const getPosStyles = (i: number, total: number) => {
     const angle = -Math.PI / 2 + (i / total) * 2 * Math.PI;
-    const rPct = 37; // 185/500 is 37%
+    const rPct = 37;
     return {
       left: `calc(50% + ${Math.cos(angle) * rPct}%)`,
       top: `calc(50% + ${Math.sin(angle) * rPct}%)`,
-      transform: 'translate(-50%, -50%)'
+      transform: 'translate(-50%, -55%)'
     };
   };
 
@@ -137,8 +130,13 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
 
         {/* Orbital */}
         <div className="relative w-[380px] h-[380px] sm:w-[450px] sm:h-[450px] lg:w-[500px] lg:h-[500px] flex-shrink-0">
-          {/* Ambient glow */}
-          <div className="absolute inset-0 rounded-full bg-accent-blue/5 blur-[90px] pointer-events-none" />
+          {/* Ambient glow — radial gradient, zero GPU cost */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: "radial-gradient(circle at 50% 50%, rgba(var(--color-accent-gold-rgb), 0.06) 0%, transparent 70%)"
+            }}
+          />
 
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none"
@@ -147,13 +145,13 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
           >
             <defs>
               <linearGradient id="line-active" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="rgba(59,130,246,0)" />
-                <stop offset="60%" stopColor="rgba(59,130,246,0.7)" />
-                <stop offset="100%" stopColor="rgba(59,130,246,0.9)" />
+                <stop offset="0%" stopColor="rgba(var(--color-accent-gold-rgb),0)" />
+                <stop offset="60%" stopColor="rgba(var(--color-accent-gold-rgb),0.7)" />
+                <stop offset="100%" stopColor="rgba(var(--color-accent-gold-rgb),0.9)" />
               </linearGradient>
             </defs>
 
-            {/* Decorative rings (radii: 45%, 75%, 100% of 37 => 16.65, 27.75, 37) */}
+            {/* Decorative rings */}
             {[16.65, 27.75, 37].map((r, i) => (
               <circle
                 key={i}
@@ -162,17 +160,17 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
                 r={r}
                 fill="none"
                 stroke="currentColor"
-                className="text-primary-text/10"
+                className="text-accent-gold/15"
                 strokeWidth="0.25"
               />
             ))}
 
-            {/* Connector lines */}
+            {/* Connector lines — plain SVG, CSS transition for opacity */}
             {data.map((svc, i) => {
               const pos = getSvgPos(i, data.length);
               const isActive = svc.id === activeId;
               return (
-                <motion.line
+                <line
                   key={`line-${svc.id}`}
                   x1="50"
                   y1="50"
@@ -181,34 +179,18 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
                   stroke={isActive ? "url(#line-active)" : "currentColor"}
                   strokeWidth={isActive ? 0.3 : 0.2}
                   strokeDasharray={isActive ? "none" : "1 1.5"}
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ duration: 1.2, ease: "easeInOut" }}
-                  className={`transition-colors duration-500 ${isActive ? "" : "text-primary-text/10"}`}
+                  className={`transition-opacity duration-500 ${isActive ? "opacity-100" : "opacity-60 text-accent-gold/25"}`}
                 />
               );
             })}
-
-            {/* Active node glow pulse */}
-            <motion.circle
-              key={`pulse-${activeId}`}
-              cx={getSvgPos(activeIndex !== -1 ? activeIndex : 0, data.length).x}
-              cy={getSvgPos(activeIndex !== -1 ? activeIndex : 0, data.length).y}
-              r="8"
-              fill="rgba(59,130,246,0.12)"
-              animate={{ r: [8, 12, 8], opacity: [0.8, 0, 0.8] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            />
           </svg>
 
-          {/* Center Logo */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 lg:w-44 lg:h-44 rounded-full bg-primary-bg border border-primary-text/15 backdrop-blur-md flex items-center justify-center shadow-[0_4px_40px_rgba(0,0,0,0.1)] z-10">
-            <div className="absolute inset-0 rounded-full border border-accent-blue/15 animate-[spin_10s_linear_infinite]" />
-            <div className="absolute inset-4 rounded-full border border-primary-text/10 animate-[spin_15s_linear_infinite_reverse]" />
+          {/* Center Logo — no backdrop-blur, no spinning rings */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 lg:w-44 lg:h-44 rounded-full bg-[#F5F1EB] border border-accent-gold/15 flex items-center justify-center shadow-[0_4px_40px_rgba(0,0,0,0.1)] z-10">
             <Image src={logoUrl} alt="Upmark" width={100} height={100} className="w-20 lg:w-28 h-auto z-10 object-contain" />
           </div>
 
-          {/* Nodes */}
+          {/* Nodes — plain buttons with CSS hover */}
           {data.map((svc, i) => {
             const isActive = svc.id === activeId;
             const IconComponent = (svc.icon_name && (LucideIcons as any)[svc.icon_name]) || LucideIcons.Check;
@@ -216,101 +198,81 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
             return (
               <div
                 key={svc.id}
-                className="absolute z-20"
+                className="absolute z-20 flex flex-col items-center"
                 style={getPosStyles(i, data.length)}
                 onMouseEnter={() => { handleInteraction(); setActiveId(svc.id || ""); }}
                 onClick={() => { handleInteraction(); setActiveId(svc.id || ""); }}
               >
-                <motion.button
-                  className={`w-16 h-16 sm:w-18 sm:h-18 lg:w-20 lg:h-20 rounded-full border flex flex-col items-center justify-center gap-0.5 transition-colors duration-300 cursor-pointer focus-visible:outline-none
+                <button
+                  className={`w-16 h-16 sm:w-18 sm:h-18 lg:w-20 lg:h-20 rounded-full border-2 flex items-center justify-center transition-all duration-300 cursor-pointer focus-visible:outline-none hover:scale-110 active:scale-95
                     ${isActive
-                      ? "bg-accent-blue/15 border-accent-blue shadow-[0_0_28px_rgba(79,70,229,0.35)]"
-                      : "bg-primary-bg border-primary-text/20 shadow-[0_2px_12px_rgba(0,0,0,0.08)] hover:border-primary-text/40 hover:bg-primary-text/5"
+                      ? "bg-[#1a1a1a] border-accent-gold shadow-[0_0_0_4px_rgba(var(--color-accent-gold-rgb),0.2),0_0_28px_rgba(0,0,0,0.3)]"
+                      : "bg-accent-gold border-accent-gold/30 shadow-[0_2px_12px_rgba(var(--color-accent-gold-rgb),0.15)] hover:border-accent-gold hover:shadow-glow-gold"
                     }`}
-                  whileHover={{ scale: 1.14 }}
-                  whileTap={{ scale: 0.94 }}
                   aria-label={svc.title}
                   aria-pressed={isActive}
                 >
                   {svc.icon_url ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img 
-                      src={svc.icon_url} 
-                      alt={svc.title} 
-                      className={`w-4 h-4 lg:w-6 lg:h-6 object-contain transition-all duration-300 ${isActive ? "opacity-100" : "opacity-50"}`} 
+                    <img
+                      src={svc.icon_url}
+                      alt={svc.title}
+                      className={`w-7 h-7 lg:w-10 lg:h-10 object-contain transition-all duration-300 ${isActive ? "opacity-100 grayscale" : "opacity-70 grayscale"}`}
                     />
                   ) : (
                     <IconComponent
-                      size={14}
-                      className={`lg:w-6 lg:h-6 transition-colors duration-300 ${isActive ? "text-accent-blue" : "text-primary-text/55"}`}
+                      size={24}
+                      className={`transition-colors duration-300 ${isActive ? "text-accent-gold" : "text-black/70"}`}
                     />
                   )}
-                  <span
-                    className={`text-[7px] lg:text-[9px] font-bold tracking-wider uppercase text-center leading-tight px-1 transition-colors duration-300 ${isActive ? "text-accent-blue" : "text-primary-text/65"
-                      }`}
-                  >
-                    {svc.label}
-                  </span>
-
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeCapabilityDot"
-                      className="absolute -top-1 -right-1 w-2.5 h-2.5 lg:w-3 lg:h-3 bg-accent-blue rounded-full shadow-[0_0_10px_rgba(59,130,246,0.9)]"
-                    />
-                  )}
-                </motion.button>
+                </button>
+                <span className={`mt-2 text-[8px] lg:text-[10px] font-bold tracking-wider uppercase text-center leading-tight transition-colors duration-300 ${isActive ? "text-[#1a1a1a]" : "text-black/50"}`}>
+                  {svc.label}
+                </span>
               </div>
             );
           })}
         </div>
 
-        {/* Info panel */}
+        {/* Info panel — plain div with CSS opacity transition */}
         <div className="flex-1 w-full lg:w-auto min-w-0">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeId}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              className="relative rounded-2xl lg:rounded-3xl border border-primary-text/10 bg-secondary-surface/40 backdrop-blur-xl p-6 sm:p-8 lg:p-10 overflow-hidden shadow-2xl"
-            >
-              {/* Glass sheen */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary-text/[0.04] to-transparent pointer-events-none" />
-              {/* Blue top accent */}
-              <div className="absolute top-0 left-6 right-6 lg:left-8 lg:right-8 h-[1px] bg-gradient-to-r from-transparent via-accent-blue/50 to-transparent" />
+          <div
+            key={activeId}
+            className="relative rounded-2xl border border-white/10 bg-[#0a0a0a] p-6 sm:p-8 lg:p-10 overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.4)] animate-[fadeInUp_0.3s_ease-out]"
+          >
+            {/* Gold top accent */}
+            <div className="absolute top-0 left-6 right-6 lg:left-8 lg:right-8 h-[1px] bg-gradient-to-r from-transparent via-accent-gold/50 to-transparent" />
 
-              {/* Decorative number */}
-              <span className="absolute top-2 right-4 text-[6rem] lg:text-[8rem] font-black text-accent-blue/[0.05] leading-none select-none pointer-events-none font-heading">
-                {String(activeIndex + 1).padStart(2, '0')}
+            {/* Decorative number */}
+            <span className="absolute top-2 right-4 text-[6rem] lg:text-[8rem] font-black text-accent-gold/[0.08] leading-none select-none pointer-events-none font-heading">
+              {String(activeIndex + 1).padStart(2, '0')}
+            </span>
+
+            <div className="relative z-10">
+              <span className="text-accent-gold font-bold tracking-[0.2em] uppercase text-[10px] lg:text-xs border border-accent-gold/30 px-3 py-1 rounded-full bg-accent-gold/10 mb-4 lg:mb-5 inline-block">
+                {active.subtitle}
               </span>
 
-              <div className="relative z-10">
-                <span className="text-accent-blue font-bold tracking-[0.2em] uppercase text-[10px] lg:text-xs border border-accent-blue/30 px-3 py-1 rounded-full bg-accent-blue/5 mb-4 lg:mb-5 inline-block">
-                  {active.subtitle}
-                </span>
+              <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white font-heading mb-4 lg:mb-5 leading-tight">
+                {active.title}
+              </h3>
 
-                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-primary-text font-heading mb-4 lg:mb-5 leading-tight">
-                  {active.title}
-                </h3>
+              <p className="text-white/60 font-light text-sm sm:text-base lg:text-[17px] leading-relaxed mb-6 lg:mb-7">
+                {active.description}
+              </p>
 
-                <p className="text-muted-text font-light text-sm sm:text-base lg:text-[17px] leading-relaxed mb-6 lg:mb-7">
-                  {active.description}
-                </p>
-
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 text-xs lg:text-sm font-semibold text-primary-text/65 hover:text-accent-blue transition-colors duration-200 group"
-                >
-                  <span>Discuss this service</span>
-                  <ArrowRight
-                    size={14}
-                    className="group-hover:translate-x-1 transition-transform duration-200"
-                  />
-                </Link>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 text-xs lg:text-sm font-semibold text-white/50 hover:text-accent-gold transition-colors duration-200 group"
+              >
+                <span>Discuss this service</span>
+                <ArrowRight
+                  size={14}
+                  className="group-hover:translate-x-1 transition-transform duration-200"
+                />
+              </Link>
+            </div>
+          </div>
 
           {/* Service dots navigation */}
           <div className="flex items-center justify-center lg:justify-start gap-2 mt-5 lg:pl-1">
@@ -319,8 +281,8 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
                 key={svc.id}
                 onClick={() => { handleInteraction(); setActiveId(svc.id || ""); }}
                 className={`rounded-full transition-[width] duration-300 focus-visible:outline-none ${svc.id === activeId
-                  ? "w-6 h-2 bg-accent-blue"
-                  : "w-2 h-2 bg-primary-text/20 hover:bg-primary-text/40"
+                  ? "w-6 h-2 bg-accent-gold"
+                  : "w-2 h-2 bg-black/20 hover:bg-black/40"
                   }`}
                 aria-label={svc.title}
               />

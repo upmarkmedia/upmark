@@ -1,96 +1,264 @@
 "use client";
 
 import { useState } from "react";
-import { Quote } from "lucide-react";
-import { HorizontalCarousel } from "@/components/ui/HorizontalCarousel";
-import { PreviewDialog } from "@/components/ui/PreviewDialog";
+import { Quote, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import type { Testimonial, WorkSection } from "@/types";
 
-const DEFAULT_TESTIMONIALS: Testimonial[] = [
+export const DEFAULT_TESTIMONIALS: Testimonial[] = [
   {
     id: "default-1",
-    quote: "Upmark completely transformed our digital strategy. Their integrated approach helped us scale our pipeline by 3x in just six months while maintaining incredibly high creative standards.",
-    name: "Sarah Jenkins",
-    role: "CMO, Vertex Corp"
+    quote: "Upmark didn't just run our ads — they rebuilt our entire marketing system from the ground up. Within six months, our qualified leads tripled and our cost per acquisition dropped by 40%. They think like a partner, not a vendor.",
+    name: "Arjun Mehta",
+    role: "Head of Growth, Luxe Stays",
   },
   {
     id: "default-2",
-    quote: "Unlike other agencies that just run ads, Upmark actually took the time to understand our complete marketing system. The results have been phenomenal — a 340% increase in eCommerce revenue.",
-    name: "Michael Ross",
-    role: "Founder, Bloom Retail"
+    quote: "We tried four agencies before Upmark. The difference? They actually understand how content, performance and brand work together. Our eCommerce revenue is up 340% and for the first time, we can trace every rupee back to a specific channel.",
+    name: "Priya Sharma",
+    role: "Founder, Bloom Retail",
   },
   {
     id: "default-3",
-    quote: "The speed and quality of Upmark's production team is unmatched. They feel less like an agency and more like an extension of our internal team. Highly recommended.",
-    name: "Eleanor Vance",
-    role: "Director of Marketing, Luxe Stays"
-  }
+    quote: "The production quality is outstanding, but what really sets Upmark apart is their speed. They went from strategy to a full campaign launch in two weeks — something our previous agency took two months to deliver.",
+    name: "Rohan Kapoor",
+    role: "CMO, Vertex Corp",
+  },
+  {
+    id: "default-4",
+    quote: "We needed a team that could handle everything — brand, content, social, performance — without us managing five different agencies. Upmark became that single integrated team, and our reservation bookings are up 290% as a result.",
+    name: "Neha Desai",
+    role: "Director of Marketing, The Grove Kitchen",
+  },
 ];
 
 interface TestimonialsCarouselProps {
   testimonials?: Testimonial[];
   maxItems?: number;
   section?: WorkSection;
+  invertHeader?: boolean;
+  noSectionPadding?: boolean;
 }
 
-export const TestimonialsCarousel = ({ testimonials, maxItems = 3, section }: TestimonialsCarouselProps) => {
-  const allTestimonials = testimonials && testimonials.length > 0 ? testimonials : DEFAULT_TESTIMONIALS;
-  const displayTestimonials = allTestimonials.slice(0, maxItems);
-  
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [selectedTestimonial, setSelectedTestimonial] = useState<Testimonial | null>(null);
-
-  const openPreview = (t: Testimonial) => {
-    setSelectedTestimonial(t);
-    setPreviewOpen(true);
-  };
-
+function TestimonialModal({
+  testimonial,
+  onClose,
+}: {
+  testimonial: Testimonial;
+  onClose: () => void;
+}) {
   return (
-    <section className="container mx-auto px-4 sm:px-6 relative z-10">
-      <HorizontalCarousel
-        label={section?.label || "CLIENT STORIES"}
-        title={section?.title || <>Don&apos;t just take <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-accent-gold">our word for it.</span></>}
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4"
+      onClick={onClose}
+    >
+      <div
+        className="relative bg-[#1a1a1a] rounded-2xl shadow-2xl max-w-lg w-full max-h-[85vh] overflow-y-auto p-8 sm:p-10 border border-white/10"
+        onClick={(e) => e.stopPropagation()}
       >
-        {displayTestimonials.map((t) => (
-          <div
-            key={t.id}
-            onClick={() => openPreview(t)}
-            className="snap-start flex-shrink-0 w-[320px] sm:w-[400px] md:w-[450px] cursor-pointer group"
-          >
-            <div className="relative z-10 bg-secondary-surface/60 border border-primary-text/10 p-6 sm:p-8 rounded-sm overflow-hidden h-full flex flex-col gap-6 hover:border-accent-blue/30 transition-[border-color] duration-300">
-              <Quote size={32} className="text-primary-text/10 flex-shrink-0" />
-              <p className="text-sm sm:text-base font-light text-primary-text leading-relaxed italic flex-grow line-clamp-5">
-                &quot;{t.quote}&quot;
-              </p>
-              <div className="flex items-center gap-3 mt-auto pt-4 border-t border-primary-text/10">
-                {t.imageUrl ? (
-                  <div className="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden bg-accent-blue/20">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={t.imageUrl} alt={t.name} className="w-full h-full object-cover" />
-                  </div>
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+        >
+          <X size={16} />
+        </button>
+
+        <Quote size={32} className="text-accent-gold/40 mb-4" />
+
+        <p className="text-white/80 text-base leading-relaxed mb-6 italic">
+          &quot;{testimonial.quote}&quot;
+        </p>
+
+        <div className="border-t border-white/10 pt-4">
+          <div className="flex items-center gap-3">
+            {testimonial.imageUrl ? (
+              <div className="w-10 h-10 rounded-full overflow-hidden bg-white/10">
+                {testimonial.profileUrl ? (
+                  <a href={testimonial.profileUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="block w-full h-full">
+                    <img
+                      src={testimonial.imageUrl}
+                      alt={testimonial.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </a>
                 ) : (
-                  <div className="w-10 h-10 rounded-full bg-accent-blue/20 flex items-center justify-center text-accent-blue font-bold text-sm uppercase flex-shrink-0">
-                    {t.name.charAt(0)}
-                  </div>
+                  <img
+                    src={testimonial.imageUrl}
+                    alt={testimonial.name}
+                    className="w-full h-full object-cover"
+                  />
                 )}
-                <div>
-                  <h4 className="text-primary-text font-semibold text-sm">{t.name}</h4>
-                  <p className="text-accent-blue text-xs">{t.role}</p>
-                </div>
               </div>
+            ) : testimonial.profileUrl ? (
+              <a href={testimonial.profileUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="w-10 h-10 rounded-full bg-accent-gold/20 flex items-center justify-center text-accent-gold font-bold text-sm uppercase">
+                {testimonial.name.charAt(0)}
+              </a>
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-accent-gold/20 flex items-center justify-center text-accent-gold font-bold text-sm uppercase">
+                {testimonial.name.charAt(0)}
+              </div>
+            )}
+            <div>
+              <h4 className="text-white font-semibold text-sm">
+                {testimonial.name}
+              </h4>
+              <p className="text-accent-gold text-xs">{testimonial.role}</p>
             </div>
           </div>
-        ))}
-      </HorizontalCarousel>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-      {/* Preview Dialog */}
+export const TestimonialsCarousel = ({
+  testimonials,
+  maxItems = 10,
+  section,
+  invertHeader = false,
+  noSectionPadding = false,
+}: TestimonialsCarouselProps) => {
+  const allTestimonials =
+    testimonials && testimonials.length > 0
+      ? testimonials
+      : DEFAULT_TESTIMONIALS;
+  const displayTestimonials = allTestimonials.slice(0, maxItems);
+
+  const [selectedTestimonial, setSelectedTestimonial] =
+    useState<Testimonial | null>(null);
+
+  const openModal = (t: Testimonial) => {
+    setSelectedTestimonial(t);
+  };
+
+  const sectionLabel = section?.label || "CLIENT STORIES";
+  const sectionTitle = section?.title || "Don't just take our word for it.";
+  const sectionSubtitle = section?.subtitle || "";
+
+  return (
+    <section className={`${noSectionPadding ? "" : "py-16 sm:py-20 md:py-28"} relative z-10 overflow-hidden`}>
+      <div className="container mx-auto px-4 sm:px-6 mb-8 sm:mb-12">
+        <div className="text-center flex flex-col items-center">
+          <span className={`font-extrabold tracking-[0.2em] uppercase text-lg sm:text-xl mb-2 block ${invertHeader ? "text-black/50" : "text-secondary-surface-dark"}`}>
+            {sectionLabel}
+          </span>
+          <h2 className={`text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading tracking-tight leading-tight uppercase max-w-3xl ${invertHeader ? "text-black" : "text-primary-text"}`}>
+            {sectionTitle}
+          </h2>
+          {sectionSubtitle && (
+            <p className={`text-base sm:text-lg mt-3 max-w-xl font-light ${invertHeader ? "text-black/50" : "text-muted-text"}`}>
+              {sectionSubtitle}
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div className="relative group px-6 sm:px-10 lg:px-20">
+        {/* Navigation Arrows */}
+        <button
+          id="testimonial-prev"
+          className="absolute left-2 sm:left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-white transition-all duration-300 hover:bg-black hover:border-accent-gold/50 shadow-lg"
+        >
+          <ChevronLeft size={20} />
+        </button>
+        <button
+          id="testimonial-next"
+          className="absolute right-2 sm:right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-white transition-all duration-300 hover:bg-black hover:border-accent-gold/50 shadow-lg"
+        >
+          <ChevronRight size={20} />
+        </button>
+
+        <Swiper
+          modules={[Navigation, Pagination, Autoplay]}
+          spaceBetween={20}
+          slidesPerView={1}
+          centeredSlides={true}
+          loop={true}
+          speed={800}
+          autoplay={{
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          }}
+          navigation={{
+            prevEl: "#testimonial-prev",
+            nextEl: "#testimonial-next",
+          }}
+          pagination={{
+            clickable: true,
+            el: ".testimonial-pagination",
+          }}
+          breakpoints={{
+            640: { slidesPerView: 1.3, spaceBetween: 20 },
+            768: { slidesPerView: 2, spaceBetween: 24 },
+            1024: { slidesPerView: 2.5, spaceBetween: 24 },
+          }}
+          className="testimonial-swiper pb-14"
+        >
+          {displayTestimonials.map((t) => (
+            <SwiperSlide key={t.id}>
+              <div
+                onClick={() => openModal(t)}
+                className="cursor-pointer h-full"
+              >
+                <div className="bg-[#1a1a1a] border border-white/5 p-6 sm:p-8 rounded-lg h-full flex flex-col hover:border-accent-gold/30 transition-[border-color] duration-300 min-h-[300px] sm:min-h-[340px]">
+                  <Quote
+                    size={24}
+                    className="text-accent-gold/50 flex-shrink-0 mb-4"
+                  />
+                  <p className="text-sm sm:text-[15px] font-light text-white/80 leading-relaxed italic flex-grow line-clamp-5">
+                    &quot;{t.quote}&quot;
+                  </p>
+                  <div className="flex items-center gap-3 mt-auto pt-5 border-t border-white/10">
+                    {t.imageUrl ? (
+                      <div className="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden bg-white/10">
+                        {t.profileUrl ? (
+                          <a href={t.profileUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="block w-full h-full">
+                            <img
+                              src={t.imageUrl}
+                              alt={t.name}
+                              className="w-full h-full object-cover"
+                            />
+                          </a>
+                        ) : (
+                          <img
+                            src={t.imageUrl}
+                            alt={t.name}
+                            className="w-full h-full object-cover"
+                          />
+                        )}
+                      </div>
+                    ) : t.profileUrl ? (
+                      <a href={t.profileUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="w-10 h-10 rounded-full bg-accent-gold/20 flex items-center justify-center text-accent-gold font-bold text-sm uppercase flex-shrink-0">
+                        {t.name.charAt(0)}
+                      </a>
+                    ) : (
+                      <div className="w-10 h-10 rounded-full bg-accent-gold/20 flex items-center justify-center text-accent-gold font-bold text-sm uppercase flex-shrink-0">
+                        {t.name.charAt(0)}
+                      </div>
+                    )}
+                    <div>
+                      <h4 className="text-white font-semibold text-sm">
+                        {t.name}
+                      </h4>
+                      <p className="text-accent-gold text-xs">{t.role}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+
+        <div className="testimonial-pagination !w-auto flex justify-center gap-2 mt-8" />
+      </div>
+
+      {/* Read More Modal */}
       {selectedTestimonial && (
-        <PreviewDialog
-          open={previewOpen}
-          onClose={() => setPreviewOpen(false)}
-          title={selectedTestimonial.name}
-          description={selectedTestimonial.quote}
-          meta={[{ label: "Role", value: selectedTestimonial.role }]}
+        <TestimonialModal
+          testimonial={selectedTestimonial}
+          onClose={() => setSelectedTestimonial(null)}
         />
       )}
     </section>

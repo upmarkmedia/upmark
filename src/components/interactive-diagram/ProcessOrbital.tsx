@@ -211,7 +211,7 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
                     className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 text-gray-700 mb-2 sm:mb-4 opacity-80"
                     strokeWidth={1.5}
                   />
-                  <p className="hidden md:block text-xs lg:text-sm text-gray-600 font-light leading-relaxed px-2">
+                  <p className="hidden md:block text-xs lg:text-sm text-gray-800 font-light leading-relaxed px-2">
                     {activeData.description}
                   </p>
                 </motion.div>
@@ -233,18 +233,18 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
                     <motion.button
                     className={`w-10 h-10 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full border flex items-center justify-center transition-colors duration-300 relative group
                     ${isActive
-                        ? "bg-white border-accent-gold shadow-glow-gold"
-                        : "bg-white border-white/30 hover:border-white/60"}`}
+                        ? "bg-accent-gold border-accent-gold shadow-glow-gold"
+                        : "bg-accent-gold border-accent-gold/30 hover:border-accent-gold/60"}`}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <span className={`font-bold font-heading text-sm sm:text-base lg:text-lg ${isActive ? "text-accent-gold" : "text-gray-700"}`}>
+                    <span className={`font-bold font-heading text-sm sm:text-base lg:text-lg ${isActive ? "text-black" : "text-black/80"}`}>
                       {item.num}
                     </span>
 
                     {/* Floating Title (always visible, or visible on hover/active) */}
-                    <div className={`absolute top-full mt-2 sm:mt-4 flex flex-col items-center text-[9px] sm:text-xs lg:text-sm font-bold tracking-wider uppercase transition-[opacity,transform] duration-300 rounded-lg px-2.5 py-1 bg-accent-blue shadow-lg
-                    ${isActive ? "text-white opacity-100 translate-y-0" : "text-white opacity-70 group-hover:opacity-100 -translate-y-1"}`}>
+                    <div className={`absolute top-full mt-2 sm:mt-4 flex flex-col items-center text-[9px] sm:text-xs lg:text-sm font-bold tracking-wider uppercase transition-[opacity,transform] duration-300 rounded-lg px-2.5 py-1 shadow-lg
+                    ${isActive ? "bg-[#F5F1EB] text-black opacity-100 translate-y-0" : "bg-[#F5F1EB]/80 text-black/80 opacity-70 group-hover:opacity-100 -translate-y-1"}`}>
                       {item.title.split(" ").map((word, i) => (
                         <span key={i}>{word}</span>
                       ))}
@@ -321,7 +321,7 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
           {/* CTA Buttons */}
           <div className="flex flex-row items-center justify-center gap-3 w-full">
             {showServices && (
-              <Link href="/services" className="group relative flex items-center justify-center gap-3 bg-accent-blue text-white px-5 py-3 rounded-lg font-semibold text-sm overflow-hidden transition-all hover:bg-[#0A0A0A] hover:text-white active:scale-95 shadow-[0_0_30px_-10px_rgba(59,130,246,0.6)]">
+              <Link href="/services" className="group relative flex items-center justify-center gap-3 bg-accent-blue text-black px-5 py-3 rounded-lg font-semibold text-sm overflow-hidden transition-all hover:bg-[#0A0A0A] hover:text-white active:scale-95 shadow-[0_0_30px_-10px_rgba(59,130,246,0.6)]">
                 <span className="relative z-10">Our Services</span>
               </Link>
             )}

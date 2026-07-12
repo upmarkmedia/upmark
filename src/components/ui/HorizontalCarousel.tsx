@@ -9,6 +9,7 @@ interface HorizontalCarouselProps {
   subtitle?: ReactNode;
   label?: string;
   className?: string;
+  lightText?: boolean;
 }
 
 export function HorizontalCarousel({
@@ -17,6 +18,7 @@ export function HorizontalCarousel({
   subtitle,
   label,
   className = "",
+  lightText = false,
 }: HorizontalCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -59,17 +61,17 @@ export function HorizontalCarousel({
         <div className="flex items-end justify-between mb-8 sm:mb-10">
           <div>
             {label && (
-              <span className="text-secondary-surface-dark font-extrabold tracking-[0.2em] uppercase text-xl mb-3">
+              <span className={`font-extrabold tracking-[0.2em] uppercase text-xl mb-3 ${lightText ? "text-white/60" : "text-secondary-surface-dark"}`}>
                 {label}
               </span>
             )}
             {title && (
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading text-primary-text tracking-tight leading-tight uppercase">
+              <h2 className={`text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading tracking-tight leading-tight uppercase ${lightText ? "text-white" : "text-primary-text"}`}>
                 {title}
               </h2>
             )}
             {subtitle && (
-              <p className="text-muted-text text-base sm:text-lg max-w-2xl font-light mt-3">
+              <p className={`text-base sm:text-lg max-w-2xl font-light mt-3 ${lightText ? "text-white/50" : "text-muted-text"}`}>
                 {subtitle}
               </p>
             )}
@@ -80,7 +82,11 @@ export function HorizontalCarousel({
             <button
               onClick={() => scroll("left")}
               disabled={!canScrollLeft}
-              className="w-11 h-11 rounded-full border border-primary-text/10 flex items-center justify-center hover:bg-primary-text/5 hover:border-accent-blue/50 transition-colors text-primary-text disabled:opacity-20 disabled:cursor-not-allowed"
+              className={`w-11 h-11 rounded-full border flex items-center justify-center transition-colors disabled:opacity-20 disabled:cursor-not-allowed ${
+                lightText
+                  ? "border-white/10 text-white hover:bg-white/5 hover:border-white/30"
+                  : "border-primary-text/10 text-primary-text hover:bg-primary-text/5 hover:border-accent-blue/50"
+              }`}
               aria-label="Scroll left"
             >
               <ChevronLeft size={20} />
@@ -88,7 +94,11 @@ export function HorizontalCarousel({
             <button
               onClick={() => scroll("right")}
               disabled={!canScrollRight}
-              className="w-11 h-11 rounded-full border border-primary-text/10 flex items-center justify-center hover:bg-primary-text/5 hover:border-accent-blue/50 transition-colors text-primary-text disabled:opacity-20 disabled:cursor-not-allowed"
+              className={`w-11 h-11 rounded-full border flex items-center justify-center transition-colors disabled:opacity-20 disabled:cursor-not-allowed ${
+                lightText
+                  ? "border-white/10 text-white hover:bg-white/5 hover:border-white/30"
+                  : "border-primary-text/10 text-primary-text hover:bg-primary-text/5 hover:border-accent-blue/50"
+              }`}
               aria-label="Scroll right"
             >
               <ChevronRight size={20} />
@@ -100,7 +110,7 @@ export function HorizontalCarousel({
       {/* Scrollable track */}
       <div
         ref={scrollRef}
-        className="flex overflow-x-auto gap-5 sm:gap-6 snap-x snap-mandatory hide-scrollbar -mx-4 px-4 sm:-mx-6 sm:px-6 pb-4"
+        className="flex overflow-x-auto gap-5 sm:gap-6 snap-x snap-mandatory hide-scrollbar -ml-4 pl-6 pr-4 sm:-mx-6 sm:px-6 pb-4"
       >
         {children}
       </div>

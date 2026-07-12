@@ -1,6 +1,6 @@
 import { ContactForm } from "@/components/forms/ContactForm";
 import { Metadata } from "next";
-import { getAdminSiteSettings as getSiteSettings } from "@/lib/firebase-admin";
+import { getSiteSettings } from "@/lib/firestore";
 import { Mail, Phone, MapPin } from "lucide-react";
 
 export const metadata: Metadata = {

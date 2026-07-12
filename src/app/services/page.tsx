@@ -1,9 +1,7 @@
 import { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { CapabilityMap } from "@/components/interactive-diagram";
-import { getAdminSiteSettings as getSiteSettings } from "@/lib/firebase-admin";
-import { getServices } from "@/lib/firestore";
+import { ContactForm } from "@/components/forms/ContactForm";
+import { getSiteSettings, getServices } from "@/lib/firestore";
 
 export const metadata: Metadata = {
   title: "Services | Upmark — Full-Stack Marketing Services",
@@ -32,11 +30,12 @@ export default async function ServicesPage() {
   const headerVisible = show("servicesHeader");
   const mapVisible = show("servicesCapabilityMap") && services.length > 0;
   const ctaVisible = show("servicesCTA");
+  const contactSection = settings?.servicesContact ?? {};
 
   if (!pageVisible) return null;
 
   return (
-    <div className="pt-24 sm:pt-32 pb-16 sm:pb-32">
+    <div className="pt-24 sm:pt-32">
       <section className="container mx-auto px-4 sm:px-6 relative z-10">
         {headerVisible && (
         <div className="mb-12 sm:mb-20">
@@ -54,34 +53,31 @@ export default async function ServicesPage() {
 
         {mapVisible && <CapabilityMap services={services} />}
 
-        {/* Global CTA at the bottom */}
-        {ctaVisible && (
-        <section className="graphite-grid rounded-sm my-16 sm:my-24 mx-4 sm:mx-6">
-          <div className="relative z-10 py-16 sm:py-24 text-center max-w-4xl mx-auto px-4">
-            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black font-heading text-white tracking-tight mb-6 sm:mb-8">
-              See the thinking in <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-purple-400">action!</span>
-            </h2>
-            <p className="text-base sm:text-xl text-white/70 mb-8 sm:mb-12 font-light max-w-2xl mx-auto">
-              Our case studies and portfolio aren't just proof of what we've made — they're evidence of how integrated thinking produces better outcomes.
-            </p>
-            <div className="flex flex-row items-center justify-center gap-4 sm:gap-6">
-              <Link
-                href="/work"
-                className="bg-white text-black px-6 py-4 sm:px-10 sm:py-5 rounded-sm font-bold text-lg hover:bg-gray-100 transition-all duration-300 flex items-center gap-3 w-full sm:w-auto justify-center whitespace-nowrap"
-              >
-                View our work <ArrowRight size={20} />
-              </Link>
-              <Link
-                href="/contact"
-                className="px-6 py-4 sm:px-10 sm:py-5 rounded-sm font-bold text-lg border-2 border-white/30 text-white hover:bg-white hover:text-black transition-all duration-300 w-full sm:w-auto justify-center"
-              >
-                Contact Us
-              </Link>
+        <div className="h-16 sm:h-24" />
+      </section>
+
+      {/* Contact Section — flush, no gaps */}
+      {ctaVisible && (
+      <section id="contact" className="bg-accent-blue scroll-mt-32 overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 py-10 sm:py-24 md:py-32">
+          <div className="flex flex-col lg:flex-row gap-6 sm:gap-12 lg:gap-16 items-start">
+            {/* Left: Heading */}
+            <div className="lg:w-1/2 flex flex-col items-start min-w-0 self-center">
+              <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold font-heading text-[#0A0A0A] tracking-tight leading-tight mb-4 sm:mb-4 uppercase break-words">
+                {contactSection.heading || "LET'S"} <span className="text-white">{contactSection.headingHighlight || "CREATE"}</span><br />{contactSection.heading ? "" : "SOMETHING"} <span className="text-white">{contactSection.heading ? "" : "GREAT"}</span>
+              </h2>
+              <p className="text-[#0A0A0A]/80 text-sm sm:text-xl md:text-2xl max-w-lg font-semibold">
+                {contactSection.subtitle || "Have a project in mind? We'd love to hear about it. Fill out the form and our team will get back to you within 24 hours."}
+              </p>
+            </div>
+            {/* Right: Contact Form */}
+            <div className="lg:w-1/2 w-full lg:pt-0">
+              <ContactForm variant="yellow" />
             </div>
           </div>
-        </section>
-        )}
+        </div>
       </section>
+      )}
     </div>
   );
 }

@@ -207,9 +207,21 @@ export async function deleteService(id: string): Promise<void> {
 const testimonialsRef = collection(db, "testimonials");
 
 export async function getTestimonials(): Promise<Testimonial[]> {
-  const q = query(testimonialsRef, orderBy("createdAt", "desc"));
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }) as Testimonial);
+  try {
+    const q = query(testimonialsRef, orderBy("createdAt", "desc"));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }) as Testimonial);
+  } catch {
+    // Fallback: fetch without orderBy in case the composite index is missing
+    const snapshot = await getDocs(testimonialsRef);
+    return snapshot.docs
+      .map((d) => ({ id: d.id, ...d.data() }) as Testimonial)
+      .sort((a, b) => {
+        const aTime = a.createdAt?.toMillis?.() ?? 0;
+        const bTime = b.createdAt?.toMillis?.() ?? 0;
+        return bTime - aTime;
+      });
+  }
 }
 
 export async function getFeaturedTestimonials(): Promise<Testimonial[]> {
@@ -217,7 +229,7 @@ export async function getFeaturedTestimonials(): Promise<Testimonial[]> {
     const all = await getTestimonials();
     const featured = all.filter((t) => t.featured === true);
     if (featured.length > 0) {
-      return featured.slice(0, 3);
+      return featured;
     }
     // Fallback: return first 3 by order
     return all

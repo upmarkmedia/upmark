@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { getAdminSiteSettings as getSiteSettings } from "@/lib/firebase-admin";
+import { getSiteSettings } from "@/lib/firestore";
 import type { LegalPageSection } from "@/types";
 
 export const metadata: Metadata = {

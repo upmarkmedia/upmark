@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Poppins, Inter } from "next/font/google";
 import "./globals.css";
 import { LayoutShell } from "@/components/layout/LayoutShell";
-import { getAdminSiteSettings as getSiteSettings } from "@/lib/firebase-admin";
+import { getSiteSettings } from "@/lib/firestore";
 
 export const dynamic = "force-dynamic";
 

@@ -22,6 +22,8 @@ import {
   Info,
   Shield,
   Scale,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { useState, useEffect, type ReactNode } from "react";
 
@@ -98,12 +100,15 @@ export function AdminLayout({ children }: { children: ReactNode }) {
   const { user, logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [logoUrl, setLogoUrl] = useState("/upmark-wordmark.png");
+  const [activeTheme, setActiveTheme] = useState<string>("v1");
+  const [darkMode, setDarkMode] = useState(false);
   _setSidebarOpen = setSidebarOpen;
 
   useEffect(() => {
     getSiteSettings()
       .then(settings => {
         const theme = settings?.theme || "v1";
+        setActiveTheme(theme);
         document.documentElement.classList.remove("dark", "theme-editorial", "theme-v1", "theme-v2", "theme-v3");
         
         if (theme === "editorial" || theme === "v2") {
@@ -112,6 +117,8 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         } else if (theme === "v3") {
           document.documentElement.classList.add("theme-v3");
           setLogoUrl(settings?.navbarLogoV3 || settings?.editorialLogoUrl || "/upmark-wordmark.png");
+          const savedDark = localStorage.getItem("upmark_admin_v3_dark") === "true";
+          setDarkMode(savedDark);
         } else {
           document.documentElement.classList.add("theme-v1");
           setLogoUrl(settings?.navbarLogoV1 || settings?.globalLogoUrl || "/upmark-wordmark.png");
@@ -120,13 +127,21 @@ export function AdminLayout({ children }: { children: ReactNode }) {
       .catch(console.error);
   }, []);
 
+  function toggleDarkMode() {
+    const next = !darkMode;
+    setDarkMode(next);
+    if (activeTheme === "v3") {
+      localStorage.setItem("upmark_admin_v3_dark", String(next));
+    }
+  }
+
   function isActive(href: string, exact: boolean) {
     if (href === "/admin") return exact ? pathname === href : pathname.startsWith(href);
     return exact ? pathname === href : pathname.startsWith(href);
   }
 
   return (
-    <div className="min-h-screen bg-primary-bg flex">
+    <div className={`min-h-screen bg-primary-bg flex ${activeTheme === "v3" && darkMode ? "theme-v3-dark" : ""}`}>
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -205,6 +220,18 @@ export function AdminLayout({ children }: { children: ReactNode }) {
           <div className="px-4 py-2 mb-2">
             <p className="text-xs text-muted-text truncate">{user?.email}</p>
           </div>
+
+          {activeTheme === "v3" && (
+            <button
+              onClick={toggleDarkMode}
+              aria-label="Toggle v3 dark mode"
+              className="w-full flex items-center gap-3 px-4 py-3 mb-2 rounded-lg text-sm font-medium transition-[background-color,color,border-color] duration-200 border border-transparent text-muted-text hover:bg-primary-text/5 hover:text-primary-text"
+            >
+              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+              {darkMode ? "Light Mode" : "Dark Mode"}
+            </button>
+          )}
+
           <button
             onClick={logout}
             className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-[background-color,color,border-color] duration-200 border border-transparent hover:border-red-500/20"

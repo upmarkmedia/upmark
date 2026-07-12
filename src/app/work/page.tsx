@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
 import { HorizontalCarousel } from "@/components/ui/HorizontalCarousel";
 import { PreviewDialog } from "@/components/ui/PreviewDialog";
@@ -8,24 +9,6 @@ import { TestimonialsCarousel } from "@/components/sections/TestimonialsCarousel
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { getWorkItems, getSiteSettings, getTestimonials } from "@/lib/firestore";
 import type { WorkItem, WorkSection, Testimonial, PageVisibility } from "@/types";
-
-const FALLBACK_WORK_ITEMS: WorkItem[] = [
-  { title: "Ingri", client: "Ingri", tag: "Fashion & Lifestyle", stat1: "+210%", stat1label: "Revenue Growth", stat2: "+380%", stat2label: "Social Engagement", description: "Ingri was a premium fashion brand struggling to differentiate in a saturated market. Organic reach had declined 60% and paid ROI was stagnating. We rebuilt their positioning from scratch and engineered a multi-channel content engine that drove consistent growth.", imageUrl: "/images/casestudy-ingri.png", gradient: "from-purple-900/30 to-indigo-900/10", category: "Studies", metrics: [], published: true },
-  { title: "Motorworks", client: "Motorworks", tag: "Automotive Services", stat1: "+320%", stat1label: "Lead Volume", stat2: "-58%", stat2label: "Cost Per Lead", description: "Motorworks had strong offline reputation but near-zero digital presence. Competitors dominated local search and their website converted at under 1%. We launched a full-stack digital strategy that transformed their pipeline.", imageUrl: "/images/casestudy-motorworks.png", gradient: "from-blue-900/30 to-slate-900/10", category: "Studies", metrics: [], published: true },
-  { title: "Luxe Stays", client: "Luxe Stays", tag: "Hospitality & Hotels", stat1: "+175%", stat1label: "Booking Rate", stat2: "+£420K", stat2label: "Direct Revenue", description: "Luxe Stays was over-reliant on OTA platforms paying 18% commission. They needed direct bookings and brand awareness in a premium segment. We built a direct-to-consumer brand strategy that cut dependency on third-party platforms.", imageUrl: "/images/casestudy-luxestays.png", gradient: "from-amber-900/30 to-orange-900/10", category: "Studies", metrics: [], published: true },
-  { title: "The Grove Kitchen", client: "The Grove Kitchen", tag: "Food & Restaurant", stat1: "+290%", stat1label: "Reservations", stat2: "0→45K", stat2label: "TikTok Followers", description: "The Grove Kitchen was a new independent restaurant with no digital footprint, limited budget and fierce competition from established names. We launched a viral-first content strategy that put them on the map in 90 days.", imageUrl: "/images/casestudy-grove.png", gradient: "from-emerald-900/30 to-teal-900/10", category: "Studies", metrics: [], published: true },
-  { title: "Vertex Corp", client: "Vertex Corp", tag: "B2B Technology", stat1: "+£2.1M", stat1label: "Pipeline Value", stat2: "+430%", stat2label: "Demo Requests", description: "Vertex had a technically superior product but poor messaging and a sales team struggling to generate qualified demo requests. We overhauled their GTM strategy and built a lead-generation machine.", imageUrl: "/images/casestudy-vertex.png", gradient: "from-rose-900/30 to-red-900/10", category: "Studies", metrics: [], published: true },
-  { title: "Bloom Retail", client: "Bloom Retail", tag: "E-commerce & Retail", stat1: "+340%", stat1label: "eCommerce Revenue", stat2: "6.8×", stat2label: "ROAS", description: "Bloom Retail had strong products but weak digital marketing — high ad spend with poor returns and no sustainable organic channel. We restructured their entire paid and organic strategy to drive profitable scale.", imageUrl: "/images/casestudy-bloom.png", gradient: "from-cyan-900/30 to-blue-900/10", category: "Studies", metrics: [], published: true },
-];
-
-const FALLBACK_PORTFOLIO: WorkItem[] = [
-  { id: "p-1", title: "Ingri — SS26 Campaign Film", client: "Ingri", defaultGalleryMode: "grid", galleryUrls: [], duration: "1:45", description: "Cinematic campaign film for Ingri's Spring/Summer collection. Shot on location in Milan and London.", imageUrl: "/images/casestudy-ingri.png", category: "Production", metrics: [], published: true },
-  { id: "p-2", title: "Luxe Stays — Brand Story", client: "Luxe Stays", defaultGalleryMode: "grid", galleryUrls: [], duration: "2:30", description: "Brand documentary capturing the essence of Luxe Stays hospitality. A narrative piece driving direct bookings.", imageUrl: "/images/casestudy-luxestays.png", category: "Production", metrics: [], published: true },
-  { id: "p-3", title: "Bloom Retail — Product Lookbook", client: "Bloom Retail", defaultGalleryMode: "carousel", galleryUrls: [], description: "Editorial product photography for Bloom's seasonal lookbook. Styled for eCommerce and social platforms.", imageUrl: "/images/casestudy-bloom.png", category: "Production", metrics: [], published: true },
-  { id: "p-4", title: "The Grove Kitchen — Menu Editorial", client: "The Grove Kitchen", defaultGalleryMode: "grid", galleryUrls: [], description: "Moody food photography for The Grove Kitchen's signature menu, shot on location in the restaurant.", imageUrl: "/images/casestudy-grove.png", category: "Production", metrics: [], published: true },
-  { id: "p-5", title: "Motorworks — Service Showcase", client: "Motorworks", defaultGalleryMode: "carousel", galleryUrls: [], duration: "0:45", description: "Cinematic workshop showcase highlighting premium automotive service and attention to detail.", imageUrl: "/images/casestudy-motorworks.png", category: "Production", metrics: [], published: true },
-  { id: "p-6", title: "Vertex Corp — Product Demo", client: "Vertex Corp", defaultGalleryMode: "grid", galleryUrls: [], duration: "1:15", description: "A technical product demonstration video that simplified complex B2B messaging into engaging visuals.", imageUrl: "/images/casestudy-vertex.png", category: "Production", metrics: [], published: true },
-];
 
 const GRADIENT_HOVER_MAP: Record<string, string> = {
   "from-purple-900/30 to-indigo-900/10": "from-purple-900 via-purple-700/70 to-transparent",
@@ -51,9 +34,10 @@ const DEFAULT_PRODUCTION_SECTION: WorkSection = {
   detailFields: ["title", "client", "description"],
 };
 
-export default function WorkPage() {
-  const [caseStudies, setCaseStudies] = useState<WorkItem[]>(FALLBACK_WORK_ITEMS);
-  const [portfolioItems, setPortfolioItems] = useState<WorkItem[]>(FALLBACK_PORTFOLIO);
+function WorkPageContent() {
+  const searchParams = useSearchParams();
+  const [caseStudies, setCaseStudies] = useState<WorkItem[]>([]);
+  const [portfolioItems, setPortfolioItems] = useState<WorkItem[]>([]);
   const [portfolioSection, setPortfolioSection] = useState<WorkSection>(DEFAULT_PORTFOLIO_SECTION);
   const [productionSection, setProductionSection] = useState<WorkSection>(DEFAULT_PRODUCTION_SECTION);
   const [testimonialsSection, setTestimonialsSection] = useState<WorkSection | undefined>();
@@ -68,10 +52,9 @@ export default function WorkPage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const [all, settings, allTestimonials] = await Promise.all([
+        const [all, settings] = await Promise.all([
           getWorkItems(),
           getSiteSettings(),
-          getTestimonials(),
         ]);
         const published = all.filter(w => w.published);
         const studies = published
@@ -82,7 +65,6 @@ export default function WorkPage() {
           .sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
         if (studies.length > 0) setCaseStudies(studies);
         if (portfolio.length > 0) setPortfolioItems(portfolio);
-        if (allTestimonials.length > 0) setTestimonials(allTestimonials);
         if (settings?.portfolioSection) setPortfolioSection(settings.portfolioSection);
         if (settings?.productionSection) setProductionSection(settings.productionSection);
         if (settings?.testimonialsSection) setTestimonialsSection(settings.testimonialsSection);
@@ -92,7 +74,43 @@ export default function WorkPage() {
       }
     };
     fetchData();
+
+    async function fetchTestimonialsData() {
+      try {
+        const allTestimonials = await getTestimonials();
+        if (allTestimonials.length > 0) setTestimonials(allTestimonials);
+      } catch (err) {
+        console.error("Failed to fetch testimonials:", err);
+      }
+    };
+    fetchTestimonialsData();
   }, []);
+
+  // Auto-open preview dialog when navigated from homepage with ?item= param
+  useEffect(() => {
+    const itemId = searchParams.get("item");
+    if (!itemId) return;
+
+    const decoded = decodeURIComponent(itemId);
+
+    // Search in case studies first
+    const foundCs = caseStudies.find(
+      (cs) => cs.id === itemId || cs.title === itemId || cs.title === decoded
+    );
+    if (foundCs) {
+      setSelectedCs(foundCs);
+      setCsPreviewOpen(true);
+      return;
+    }
+    // Then search in production items
+    const foundPf = portfolioItems.find(
+      (pf) => pf.id === itemId || pf.title === itemId || pf.title === decoded
+    );
+    if (foundPf) {
+      setSelectedPf(foundPf);
+      setPfPreviewOpen(true);
+    }
+  }, [searchParams, caseStudies, portfolioItems]);
 
   // Sequentially preload the first portfolio item's gallery
   useEffect(() => {
@@ -100,6 +118,7 @@ export default function WorkPage() {
       const firstItemUrls = portfolioItems[0].galleryUrls;
       if (firstItemUrls && firstItemUrls.length > 0) {
         let isCancelled = false;
+        const elements: (HTMLVideoElement | HTMLImageElement)[] = [];
         const preload = async () => {
           for (const url of firstItemUrls) {
             if (isCancelled) break;
@@ -109,6 +128,7 @@ export default function WorkPage() {
                   const video = document.createElement("video");
                   video.preload = "metadata";
                   video.src = url;
+                  elements.push(video);
                   video.onloadedmetadata = () => resolve(true);
                   video.onerror = () => resolve(false);
                 });
@@ -116,6 +136,7 @@ export default function WorkPage() {
                 await new Promise((resolve) => {
                   const img = new window.Image();
                   img.src = url;
+                  elements.push(img);
                   img.onload = () => resolve(true);
                   img.onerror = () => resolve(false);
                 });
@@ -126,6 +147,9 @@ export default function WorkPage() {
         preload();
         return () => {
           isCancelled = true;
+          elements.forEach((el) => {
+            el.removeAttribute("src");
+          });
         };
       }
     }
@@ -136,12 +160,12 @@ export default function WorkPage() {
   const headerVisible = show("workHeader");
   const portfolioVisible = show("workPortfolio") && caseStudies.length > 0;
   const productionVisible = show("workProduction") && portfolioItems.length > 0;
-  const testimonialsVisible = show("workTestimonials") && testimonials.length > 0;
+  const testimonialsVisible = show("workTestimonials");
 
   if (!pageVisible) return null;
 
   return (
-    <div className="pt-24 sm:pt-32 pb-16 sm:pb-32">
+    <div className="pt-24 sm:pt-32">
       {/* Page Header */}
       {headerVisible && (
       <section className="container mx-auto px-4 sm:px-6 relative z-10 mb-16 sm:mb-20">
@@ -160,7 +184,7 @@ export default function WorkPage() {
       )}
 
       {/* ─── Portfolio Section ─────────────────────────── */}
-      {portfolioVisible && (
+      {portfolioVisible && caseStudies.length > 0 && (
       <section className="container mx-auto px-4 sm:px-6 relative z-10 mb-20 sm:mb-32 content-visibility-auto">
         <HorizontalCarousel
           label={portfolioSection.label}
@@ -208,12 +232,14 @@ export default function WorkPage() {
       )}
 
       {/* ─── Production Section ────────────────────────────── */}
-      {productionVisible && (
-      <section className="container mx-auto px-4 sm:px-6 relative z-10 mb-20 sm:mb-32 content-visibility-auto">
+      {productionVisible && portfolioItems.length > 0 && (
+      <section className="bg-black relative z-10 content-visibility-auto">
+        <div className="container mx-auto px-4 sm:px-6 py-20 sm:py-32">
         <HorizontalCarousel
           label={productionSection.label}
           title={productionSection.title}
           subtitle={productionSection.subtitle}
+          lightText
         >
           {portfolioItems.map((item) => (
             <div
@@ -221,7 +247,7 @@ export default function WorkPage() {
               onClick={() => { setSelectedPf(item); setPfPreviewOpen(true); }}
               className="snap-start flex-shrink-0 cursor-pointer group"
             >
-              <div className="relative rounded-sm overflow-hidden bg-secondary-surface/40 border border-primary-text/10 hover:border-accent-blue/30 transition-[border-color]">
+              <div className="relative rounded-sm overflow-hidden bg-white/5 border border-white/10 hover:border-accent-blue/30 transition-[border-color]">
                 <div className="aspect-square w-[300px] sm:w-[420px] relative overflow-hidden flex">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors z-10"></div>
 
@@ -257,13 +283,14 @@ export default function WorkPage() {
             </div>
           ))}
         </HorizontalCarousel>
+        </div>
       </section>
       )}
 
       {/* ─── Testimonials Section ─────────────────────────── */}
       {testimonialsVisible && (
-      <div id="testimonials" className="scroll-mt-32">
-        <TestimonialsCarousel testimonials={testimonials} maxItems={testimonials.length || 3} section={testimonialsSection} />
+      <div id="testimonials" className="scroll-mt-32 bg-accent-gold py-20 sm:py-32 -mx-4 sm:-mx-6 px-4 sm:px-6 overflow-hidden">
+        <TestimonialsCarousel testimonials={testimonials} maxItems={testimonials.length || 3} section={testimonialsSection} invertHeader noSectionPadding />
       </div>
       )}
 
@@ -312,5 +339,17 @@ export default function WorkPage() {
         />
       )}
     </div>
+  );
+}
+
+export default function WorkPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex h-[50vh] items-center justify-center text-muted-text">
+        <div className="w-10 h-10 border-2 border-accent-blue border-t-transparent rounded-full animate-spin" />
+      </div>
+    }>
+      <WorkPageContent />
+    </Suspense>
   );
 }

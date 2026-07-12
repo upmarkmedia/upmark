@@ -55,14 +55,14 @@ export const Footer = () => {
         <div className="flex whitespace-nowrap animate-[marquee_40s_linear_infinite]" style={{ willChange: "transform", width: "max-content" }}>
           <div className="flex whitespace-nowrap">
             {Array.from({ length: 8 }).map((_, i) => (
-              <span key={i} className="text-[13px] uppercase tracking-[0.3em] text-neutral-100/20 font-heading font-black mx-4">
+              <span key={i} className="text-[13px] uppercase tracking-[0.3em] text-accent-gold font-heading font-black mx-4">
                 {marqueeText}
               </span>
             ))}
           </div>
           <div className="flex whitespace-nowrap" aria-hidden="true">
             {Array.from({ length: 8 }).map((_, i) => (
-              <span key={i} className="text-[13px] uppercase tracking-[0.3em] text-neutral-100/20 font-heading font-black mx-4">
+              <span key={i} className="text-[13px] uppercase tracking-[0.3em] text-accent-gold font-heading font-black mx-4">
                 {marqueeText}
               </span>
             ))}

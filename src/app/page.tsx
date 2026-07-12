@@ -3,12 +3,12 @@ import { PlaySquare, CheckCircle2, ArrowRight, Send } from "lucide-react";
 import * as LucideIcons from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { getAdminSiteSettings as getSiteSettings } from "@/lib/firebase-admin";
-import { getFeaturedTestimonials, getServices } from "@/lib/firestore";
+import { getSiteSettings, getFeaturedTestimonials, getServices } from "@/lib/firestore";
 import { TestimonialsCarousel } from "@/components/sections/TestimonialsCarousel";
 import { BrandCarousel } from "@/components/sections/BrandCarousel";
 import { ProcessOrbital } from "@/components/interactive-diagram";
 import { ContactForm } from "@/components/forms/ContactForm";
+import { PortfolioPreview } from "@/components/sections/PortfolioPreview";
 import { parseHighlighted } from "@/lib/parseHighlighted";
 
 // ─── Default content (fallbacks when admin hasn't configured) ────────
@@ -89,9 +89,10 @@ export default async function Home() {
   const processVisible = show("homeProcess") && processItems.length > 0;
   const contentStudioVisible = show("homeContentStudio") && contentItems.length > 0;
   const studioCapVisible = show("homeStudioCapabilities") && studioCapabilities.length > 0;
-  const testimonialsVisible = show("homeTestimonials") && testimonials.length > 0;
+  const testimonialsVisible = show("homeTestimonials");
   const brandCarouselVisible = show("homeBrandCarousel") && brandCarouselItems.length > 0;
   const contactVisible = show("homeContact");
+  const portfolioPreviewVisible = show("homePortfolio");
 
   if (!pageVisible) return null;
 
@@ -220,8 +221,11 @@ export default async function Home() {
       </section>
       )}
 
+      {/* Portfolio Preview */}
+      {portfolioPreviewVisible && <PortfolioPreview />}
+
       {/* Testimonials Carousel */}
-      {testimonialsVisible && <TestimonialsCarousel testimonials={testimonials} />}
+      {testimonialsVisible && <TestimonialsCarousel testimonials={testimonials} section={settings?.testimonialsSection} />}
 
       </div>
 

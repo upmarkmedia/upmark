@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { getAdminSiteSettings as getSiteSettings } from "@/lib/firebase-admin";
+import { getSiteSettings } from "@/lib/firestore";
 
 export const metadata: Metadata = {
   title: "Case Studies | Upmark — Real Results, Real Growth",

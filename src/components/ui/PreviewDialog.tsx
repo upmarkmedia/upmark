@@ -96,12 +96,13 @@ export function PreviewDialog({
   useEffect(() => {
     if (open) {
       document.addEventListener("keydown", handleKeyDown);
+      const prev = document.body.style.overflow;
       document.body.style.overflow = "hidden";
+      return () => {
+        document.removeEventListener("keydown", handleKeyDown);
+        document.body.style.overflow = prev;
+      };
     }
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "";
-    };
   }, [open, handleKeyDown]);
 
   return (

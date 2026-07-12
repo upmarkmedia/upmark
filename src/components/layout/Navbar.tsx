@@ -6,20 +6,18 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useIdle } from "@/contexts/IdleContext";
 import { getSiteSettings } from "@/lib/firestore";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const lastScrollY = useRef(0);
 
   const [logoUrl, setLogoUrl] = useState("/upmark-wordmark.png");
   const [isLight, setIsLight] = useState(false);
   const [settingsLoaded, setSettingsLoaded] = useState(false);
-  const lastScrollY = useRef(0);
   const pathname = usePathname();
-  const { isIdle, isHeroVisible } = useIdle();
 
   const [visibility, setVisibility] = useState<Record<string, boolean>>({});
 
@@ -47,7 +45,7 @@ export const Navbar = () => {
 
   const show = (key: string) => visibility[key] ?? true;
 
-  // Handle scroll effect for dynamic glassmorphism on desktop
+  // Handle scroll effect for dynamic glassmorphism and hide/show
   useEffect(() => {
     let ticking = false;
     const handleScroll = () => {
@@ -56,12 +54,10 @@ export const Navbar = () => {
           const currentScrollY = window.scrollY;
           setScrolled(currentScrollY > 20);
 
-          if (window.innerWidth >= 1024) {
-            if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
-              setHidden(true);
-            } else if (currentScrollY < lastScrollY.current || currentScrollY <= 50) {
-              setHidden(false);
-            }
+          if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
+            setHidden(true);
+          } else if (currentScrollY < lastScrollY.current || currentScrollY <= 50) {
+            setHidden(false);
           }
 
           lastScrollY.current = currentScrollY;
@@ -88,20 +84,18 @@ export const Navbar = () => {
     setIsOpen(false);
   }, [pathname]);
 
-  const isVisible = !(pathname === "/" && isHeroVisible);
-
   return (
-    <header className={`fixed top-0 w-full z-50 flex justify-center pt-3 sm:pt-6 px-3 sm:px-6 pointer-events-none transition-all duration-500 ${isVisible && settingsLoaded ? "opacity-100" : "opacity-0"} ${hidden ? '-translate-y-full' : 'translate-y-0'}`}>
+    <header className={`fixed top-0 w-full z-50 pointer-events-none transition-all duration-500 ${settingsLoaded ? "opacity-100" : "opacity-0"} ${hidden ? "-translate-y-full" : "translate-y-0"}`}>
       <motion.div
-        initial={{ y: -100, opacity: 0 }}
+        initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className={`relative w-full max-w-6xl rounded-full transition-colors duration-300 ${isVisible ? "pointer-events-auto" : "pointer-events-none"} flex justify-between items-center ${
+        className={`relative w-full pointer-events-auto transition-colors duration-300 flex justify-between items-center ${
           scrolled
-            ? "bg-primary-bg/80 backdrop-blur-xl border border-primary-text/10 shadow-lg py-2.5 sm:py-3 px-4 sm:px-6 md:px-8"
+            ? "bg-primary-bg/80 backdrop-blur-xl border-b border-primary-text/10 shadow-lg py-2.5 sm:py-3 px-4 sm:px-6 md:px-10"
             : isLight
-              ? "bg-primary-bg/85 backdrop-blur-md border border-primary-text/10 shadow-md py-2.5 sm:py-3 px-4 sm:px-6 md:px-8"
-              : "bg-transparent py-3 sm:py-4 px-4 sm:px-6 md:px-8"
+              ? "bg-primary-bg/85 backdrop-blur-md border-b border-primary-text/10 shadow-md py-2.5 sm:py-3 px-4 sm:px-6 md:px-10"
+              : "bg-transparent py-3 sm:py-4 px-4 sm:px-6 md:px-10"
         }`}
       >
         {/* Logo - Left Side */}

@@ -101,6 +101,7 @@ export interface Testimonial {
   featured?: boolean;
   order?: number;
   imageUrl?: string;
+  profileUrl?: string;
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }
@@ -192,6 +193,7 @@ export interface PageVisibility {
   homeStudioCapabilities?: boolean;
   homeTestimonials?: boolean;
   homeBrandCarousel?: boolean;
+  homePortfolio?: boolean;
   // Work sections
   workHeader?: boolean;
   workPortfolio?: boolean;
@@ -256,6 +258,12 @@ export interface SiteSettings {
   portfolioSection?: WorkSection;
   productionSection?: WorkSection;
   testimonialsSection?: WorkSection;
+  // Services page contact section
+  servicesContact?: {
+    heading?: string;
+    headingHighlight?: string;
+    subtitle?: string;
+  };
   // Page/Section visibility
   visibility?: PageVisibility;
   // About page
