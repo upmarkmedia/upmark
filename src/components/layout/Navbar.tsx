@@ -45,7 +45,7 @@ export const Navbar = () => {
 
   const show = (key: string) => visibility[key] ?? true;
 
-  // Handle scroll effect for dynamic glassmorphism and hide/show
+  // Handle scroll effect — hide on scroll down, show on scroll up
   useEffect(() => {
     let ticking = false;
     const handleScroll = () => {
@@ -85,18 +85,12 @@ export const Navbar = () => {
   }, [pathname]);
 
   return (
-    <header className={`fixed top-0 w-full z-50 pointer-events-none transition-all duration-500 ${settingsLoaded ? "opacity-100" : "opacity-0"} ${hidden ? "-translate-y-full" : "translate-y-0"}`}>
+    <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${settingsLoaded ? "opacity-100" : "opacity-0"} ${hidden ? "-translate-y-full" : "translate-y-0"}`}>
       <motion.div
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className={`relative w-full pointer-events-auto transition-colors duration-300 flex justify-between items-center ${
-          scrolled
-            ? "bg-primary-bg/80 backdrop-blur-xl border-b border-primary-text/10 shadow-lg py-2.5 sm:py-3 px-4 sm:px-6 md:px-10"
-            : isLight
-              ? "bg-primary-bg/85 backdrop-blur-md border-b border-primary-text/10 shadow-md py-2.5 sm:py-3 px-4 sm:px-6 md:px-10"
-              : "bg-transparent py-3 sm:py-4 px-4 sm:px-6 md:px-10"
-        }`}
+        className={`relative w-full bg-primary-bg border-b border-primary-text/10 shadow-sm py-2.5 sm:py-3 px-4 sm:px-6 md:px-10 flex justify-between items-center`}
       >
         {/* Logo - Left Side */}
         <Link href="/" className="flex items-center shrink-0">

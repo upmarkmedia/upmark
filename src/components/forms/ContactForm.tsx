@@ -17,7 +17,7 @@ interface ContactFormProps {
   variant?: "default" | "yellow";
 }
 
-const inputYellow = "bg-white/40 border-[#0A0A0A]/30 text-[#0A0A0A] placeholder-[#0A0A0A]/40 focus:border-[#0A0A0A] focus:ring-[#0A0A0A] font-medium";
+  const inputYellow = "bg-white/40 border-[#0A0A0A]/30 text-[#0A0A0A] placeholder-[#0A0A0A]/40 focus:border-[#0A0A0A] focus:ring-[#0A0A0A] font-medium";
 const inputDefault = "bg-primary-text/5 border-primary-text/10 text-primary-text placeholder-primary-text/30 focus:border-accent-blue focus:ring-accent-blue";
 
 export const ContactForm = ({ variant = "default" }: ContactFormProps) => {
@@ -75,61 +75,61 @@ export const ContactForm = ({ variant = "default" }: ContactFormProps) => {
 
   return (
     <div className="bg-transparent w-full">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-2 sm:gap-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
-          <div className="flex flex-col gap-1">
-            <label htmlFor="name" className={isYellow ? "text-[10px] sm:text-xs uppercase tracking-widest font-extrabold text-[#0A0A0A]" : "text-[10px] uppercase tracking-widest text-muted-text font-bold"}>Full Name *</label>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-1.5 sm:gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-3">
+          <div className="flex flex-col gap-0.5">
+            <label htmlFor="name" className={isYellow ? "text-[10px] sm:text-[11px] uppercase tracking-widest font-extrabold text-[#0A0A0A]" : "text-[10px] uppercase tracking-widest text-muted-text font-bold"}>Full Name *</label>
             <input
               type="text"
               id="name"
               name="name"
               required
               placeholder="Aditya"
-              className={`${isYellow ? inputYellow : inputDefault} border-2 rounded-none px-3 py-2.5 sm:px-5 sm:py-4 text-sm sm:text-lg focus:outline-none focus:ring-2 transition-[border-color,box-shadow]`}
+              className={`${isYellow ? inputYellow : inputDefault} border-2 rounded-none px-4 py-3 sm:px-5 sm:py-3.5 text-sm focus:outline-none focus:ring-2 transition-[border-color,box-shadow]`}
             />
           </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="phone" className={isYellow ? "text-[10px] sm:text-xs uppercase tracking-widest font-extrabold text-[#0A0A0A]" : "text-[10px] uppercase tracking-widest text-muted-text font-bold"}>Phone Number</label>
+          <div className="flex flex-col gap-0.5">
+            <label htmlFor="phone" className={isYellow ? "text-[10px] sm:text-[11px] uppercase tracking-widest font-extrabold text-[#0A0A0A]" : "text-[10px] uppercase tracking-widest text-muted-text font-bold"}>Phone Number</label>
             <input
               type="tel"
               id="phone"
               name="phone"
               placeholder="+91 9891392912"
-              className={`${isYellow ? inputYellow : inputDefault} border-2 rounded-none px-3 py-2.5 sm:px-5 sm:py-4 text-sm sm:text-lg focus:outline-none focus:ring-2 transition-[border-color,box-shadow]`}
+              className={`${isYellow ? inputYellow : inputDefault} border-2 rounded-none px-4 py-3 sm:px-5 sm:py-3.5 text-sm focus:outline-none focus:ring-2 transition-[border-color,box-shadow]`}
             />
           </div>
         </div>
 
-        <div className="flex flex-col gap-1">
-          <label htmlFor="email" className={isYellow ? "text-[10px] sm:text-xs uppercase tracking-widest font-extrabold text-[#0A0A0A]" : "text-[10px] uppercase tracking-widest text-muted-text font-bold"}>Email *</label>
+        <div className="flex flex-col gap-0.5">
+          <label htmlFor="email" className={isYellow ? "text-[10px] sm:text-[11px] uppercase tracking-widest font-extrabold text-[#0A0A0A]" : "text-[10px] uppercase tracking-widest text-muted-text font-bold"}>Email *</label>
           <input
             type="email"
             id="email"
             name="email"
             required
             placeholder="you@email.com"
-            className={`${isYellow ? inputYellow : inputDefault} border-2 rounded-none px-3 py-2.5 sm:px-5 sm:py-4 text-sm sm:text-lg focus:outline-none focus:ring-2 transition-[border-color,box-shadow]`}
+            className={`${isYellow ? inputYellow : inputDefault} border-2 rounded-none px-4 py-3 sm:px-5 sm:py-3.5 text-sm focus:outline-none focus:ring-2 transition-[border-color,box-shadow]`}
           />
         </div>
 
-        <div className="flex flex-col gap-1">
-          <label htmlFor="company" className={isYellow ? "text-[10px] sm:text-xs uppercase tracking-widest font-extrabold text-[#0A0A0A]" : "text-[10px] uppercase tracking-widest text-muted-text font-bold"}>Company / Brand</label>
+        <div className="flex flex-col gap-0.5">
+          <label htmlFor="company" className={isYellow ? "text-[10px] sm:text-[11px] uppercase tracking-widest font-extrabold text-[#0A0A0A]" : "text-[10px] uppercase tracking-widest text-muted-text font-bold"}>Company / Brand</label>
           <input
             type="text"
             id="company"
             name="company"
             placeholder="acaditya10"
-            className={`${isYellow ? inputYellow : inputDefault} border-2 rounded-none px-3 py-2.5 sm:px-5 sm:py-4 text-sm sm:text-lg focus:outline-none focus:ring-2 transition-[border-color,box-shadow]`}
+            className={`${isYellow ? inputYellow : inputDefault} border-2 rounded-none px-4 py-3 sm:px-5 sm:py-3.5 text-sm focus:outline-none focus:ring-2 transition-[border-color,box-shadow]`}
           />
         </div>
 
-        <div className="flex flex-col gap-1.5">
-          <label className={isYellow ? "text-[10px] sm:text-xs uppercase tracking-widest font-extrabold text-[#0A0A0A]" : "text-[10px] uppercase tracking-widest text-muted-text font-bold"}>Services Interested In *</label>
+        <div className="flex flex-col gap-1">
+          <label className={isYellow ? "text-[10px] sm:text-[11px] uppercase tracking-widest font-extrabold text-[#0A0A0A]" : "text-[10px] uppercase tracking-widest text-muted-text font-bold"}>Services Interested In *</label>
           <input type="hidden" name="services" value={JSON.stringify(selectedServices)} />
-          <div className="flex flex-wrap gap-1.5 sm:gap-2.5">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2">
             {SERVICES.map((svc) => {
               const isSelected = selectedServices.includes(svc.id);
-              let btnClass = "px-2.5 py-1.5 sm:px-5 sm:py-2.5 rounded-full text-[11px] sm:text-base font-bold transition-all ";
+              let btnClass = "px-3 py-2 sm:px-5 sm:py-2.5 rounded-none text-xs sm:text-sm font-bold transition-all ";
               if (isSelected) {
                 btnClass += isYellow ? "bg-[#0A0A0A] text-white shadow-lg" : "bg-accent-blue text-white";
               } else if (isYellow) {
@@ -155,19 +155,19 @@ export const ContactForm = ({ variant = "default" }: ContactFormProps) => {
           type="submit"
           disabled={isSubmitting || selectedServices.length === 0}
           className={isYellow
-            ? "w-full bg-[#0A0A0A] hover:bg-[#0A0A0A]/80 transition-all text-white font-extrabold text-base sm:text-lg py-3 sm:py-5 rounded-none flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed shadow-xl hover:shadow-2xl hover:scale-[1.01] active:scale-[0.99]"
+            ? "w-full bg-[#0A0A0A] hover:bg-[#0A0A0A]/80 transition-all text-white font-extrabold text-sm sm:text-base py-2.5 sm:py-3.5 rounded-none flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed shadow-xl hover:shadow-2xl hover:scale-[1.01] active:scale-[0.99]"
             : "w-full bg-accent-blue hover:bg-amber-500 transition-colors text-white font-bold py-3 sm:py-4 rounded-none flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
           }
         >
           {isSubmitting ? (
-            <Loader2 className="animate-spin" size={24} />
+            <Loader2 className="animate-spin" size={20} />
           ) : (
             <>
-              Start a Conversation <Send size={20} />
+              Start a Conversation <Send size={18} />
             </>
           )}
         </button>
-        <p className={isYellow ? "text-center text-xs text-[#0A0A0A]/50 font-medium" : "text-center text-[10px] text-muted-text/60"}>No spam. Your data is kept private and never shared.</p>
+        <p className={isYellow ? "text-center text-[10px] text-[#0A0A0A]/50 font-medium" : "text-center text-[10px] text-muted-text/60"}>No spam. Your data is kept private and never shared.</p>
       </form>
     </div>
   );
