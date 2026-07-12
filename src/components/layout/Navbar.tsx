@@ -15,7 +15,6 @@ export const Navbar = () => {
   const lastScrollY = useRef(0);
 
   const [logoUrl, setLogoUrl] = useState("/upmark-wordmark.png");
-  const [isLight, setIsLight] = useState(false);
   const [settingsLoaded, setSettingsLoaded] = useState(false);
   const pathname = usePathname();
 
@@ -23,22 +22,7 @@ export const Navbar = () => {
 
   useEffect(() => {
     getSiteSettings().then(data => {
-      const theme = data?.theme || "v1";
-      document.documentElement.classList.remove("dark", "theme-editorial", "theme-v1", "theme-v2", "theme-v3");
-      
-      if (theme === "editorial" || theme === "v2") {
-        document.documentElement.classList.add("theme-v2");
-        setIsLight(true);
-        setLogoUrl(data?.navbarLogoV2 || data?.editorialLogoUrl || "/upmark-wordmark.png");
-      } else if (theme === "v3") {
-        document.documentElement.classList.add("theme-v3");
-        setIsLight(true);
-        setLogoUrl(data?.navbarLogoV3 || data?.editorialLogoUrl || "/upmark-wordmark.png");
-      } else {
-        document.documentElement.classList.add("theme-v1");
-        setIsLight(false);
-        setLogoUrl(data?.navbarLogoV1 || data?.globalLogoUrl || "/upmark-wordmark.png");
-      }
+      setLogoUrl(data?.navbarLogoV3 || data?.editorialLogoUrl || "/upmark-wordmark.png");
       if (data?.visibility) setVisibility(data.visibility as Record<string, boolean>);
     }).catch(console.error).finally(() => setSettingsLoaded(true));
   }, []);

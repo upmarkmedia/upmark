@@ -3,29 +3,7 @@
 @import "swiper/css/navigation";
 @import "swiper/css/pagination";
 
-:root, .theme-v1 {
-  /* v1: Dark Theme (Rich Black background) */
-  --color-primary-bg-var: #0F172A;
-  --color-secondary-surface-var: #1E293B;
-  --color-accent-blue-var: #3B82F6;
-  --color-accent-gold-var: #F59E0B;
-  --color-accent-gold-rgb: 245, 158, 11;
-  --color-primary-text-var: #F8FAFC;
-  --color-muted-text-var: #94A3B8;
-}
-
-.theme-v2 {
-  /* v2: Editorial Theme (Light Ivory) */
-  --color-primary-bg-var: #F5F3EF;
-  --color-secondary-surface-var: #E7E2DA;
-  --color-accent-blue-var: #4F46E5;
-  --color-accent-gold-var: #B08968;
-  --color-accent-gold-rgb: 176, 137, 104;
-  --color-primary-text-var: #2F343A;
-  --color-muted-text-var: #4C545E;
-}
-
-.theme-v3 {
+:root {
   /* v3: Hospitality Theme — Warm Ivory, Rich Black, Signal Yellow */
   --color-primary-bg-var: #F5F1EB;
   --color-secondary-surface-var: #DCD6CB;
@@ -51,9 +29,9 @@
   --color-btn-secondary-border: #DCD6CB;
 }
 
-/* v3 Dark Mode — toggled only inside the admin panel (scoped to .theme-v3-dark).
+/* Dark Mode — toggled only inside the admin panel (scoped to .theme-v3-dark).
    Public-facing site is unaffected because it never renders this class. */
-.theme-v3 .theme-v3-dark {
+.theme-v3-dark {
   /* Rich Black (bg) */
   --color-primary-bg-var: #0A0A0A;
   /* Muted (surface) */

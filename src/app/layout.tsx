@@ -26,14 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     const settings = await getSiteSettings();
     if (settings?.globalOgImageUrl) ogImageUrl = settings.globalOgImageUrl;
-    const theme = settings?.theme || "v1";
-    if (theme === "editorial" || theme === "v2") {
-      if (settings?.faviconV2) faviconUrl = settings.faviconV2;
-    } else if (theme === "v3") {
-      if (settings?.faviconV3) faviconUrl = settings.faviconV3;
-    } else {
-      if (settings?.faviconV1) faviconUrl = settings.faviconV1;
-    }
+    if (settings?.faviconV3) faviconUrl = settings.faviconV3;
   } catch (error) {
     console.error("Failed to load settings:", error);
   }
@@ -83,14 +76,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const settings = await getSiteSettings();
-  const themeSetting = settings?.theme || "v1";
-  let themeClass = "theme-v1"; // default
-  if (themeSetting === "editorial" || themeSetting === "v2") themeClass = "theme-v2";
-  else if (themeSetting === "v3") themeClass = "theme-v3";
-  else if (themeSetting === "default" || themeSetting === "v1") themeClass = "theme-v1";
 
   return (
-    <html lang="en" className={`${themeClass} overflow-x-clip`}>
+    <html lang="en" className="overflow-x-clip">
       <body className={`${poppins.variable} ${inter.variable} min-h-screen flex flex-col overflow-x-clip`}>
         <LayoutShell>{children}</LayoutShell>
       </body>

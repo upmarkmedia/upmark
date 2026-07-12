@@ -17,14 +17,7 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
 
   useEffect(() => {
     getSiteSettings().then(data => {
-      const theme = data?.theme || "v1";
-      if (theme === "editorial" || theme === "v2") {
-        setLogoUrl(data?.navbarLogoV2 || data?.editorialLogoUrl || "/upmark-wordmark.png");
-      } else if (theme === "v3") {
-        setLogoUrl(data?.navbarLogoV3 || data?.editorialLogoUrl || "/upmark-wordmark.png");
-      } else {
-        setLogoUrl(data?.navbarLogoV1 || data?.globalLogoUrl || "/upmark-wordmark.png");
-      }
+      setLogoUrl(data?.navbarLogoV3 || data?.editorialLogoUrl || "/upmark-wordmark.png");
     }).catch(console.error);
 
     const handleHashChange = () => {

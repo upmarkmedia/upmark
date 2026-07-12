@@ -214,7 +214,7 @@ export interface PageVisibility {
 
 export interface SiteSettings {
   // Global Assets
-  theme?: "v1" | "v2" | "v3" | "default" | "editorial"; // Keeping legacy types temporarily for backward compatibility during runtime, but we'll migrate them.
+  theme?: "v3";
   globalLogoUrl?: string;
   editorialLogoUrl?: string;
   // Per-theme navbar logos
