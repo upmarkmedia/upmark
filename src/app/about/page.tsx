@@ -40,7 +40,7 @@ export default async function AboutPage() {
   if (!pageVisible) return null;
 
   return (
-    <div className="min-h-screen pt-28 sm:pt-24 md:pt-32 pb-8 sm:pb-12">
+    <div className="min-h-screen pt-28 sm:pt-24 md:pt-32">
       {/* ─── About Section ─── */}
       <section className="container mx-auto px-4 sm:px-6 mb-16 sm:mb-24">
         <div className="text-primary-text">
@@ -132,8 +132,8 @@ export default async function AboutPage() {
         </section>
       )}
 
-      {/* ─── CTA Section ─── */}
-      <section className="graphite-grid rounded-sm my-16 sm:my-24 mx-4 sm:mx-6">
+      {/* ─── CTA Section — flush, no gaps ─── */}
+      <section className="graphite-grid">
         <div className="relative z-10 py-16 sm:py-24 text-center max-w-4xl mx-auto px-4">
           <ParsedHeading text={ctaTitle} as="h2" className="text-3xl sm:text-4xl md:text-6xl font-black font-heading text-white tracking-tight mb-6 sm:mb-8 uppercase" highlight="white" />
           <p className="text-base sm:text-xl text-white/70 mb-8 sm:mb-12 font-light max-w-2xl mx-auto">
