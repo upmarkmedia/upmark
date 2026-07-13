@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { getAuth } from "firebase-admin/auth";
 
 const s3Client = new S3Client({
@@ -37,48 +38,47 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const formData = await req.formData();
-    const file = formData.get("file") as File | null;
-    if (!file) {
-      return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    const { name, type, size } = await req.json();
+
+    if (!name || !type || !size) {
+      return NextResponse.json({ error: "Missing file metadata" }, { status: 400 });
     }
 
-    if (!ALLOWED_TYPES.has(file.type)) {
+    if (!ALLOWED_TYPES.has(type)) {
       return NextResponse.json(
         { error: "File type not allowed" },
         { status: 400 }
       );
     }
 
-    if (file.size > MAX_SIZE) {
+    if (size > MAX_SIZE) {
       return NextResponse.json(
         { error: "File too large (max 50MB)" },
         { status: 400 }
       );
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
     const uniqueSuffix = crypto.randomUUID();
-    const sanitizedName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, "");
+    const sanitizedName = name.replace(/[^a-zA-Z0-9.\-_]/g, "");
     const key = `uploads/${uniqueSuffix}-${sanitizedName}`;
 
     const command = new PutObjectCommand({
       Bucket: process.env.R2_BUCKET,
       Key: key,
-      Body: buffer,
-      ContentType: file.type,
+      ContentType: type,
     });
 
-    await s3Client.send(command);
+    // Generate a presigned URL valid for 5 minutes
+    const presignedUrl = await getSignedUrl(s3Client, command, { expiresIn: 300 });
 
     const baseUrl = process.env.NEXT_PUBLIC_R2_PUBLIC_URL?.replace(/\/$/, "");
-    const url = `${baseUrl}/${key}`;
+    const finalUrl = `${baseUrl}/${key}`;
 
-    return NextResponse.json({ url });
+    return NextResponse.json({ uploadUrl: presignedUrl, finalUrl });
   } catch (error) {
-    console.error("Upload error:", error);
+    console.error("Presign error:", error);
     return NextResponse.json(
-      { error: "Failed to upload file" },
+      { error: "Failed to generate upload URL" },
       { status: 500 }
     );
   }
