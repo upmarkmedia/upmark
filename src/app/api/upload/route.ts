@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { getAuth } from "firebase-admin/auth";
+import { getAdminApp } from "@/lib/firebase-admin";
 
 const s3Client = new S3Client({
   region: "auto",
@@ -33,7 +34,7 @@ export async function POST(req: NextRequest) {
     }
     try {
       const token = authHeader.split("Bearer ")[1];
-      await getAuth().verifyIdToken(token);
+      await getAuth(getAdminApp()).verifyIdToken(token);
     } catch {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
