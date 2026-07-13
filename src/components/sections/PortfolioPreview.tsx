@@ -90,13 +90,13 @@ export function PortfolioPreview() {
       <div className="relative group">
         <button
           id="portfolio-prev"
-          className="absolute -left-2 sm:-left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-primary-bg/90 backdrop-blur-md border border-primary-text/10 flex items-center justify-center text-primary-text transition-all duration-300 hover:bg-primary-bg hover:border-accent-blue/50 shadow-lg opacity-0 group-hover:opacity-100"
+          className="absolute -left-2 sm:-left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-primary-bg/90 backdrop-blur-md border border-primary-text/10 flex items-center justify-center text-primary-text transition-all duration-300 hover:bg-primary-bg hover:border-accent-blue/50 shadow-lg"
         >
           <ChevronLeft size={20} />
         </button>
         <button
           id="portfolio-next"
-          className="absolute -right-2 sm:-right-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-primary-bg/90 backdrop-blur-md border border-primary-text/10 flex items-center justify-center text-primary-text transition-all duration-300 hover:bg-primary-bg hover:border-accent-blue/50 shadow-lg opacity-0 group-hover:opacity-100"
+          className="absolute -right-2 sm:-right-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-primary-bg/90 backdrop-blur-md border border-primary-text/10 flex items-center justify-center text-primary-text transition-all duration-300 hover:bg-primary-bg hover:border-accent-blue/50 shadow-lg"
         >
           <ChevronRight size={20} />
         </button>

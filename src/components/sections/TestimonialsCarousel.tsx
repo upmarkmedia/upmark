@@ -37,7 +37,7 @@ interface TestimonialsCarouselProps {
   testimonials?: Testimonial[];
   maxItems?: number;
   section?: WorkSection;
-  invertHeader?: boolean;
+  lightText?: boolean;
   noSectionPadding?: boolean;
 }
 
@@ -116,7 +116,7 @@ export const TestimonialsCarousel = ({
   testimonials,
   maxItems = 10,
   section,
-  invertHeader = false,
+  lightText = false,
   noSectionPadding = false,
 }: TestimonialsCarouselProps) => {
   const allTestimonials =
@@ -124,6 +124,10 @@ export const TestimonialsCarousel = ({
       ? testimonials
       : DEFAULT_TESTIMONIALS;
   const displayTestimonials = allTestimonials.slice(0, maxItems);
+  const swiperTestimonials =
+    displayTestimonials.length > 0 && displayTestimonials.length < 5
+      ? [...displayTestimonials, ...displayTestimonials]
+      : displayTestimonials;
 
   const [selectedTestimonial, setSelectedTestimonial] =
     useState<Testimonial | null>(null);
@@ -140,14 +144,14 @@ export const TestimonialsCarousel = ({
     <section className={`${noSectionPadding ? "" : "py-10 sm:py-14 md:py-20"} relative z-10 overflow-hidden`}>
       <div className="container mx-auto px-4 sm:px-6 mb-8 sm:mb-12">
         <div className="text-center flex flex-col items-center">
-          <span className={`font-extrabold tracking-[0.2em] uppercase text-lg sm:text-xl mb-2 block ${invertHeader ? "text-black/50" : "text-secondary-surface-dark"}`}>
+          <span className={`font-extrabold tracking-[0.2em] uppercase text-lg sm:text-xl mb-2 block ${lightText ? "text-white/60" : "text-secondary-surface-dark"}`}>
             {sectionLabel}
           </span>
-          <h2 className={`text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading tracking-tight leading-tight uppercase max-w-3xl ${invertHeader ? "text-black" : "text-primary-text"}`}>
+          <h2 className={`text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading tracking-tight leading-tight uppercase max-w-3xl ${lightText ? "text-white" : "text-primary-text"}`}>
             {sectionTitle}
           </h2>
           {sectionSubtitle && (
-            <p className={`text-base sm:text-lg mt-3 max-w-xl font-light ${invertHeader ? "text-black/50" : "text-muted-text"}`}>
+            <p className={`text-base sm:text-lg mt-3 max-w-xl font-light ${lightText ? "text-white/50" : "text-muted-text"}`}>
               {sectionSubtitle}
             </p>
           )}
@@ -196,13 +200,13 @@ export const TestimonialsCarousel = ({
           }}
           className="testimonial-swiper pb-14"
         >
-          {displayTestimonials.map((t) => (
-            <SwiperSlide key={t.id}>
+          {swiperTestimonials.map((t, index) => (
+            <SwiperSlide key={`${t.id}-${index}`}>
               <div
                 onClick={() => openModal(t)}
                 className="cursor-pointer h-full"
               >
-                <div className="bg-[#1a1a1a] border border-white/5 p-6 sm:p-8 rounded-lg h-full flex flex-col hover:border-accent-gold/30 transition-[border-color] duration-300 min-h-[300px] sm:min-h-[340px]">
+                <div className="bg-[#1a1a1a] border border-white/10 p-6 sm:p-8 rounded-lg h-full flex flex-col hover:border-accent-gold/40 transition-[border-color] duration-300 min-h-[300px] sm:min-h-[340px] shadow-xl">
                   <Quote
                     size={24}
                     className="text-accent-gold/50 flex-shrink-0 mb-4"

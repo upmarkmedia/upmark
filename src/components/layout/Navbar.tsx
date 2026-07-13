@@ -183,10 +183,10 @@ export const Navbar = () => {
                     ) : (
                       <Link
                         href={link.href}
-                        className={`inline-flex items-center px-5 py-2.5 rounded-full border text-[14px] tracking-wider uppercase transition-all duration-300 ${
+                        className={`inline-flex items-center px-5 py-2.5 rounded-sm border text-[14px] tracking-wider uppercase transition-all duration-300 ${
                           pathname === link.href
-                            ? "border-primary-text/15 bg-primary-bg/90 text-primary-text font-semibold ring-2 ring-inset ring-accent-blue/60"
-                            : "border-primary-text/15 bg-primary-bg/90 text-primary-text/80 hover:text-accent-blue hover:border-accent-blue/40"
+                            ? "border-primary-text/15 bg-primary-bg text-primary-text font-semibold ring-2 ring-inset ring-accent-blue/60 shadow-sm"
+                            : "border-primary-text/15 bg-primary-bg text-primary-text/80 hover:text-accent-blue hover:border-accent-blue/40 shadow-sm"
                         }`}
                       >
                         {link.name}

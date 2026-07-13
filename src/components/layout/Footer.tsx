@@ -70,8 +70,8 @@ export const Footer = () => {
         </div>
       </div>
 
-      <div className="container mx-auto pl-10 pr-4 sm:px-8 pt-10 sm:pt-16 pb-6 sm:pb-10 max-w-6xl">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-10 sm:mb-16">
+      <div className="container mx-auto pl-10 pr-4 sm:px-8 pt-8 sm:pt-10 pb-6 max-w-6xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-8 sm:mb-12">
           <div className="lg:col-span-1">
             <Link href="/" className="mb-4 sm:mb-6 inline-block">
               <Image src={settings?.globalLogoUrl || "/upmark-wordmark.png"} alt="Upmark" width={200} height={200} className="h-12 sm:h-14 w-auto object-contain" />
@@ -83,8 +83,8 @@ export const Footer = () => {
 
           <div className="grid grid-cols-2 gap-8 sm:gap-12 lg:col-span-2">
             <div>
-              <h4 className="text-neutral-100 font-bold font-heading mb-4 sm:mb-6 uppercase text-xs tracking-[0.2em]">{settings?.footerHeadingServices || "Services"}</h4>
-              <ul className="flex flex-col space-y-4">
+              <h4 className="text-neutral-100 font-bold font-heading mb-3 uppercase text-xs tracking-[0.2em]">{settings?.footerHeadingServices || "Services"}</h4>
+              <ul className="flex flex-col space-y-2">
                 {services.map((service) => (
                   <li key={service.id}>
                     <Link href={`/services#${service.id}`} className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">
@@ -96,8 +96,8 @@ export const Footer = () => {
             </div>
 
             <div>
-              <h4 className="text-neutral-100 font-bold font-heading mb-4 sm:mb-6 uppercase text-xs tracking-[0.2em]">{settings?.footerHeadingCompany || "Company"}</h4>
-              <ul className="flex flex-col space-y-4">
+              <h4 className="text-neutral-100 font-bold font-heading mb-3 uppercase text-xs tracking-[0.2em]">{settings?.footerHeadingCompany || "Company"}</h4>
+              <ul className="flex flex-col space-y-2">
                 {show("about") && <li><Link href="/about" className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">About Us</Link></li>}
                 {show("work") && <li><Link href="/work" className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">Portfolio</Link></li>}
                 {show("caseStudies") && <li><Link href="/case-studies" className="text-neutral-400 hover:text-white transition-colors duration-300 text-xs sm:text-sm">Case Studies</Link></li>}
@@ -109,8 +109,8 @@ export const Footer = () => {
           </div>
 
           <div>
-              <h4 className="text-neutral-100 font-bold font-heading mb-4 sm:mb-6 uppercase text-xs tracking-[0.2em]">{settings?.footerHeadingConnect || "Connect"}</h4>
-            <ul className="flex flex-col space-y-4">
+              <h4 className="text-neutral-100 font-bold font-heading mb-3 uppercase text-xs tracking-[0.2em]">{settings?.footerHeadingConnect || "Connect"}</h4>
+            <ul className="flex flex-col space-y-2">
               {(settings?.socialTwitter || !settings) && (
                 <li>
                   <a href={settings?.socialTwitter || "https://x.com/upmarkmedia"} target="_blank" rel="noopener noreferrer" className="group/social flex items-center gap-2 text-neutral-400 hover:text-white transition-colors duration-300 text-sm">
@@ -142,10 +142,10 @@ export const Footer = () => {
                 </li>
               )}
               {(settings?.footerContacts && settings.footerContacts.length > 0 || settings?.contactEmail || !settings) && (
-                <li className="pt-2 mt-2 border-t border-white/10">
-                  <p className="text-neutral-100 font-bold font-heading uppercase text-xs tracking-[0.2em] mb-4">{settings?.footerHeadingGetInTouch || "Get in touch"}</p>
+                <li className="pt-3 mt-3 border-t border-white/10">
+                  <p className="text-neutral-100 font-bold font-heading uppercase text-xs tracking-[0.2em] mb-3">{settings?.footerHeadingGetInTouch || "Get in touch"}</p>
                   {settings?.footerContacts && settings.footerContacts.length > 0 && (
-                    <div className="flex flex-col gap-4 mb-4">
+                    <div className="flex flex-col gap-3 mb-3">
                       {settings.footerContacts.map((contact, i) => (
                         <div key={contact.id || i} className="flex flex-col gap-1">
                           <p className="text-neutral-100 font-bold text-sm">{contact.name}</p>
@@ -175,7 +175,7 @@ export const Footer = () => {
           </div>
         </div>
         
-        <div className="pt-6 sm:pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 safe-bottom">
+        <div className="pt-4 sm:pt-6 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 safe-bottom">
           <p className="text-neutral-500 text-xs text-center md:text-left">
             © 2026 Upmark. All rights reserved.
           </p>

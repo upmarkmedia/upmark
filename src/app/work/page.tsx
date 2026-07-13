@@ -7,6 +7,7 @@ import { HorizontalCarousel } from "@/components/ui/HorizontalCarousel";
 import { PreviewDialog } from "@/components/ui/PreviewDialog";
 import { TestimonialsCarousel } from "@/components/sections/TestimonialsCarousel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { SwiperSlide } from "swiper/react";
 import { getWorkItems, getSiteSettings, getTestimonials } from "@/lib/firestore";
 import type { WorkItem, WorkSection, Testimonial, PageVisibility } from "@/types";
 
@@ -165,10 +166,10 @@ function WorkPageContent() {
   if (!pageVisible) return null;
 
   return (
-    <div className="pt-24 sm:pt-32">
+    <div className="pt-16 sm:pt-20">
       {/* Page Header */}
       {headerVisible && (
-      <section className="container mx-auto px-4 sm:px-6 relative z-10 mb-16 sm:mb-20">
+      <section className="container mx-auto px-4 sm:px-6 relative z-10 mb-10 sm:mb-12">
         <ScrollReveal className="text-center flex flex-col items-center">
            <span className="text-secondary-surface-dark font-extrabold tracking-[0.2em] uppercase text-xl mb-3">
               OUR WORK
@@ -185,19 +186,21 @@ function WorkPageContent() {
 
       {/* ─── Portfolio Section ─────────────────────────── */}
       {portfolioVisible && caseStudies.length > 0 && (
-      <section className="container mx-auto px-4 sm:px-6 relative z-10 mb-20 sm:mb-32 content-visibility-auto">
+      <section className="bg-black relative z-10 content-visibility-auto py-10 sm:py-16">
+        <div className="container mx-auto px-4 sm:px-6">
         <HorizontalCarousel
           label={portfolioSection.label}
           title={portfolioSection.title}
           subtitle={portfolioSection.subtitle}
+          lightText
         >
           {caseStudies.map((cs) => (
-            <div
-              key={cs.id || cs.title}
-              onClick={() => { setSelectedCs(cs); setCsPreviewOpen(true); }}
-              className="snap-start flex-shrink-0 cursor-pointer group"
-            >
-              <div className="relative rounded-sm overflow-hidden bg-secondary-surface/40 border border-primary-text/10 hover:border-accent-blue/30 transition-[border-color,box-shadow] duration-200 aspect-square w-[300px] sm:w-[420px] flex">
+            <SwiperSlide key={cs.id || cs.title}>
+              <div
+                onClick={() => { setSelectedCs(cs); setCsPreviewOpen(true); }}
+                className="cursor-pointer group"
+              >
+              <div className="relative rounded-sm overflow-hidden bg-white border border-primary-text/10 hover:border-accent-blue/30 transition-[border-color,box-shadow] duration-200 aspect-square w-full flex">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={cs.imageUrl || "/images/placeholder.png"}
@@ -214,43 +217,42 @@ function WorkPageContent() {
                 </div>
 
                 {/* Content Overlay */}
-                <div className="absolute bottom-0 left-0 right-0 p-5 z-30 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                  <h3 className="text-xl sm:text-2xl font-bold text-white">{cs.title}</h3>
+                <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5 z-30 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                  <h3 className="text-base sm:text-2xl font-bold text-white leading-tight">{cs.title}</h3>
                   {cs.client && (
-                    <div className="text-sm font-semibold text-blue-400 pb-3 border-b border-white/10 uppercase tracking-wider">{cs.client}</div>
+                    <div className="text-[10px] sm:text-sm font-semibold text-blue-400 pb-2 sm:pb-3 border-b border-white/10 uppercase tracking-wider mt-1">{cs.client}</div>
                   )}
-                  <p className="text-white/80 font-light text-sm line-clamp-2 mt-1 whitespace-pre-wrap">{cs.description}</p>
-                  <div className="inline-flex items-center gap-2 text-blue-400 font-semibold text-sm group-hover:gap-3 transition-[gap] mt-3">
-                    View Details <ArrowUpRight size={16} />
+                  <p className="text-white/80 font-light text-[10px] sm:text-sm line-clamp-2 mt-1 sm:mt-2 whitespace-pre-wrap">{cs.description}</p>
+                  <div className="inline-flex items-center gap-1 sm:gap-2 text-blue-400 font-semibold text-[10px] sm:text-sm group-hover:gap-2 sm:group-hover:gap-3 transition-[gap] mt-2 sm:mt-3">
+                    View Details <ArrowUpRight size={14} className="sm:w-4 sm:h-4" />
                   </div>
                 </div>
+                </div>
               </div>
-            </div>
+            </SwiperSlide>
           ))}
         </HorizontalCarousel>
+        </div>
       </section>
       )}
 
       {/* ─── Production Section ────────────────────────────── */}
       {productionVisible && portfolioItems.length > 0 && (
-      <section className="bg-black relative z-10 content-visibility-auto">
-        <div className="container mx-auto px-4 sm:px-6 py-20 sm:py-32">
+      <section className="bg-accent-gold relative z-10 content-visibility-auto">
+        <div className="container mx-auto px-4 sm:px-6 py-10 sm:py-16">
         <HorizontalCarousel
           label={productionSection.label}
           title={productionSection.title}
           subtitle={productionSection.subtitle}
-          lightText
         >
           {portfolioItems.map((item) => (
-            <div
-              key={item.id || item.title}
-              onClick={() => { setSelectedPf(item); setPfPreviewOpen(true); }}
-              className="snap-start flex-shrink-0 cursor-pointer group"
-            >
-              <div className="relative rounded-sm overflow-hidden bg-white/5 border border-white/10 hover:border-accent-blue/30 transition-[border-color]">
-                <div className="aspect-square w-[300px] sm:w-[420px] relative overflow-hidden flex">
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors z-10"></div>
-
+            <SwiperSlide key={item.id || item.title}>
+              <div
+                onClick={() => { setSelectedPf(item); setPfPreviewOpen(true); }}
+                className="cursor-pointer group"
+              >
+              <div className="relative rounded-sm overflow-hidden bg-white border border-primary-text/10 hover:border-accent-blue/30 transition-[border-color]">
+                <div className="aspect-square w-full relative overflow-hidden flex">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={item.imageUrl || "/images/placeholder.png"}
@@ -266,21 +268,22 @@ function WorkPageContent() {
                      </div>
                   </div>
 
-                  <div className="absolute bottom-0 left-0 right-0 p-5 z-30 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                    <div className="flex items-center gap-2 mb-2">
-                       <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-white/10 text-white/90">
+                  <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5 z-30 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                    <div className="flex items-center gap-1 sm:gap-2 mb-1 sm:mb-2">
+                       <span className="px-1 sm:px-2 py-0.5 rounded text-[8px] sm:text-[10px] font-bold uppercase tracking-wider bg-white/10 text-white/90">
                          Gallery
                        </span>
-                       {item.duration && <span className="text-[10px] text-white/70 font-mono tracking-widest">{item.duration}</span>}
+                       {item.duration && <span className="text-[8px] sm:text-[10px] text-white/70 font-mono tracking-widest">{item.duration}</span>}
                     </div>
-                    <h3 className="text-base sm:text-lg font-bold text-white">{item.title}</h3>
+                    <h3 className="text-sm sm:text-lg font-bold text-white leading-tight">{item.title}</h3>
                     {item.client && (
-                      <div className="text-sm font-semibold text-blue-400 mt-1 uppercase tracking-wider">{item.client}</div>
+                      <div className="text-[10px] sm:text-sm font-semibold text-blue-400 mt-0.5 sm:mt-1 uppercase tracking-wider">{item.client}</div>
                     )}
                   </div>
                 </div>
+                </div>
               </div>
-            </div>
+            </SwiperSlide>
           ))}
         </HorizontalCarousel>
         </div>
@@ -289,8 +292,8 @@ function WorkPageContent() {
 
       {/* ─── Testimonials Section ─────────────────────────── */}
       {testimonialsVisible && (
-      <div id="testimonials" className="scroll-mt-32 bg-accent-gold py-20 sm:py-32 -mx-4 sm:-mx-6 px-4 sm:px-6 overflow-hidden">
-        <TestimonialsCarousel testimonials={testimonials} maxItems={testimonials.length || 3} section={testimonialsSection} invertHeader noSectionPadding />
+      <div id="testimonials" className="scroll-mt-32 bg-black py-10 sm:py-16 -mx-4 sm:-mx-6 px-4 sm:px-6 overflow-hidden">
+        <TestimonialsCarousel testimonials={testimonials} maxItems={testimonials.length || 3} section={testimonialsSection} lightText noSectionPadding />
       </div>
       )}
 

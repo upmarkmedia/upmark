@@ -1,7 +1,13 @@
 "use client";
 
-import { useRef, useState, useEffect, type ReactNode } from "react";
+import { useId, type ReactNode } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Swiper } from "swiper/react";
+import { Navigation } from "swiper/modules";
+
+// Import Swiper styles if not already globally imported
+import "swiper/css";
+import "swiper/css/navigation";
 
 interface HorizontalCarouselProps {
   children: ReactNode;
@@ -20,99 +26,71 @@ export function HorizontalCarousel({
   className = "",
   lightText = false,
 }: HorizontalCarouselProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
-
-  const checkScroll = () => {
-    const el = scrollRef.current;
-    if (!el) return;
-    setCanScrollLeft(el.scrollLeft > 4);
-    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
-  };
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    checkScroll();
-    el.addEventListener("scroll", checkScroll, { passive: true });
-    const ro = new ResizeObserver(checkScroll);
-    ro.observe(el);
-    return () => {
-      el.removeEventListener("scroll", checkScroll);
-      ro.disconnect();
-    };
-  }, []);
-
-  const scroll = (direction: "left" | "right") => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const cardWidth = el.querySelector(":scope > *")?.clientWidth ?? 350;
-    el.scrollBy({
-      left: direction === "left" ? -(cardWidth + 24) : cardWidth + 24,
-      behavior: "smooth",
-    });
-  };
+  // Generate a unique ID for Swiper navigation buttons
+  const carouselId = useId().replace(/:/g, "");
 
   return (
     <div className={className}>
       {/* Header */}
       {(title || label) && (
-        <div className="flex items-end justify-between mb-8 sm:mb-10">
-          <div>
-            {label && (
-              <span className={`font-extrabold tracking-[0.2em] uppercase text-xl mb-3 ${lightText ? "text-white/60" : "text-secondary-surface-dark"}`}>
-                {label}
-              </span>
-            )}
-            {title && (
-              <h2 className={`text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading tracking-tight leading-tight uppercase ${lightText ? "text-white" : "text-primary-text"}`}>
-                {title}
-              </h2>
-            )}
-            {subtitle && (
-              <p className={`text-base sm:text-lg max-w-2xl font-light mt-3 ${lightText ? "text-white/50" : "text-muted-text"}`}>
-                {subtitle}
-              </p>
-            )}
-          </div>
-
-          {/* Desktop nav arrows */}
-          <div className="hidden sm:flex items-center gap-2 flex-shrink-0 ml-6">
-            <button
-              onClick={() => scroll("left")}
-              disabled={!canScrollLeft}
-              className={`w-11 h-11 rounded-full border flex items-center justify-center transition-colors disabled:opacity-20 disabled:cursor-not-allowed ${
-                lightText
-                  ? "border-white/10 text-white hover:bg-white/5 hover:border-white/30"
-                  : "border-primary-text/10 text-primary-text hover:bg-primary-text/5 hover:border-accent-blue/50"
-              }`}
-              aria-label="Scroll left"
-            >
-              <ChevronLeft size={20} />
-            </button>
-            <button
-              onClick={() => scroll("right")}
-              disabled={!canScrollRight}
-              className={`w-11 h-11 rounded-full border flex items-center justify-center transition-colors disabled:opacity-20 disabled:cursor-not-allowed ${
-                lightText
-                  ? "border-white/10 text-white hover:bg-white/5 hover:border-white/30"
-                  : "border-primary-text/10 text-primary-text hover:bg-primary-text/5 hover:border-accent-blue/50"
-              }`}
-              aria-label="Scroll right"
-            >
-              <ChevronRight size={20} />
-            </button>
-          </div>
+        <div className="mb-8 sm:mb-10">
+          {label && (
+            <span className={`font-extrabold tracking-[0.2em] uppercase text-xl mb-3 block ${lightText ? "text-white/60" : "text-secondary-surface-dark"}`}>
+              {label}
+            </span>
+          )}
+          {title && (
+            <h2 className={`text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading tracking-tight leading-tight uppercase ${lightText ? "text-white" : "text-primary-text"}`}>
+              {title}
+            </h2>
+          )}
+          {subtitle && (
+            <p className={`text-base sm:text-lg max-w-2xl font-light mt-3 ${lightText ? "text-white/50" : "text-muted-text"}`}>
+              {subtitle}
+            </p>
+          )}
         </div>
       )}
 
-      {/* Scrollable track */}
-      <div
-        ref={scrollRef}
-        className="flex overflow-x-auto gap-5 sm:gap-6 snap-x snap-mandatory hide-scrollbar -ml-4 pl-6 pr-4 sm:-mx-6 sm:px-6 pb-4"
-      >
-        {children}
+      {/* Swiper track */}
+      <div className="relative group">
+        <button
+          id={`prev-${carouselId}`}
+          className={`absolute -left-2 sm:-left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full backdrop-blur-md border flex items-center justify-center transition-all duration-300 shadow-lg ${
+            lightText
+              ? "bg-black/90 border-white/10 text-white hover:bg-black hover:border-white/50"
+              : "bg-primary-bg/90 border-primary-text/10 text-primary-text hover:bg-primary-bg hover:border-accent-blue/50"
+          }`}
+        >
+          <ChevronLeft size={20} />
+        </button>
+        <button
+          id={`next-${carouselId}`}
+          className={`absolute -right-2 sm:-right-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full backdrop-blur-md border flex items-center justify-center transition-all duration-300 shadow-lg ${
+            lightText
+              ? "bg-black/90 border-white/10 text-white hover:bg-black hover:border-white/50"
+              : "bg-primary-bg/90 border-primary-text/10 text-primary-text hover:bg-primary-bg hover:border-accent-blue/50"
+          }`}
+        >
+          <ChevronRight size={20} />
+        </button>
+
+        <Swiper
+          modules={[Navigation]}
+          spaceBetween={16}
+          slidesPerView={2}
+          speed={600}
+          navigation={{
+            prevEl: `#prev-${carouselId}`,
+            nextEl: `#next-${carouselId}`,
+          }}
+          breakpoints={{
+            640: { slidesPerView: 2, spaceBetween: 20 },
+            1024: { slidesPerView: 3, spaceBetween: 24 },
+          }}
+        >
+          {children}
+        </Swiper>
       </div>
     </div>
   );
