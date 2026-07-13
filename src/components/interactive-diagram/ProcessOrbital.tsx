@@ -122,7 +122,7 @@ export function ProcessOrbital({ items }: { items?: ProcessOrbitalItem[] }) {
   };
 
   return (
-    <div className="graphite-grid py-20 md:py-32 px-4">
+    <div className="graphite-grid py-12 md:py-20 px-4">
       <div className="relative z-10 w-full max-w-7xl mx-auto">
       <div className="text-center mb-0">
         <span className="text-secondary-surface-dark font-extrabold tracking-[0.2em] uppercase text-xl mb-3">

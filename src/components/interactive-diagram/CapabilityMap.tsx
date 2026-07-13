@@ -267,8 +267,41 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
             </div>
           </div>
 
-          {/* Service dots navigation */}
-          <div className="flex items-center justify-center lg:justify-start gap-2 mt-5 lg:pl-1">
+          {/* Mobile arrow navigation */}
+          <div className="flex items-center justify-center gap-4 mt-5 lg:hidden">
+            <button
+              onClick={() => {
+                handleInteraction();
+                const prevIndex = activeIndex > 0 ? activeIndex - 1 : data.length - 1;
+                setActiveId(data[prevIndex].id || "");
+              }}
+              className="w-10 h-10 rounded-full border border-black/20 flex items-center justify-center hover:bg-black/10 transition-colors"
+              aria-label="Previous service"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+            <span className="text-sm text-black/50 font-medium">
+              {activeIndex + 1} / {data.length}
+            </span>
+            <button
+              onClick={() => {
+                handleInteraction();
+                const nextIndex = (activeIndex + 1) % data.length;
+                setActiveId(data[nextIndex].id || "");
+              }}
+              className="w-10 h-10 rounded-full border border-black/20 flex items-center justify-center hover:bg-black/10 transition-colors"
+              aria-label="Next service"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Service dots navigation — desktop only */}
+          <div className="hidden lg:flex items-center justify-start gap-2 mt-5 lg:pl-1">
             {data.map((svc) => (
               <button
                 key={svc.id}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { getSiteSettings, updateSiteSettings } from "@/lib/firestore";
 import { SeoSection } from "@/components/admin/ui/SeoSection";
 import { revalidatePathAction } from "@/app/actions";
@@ -10,6 +11,9 @@ import {
   Info, GripVertical, FileText, Upload,
 } from "lucide-react";
 import type { TeamMember, Investor, SeoPageConfig, PageVisibility } from "@/types";
+
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
+import "react-quill-new/dist/quill.snow.css";
 
 function Section({ title, icon: Icon, children, defaultOpen = false }: { title: string; icon: React.ElementType; children: React.ReactNode; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -42,6 +46,7 @@ export default function AboutPageSettings() {
 
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [investors, setInvestors] = useState<Investor[]>([]);
+  const [homeAboutImageUrl, setHomeAboutImageUrl] = useState("");
   const [aboutEyebrow, setAboutEyebrow] = useState("");
   const [aboutTitle, setAboutTitle] = useState("");
   const [aboutSubtitle, setAboutSubtitle] = useState("");
@@ -64,6 +69,7 @@ export default function AboutPageSettings() {
         if (data) {
           if (data.teamMembers?.length) setTeamMembers(data.teamMembers);
           if (data.investors?.length) setInvestors(data.investors);
+          if (data.homeAboutImageUrl) setHomeAboutImageUrl(data.homeAboutImageUrl);
           if (data.aboutEyebrow) setAboutEyebrow(data.aboutEyebrow);
           if (data.aboutTitle) setAboutTitle(data.aboutTitle);
           if (data.aboutSubtitle) setAboutSubtitle(data.aboutSubtitle);
@@ -99,6 +105,7 @@ export default function AboutPageSettings() {
       await updateSiteSettings({
         teamMembers,
         investors,
+        homeAboutImageUrl: homeAboutImageUrl || undefined,
         aboutEyebrow: aboutEyebrow || undefined,
         aboutTitle: aboutTitle || undefined,
         aboutSubtitle: aboutSubtitle || undefined,
@@ -160,12 +167,83 @@ export default function AboutPageSettings() {
         <div className="flex flex-col gap-6">
           <div>
             <h3 className="text-md font-semibold text-primary-text mb-3">About Section</h3>
+            <div className="flex flex-col gap-6 mb-3">
+              <div className="flex gap-4 items-center">
+                <label className="group relative w-32 h-32 bg-secondary-surface/40 border border-primary-text/10 rounded-xl overflow-hidden cursor-pointer flex-shrink-0">
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept="image/*,video/*"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        try {
+                          const url = await uploadToR2(file);
+                          setHomeAboutImageUrl(url);
+                        } catch (err) {
+                          console.error(err);
+                          alert("Upload failed");
+                        }
+                      }
+                    }}
+                  />
+                  {homeAboutImageUrl ? (
+                    homeAboutImageUrl.match(/\.(mp4|webm|mov)$/i) ? (
+                      <video src={homeAboutImageUrl} autoPlay loop muted playsInline className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                    ) : (
+                      <img src={homeAboutImageUrl} alt="About image" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                    )
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-primary-text/5">
+                      <Upload size={18} className="text-muted-text mb-2" />
+                      <span className="text-[10px] text-muted-text text-center px-2">Upload Image</span>
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span className="text-xs text-white font-medium">{homeAboutImageUrl ? "Change" : "Upload"}</span>
+                  </div>
+                </label>
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium text-primary-text">About Section Image</span>
+                  <span className="text-xs text-muted-text">Displayed alongside the about description.</span>
+                  {homeAboutImageUrl && (
+                    <button
+                      type="button"
+                      onClick={() => setHomeAboutImageUrl("")}
+                      className="text-xs text-red-400 hover:text-red-300 mt-2 self-start flex items-center gap-1"
+                    >
+                      <Trash2 size={12} /> Remove Image
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
             <div className="flex flex-col gap-3">
               <input value={aboutEyebrow} onChange={(e) => setAboutEyebrow(e.target.value)} placeholder='Eyebrow label (e.g. "ABOUT US")' className={inputClass} />
               <input value={aboutTitle} onChange={(e) => setAboutTitle(e.target.value)} placeholder='Title (e.g. "Most agencies only...")' className={inputClass} />
               <p className="text-xs text-muted-text">Wrap text in **double asterisks** to highlight in yellow, e.g. **RUN ADS**</p>
               <input value={aboutSubtitle} onChange={(e) => setAboutSubtitle(e.target.value)} placeholder='Subtitle (e.g. "Upmark builds...")' className={inputClass} />
-              <textarea value={aboutDescription} onChange={(e) => setAboutDescription(e.target.value)} placeholder="Description (separate paragraphs with a blank line)" className={`${inputClass} resize-none`} rows={4} />
+              <div>
+                <label className="text-xs font-medium text-muted-text mb-1 block">Description</label>
+                <div className="bg-primary-bg border border-primary-text/10 rounded-lg overflow-hidden">
+                  <ReactQuill
+                    value={aboutDescription}
+                    onChange={setAboutDescription}
+                    placeholder="Description for the About section"
+                    modules={{
+                      toolbar: [
+                        [{ header: [1, 2, 3, false] }],
+                        ["bold", "italic", "underline", "strike"],
+                        [{ color: [] }, { background: [] }],
+                        [{ list: "ordered" }, { list: "bullet" }],
+                        ["blockquote", "link"],
+                        ["clean"],
+                      ],
+                    }}
+                    theme="snow"
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <div>

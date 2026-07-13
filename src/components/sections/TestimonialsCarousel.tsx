@@ -137,7 +137,7 @@ export const TestimonialsCarousel = ({
   const sectionSubtitle = section?.subtitle || "";
 
   return (
-    <section className={`${noSectionPadding ? "" : "py-16 sm:py-20 md:py-28"} relative z-10 overflow-hidden`}>
+    <section className={`${noSectionPadding ? "" : "py-10 sm:py-14 md:py-20"} relative z-10 overflow-hidden`}>
       <div className="container mx-auto px-4 sm:px-6 mb-8 sm:mb-12">
         <div className="text-center flex flex-col items-center">
           <span className={`font-extrabold tracking-[0.2em] uppercase text-lg sm:text-xl mb-2 block ${invertHeader ? "text-black/50" : "text-secondary-surface-dark"}`}>

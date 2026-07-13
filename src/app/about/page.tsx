@@ -1,9 +1,23 @@
 import { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { getSiteSettings } from "@/lib/firestore";
 import { AboutCardGrid } from "@/components/ui/AboutCardGrid";
 import { ParsedHeading } from "@/components/ui/ParsedHeading";
+import { sanitizeHtml } from "@/lib/sanitize-html";
+import { StorySection } from "@/components/ui/about/StorySection";
+
+function formatDescription(text: string): string {
+  let html = text;
+  if (!text.includes("<p>") && !text.includes("<h") && !text.includes("<strong")) {
+    html = text
+      .split(/\n\s*\n/)
+      .filter((p) => p.trim())
+      .map((p) => `<p>${p.replace(/\n/g, "<br/>")}</p>`)
+      .join("");
+  }
+  // Remove empty paragraphs to fix spacing issues caused by CMS empty lines
+  return html.replace(/<p>(\s*|<br\s*\/?>|&nbsp;)*<\/p>/gi, "");
+}
 
 export const metadata: Metadata = {
   title: "About Us | Upmark",
@@ -40,68 +54,24 @@ export default async function AboutPage() {
   if (!pageVisible) return null;
 
   return (
-    <div className="min-h-screen pt-28 sm:pt-24 md:pt-32">
+    <div className="min-h-screen pt-8 md:pt-12">
       {/* ─── About Section ─── */}
-      <section className="container mx-auto px-4 sm:px-6 mb-16 sm:mb-24">
-        <div className="text-primary-text">
-           <span className="text-secondary-surface-dark font-extrabold tracking-[0.2em] uppercase text-xl mb-3">
-             {aboutEyebrow}
-           </span>
-
-           <ParsedHeading text={aboutTitle} as="h1" className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading text-primary-text tracking-tight leading-tight mb-4 uppercase" />
-           <h2 className="text-xl sm:text-2xl md:text-3xl mt-4 mb-6 sm:mb-8 font-semibold" dangerouslySetInnerHTML={{ __html: aboutSubtitle }} />
-
-          <div className="relative">
-            <div className="float-right ml-6 sm:ml-8 lg:ml-10 mb-4 w-[300px] sm:w-[400px] lg:w-[500px] relative aspect-square rounded-sm overflow-hidden border border-primary-text/10 shadow-2xl">
-              <div className="absolute inset-0 bg-gradient-to-tr from-accent-blue/10 to-accent-gold/5 rounded-full blur-[40px] sm:blur-[60px] pointer-events-none"></div>
-              {aboutImageUrl.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-                <video
-                  src={aboutImageUrl}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="w-full h-full object-cover relative z-10"
-                />
-              ) : (
-                <Image
-                  src={aboutImageUrl}
-                  alt="Upmark strategy session"
-                  fill
-                  className="object-cover relative z-10"
-                  sizes="(max-width: 640px) 300px, (max-width: 1024px) 400px, 500px"
-                  priority
-                />
-              )}
-            </div>
-
-            <div className="text-muted-text font-light text-base sm:text-lg mb-8 sm:mb-10">
-              {aboutDescription.split("\n\n").map((paragraph, i) => (
-                <p key={i} className="mb-4 sm:mb-6">{paragraph}</p>
-              ))}
-            </div>
-          </div>
-
-          <div className="clear-both flex flex-row items-center justify-start gap-3 w-full">
-            {show("services") && (
-              <Link href="/services" className="group relative flex items-center justify-center gap-3 bg-accent-blue text-white px-5 py-3 rounded-sm font-semibold text-sm overflow-hidden transition-[transform] hover:scale-[1.02] active:scale-95">
-                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-600 to-accent-blue opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <span className="relative z-10">Our Services</span>
-              </Link>
-            )}
-            {show("contact") && (
-              <Link href="/contact" className="group flex items-center justify-center px-5 py-3 rounded-sm font-semibold text-sm text-primary-text bg-primary-text/5 border border-primary-text/10 hover:bg-primary-text/10 hover:border-primary-text/20 transition-colors duration-200">
-                Get in touch
-              </Link>
-            )}
-          </div>
-        </div>
+      <section className="container mx-auto px-4 sm:px-6 pt-12 sm:pt-16 mb-10 sm:mb-16 relative z-10">
+        <StorySection
+          eyebrow={aboutEyebrow}
+          title={aboutTitle}
+          subtitle={sanitizeHtml(aboutSubtitle).replace(/&nbsp;/g, ' ')}
+          descriptionHtml={sanitizeHtml(formatDescription(aboutDescription)).replace(/&nbsp;/g, ' ')}
+          imageUrl={aboutImageUrl}
+          showServices={show("services")}
+          showContact={show("contact")}
+        />
       </section>
 
       {/* ─── Meet the Team ─── */}
       {teamVisible && (
-        <section id="team" className="container mx-auto px-4 sm:px-6 mb-16 sm:mb-24 scroll-mt-32">
-          <div className="text-center mb-10 sm:mb-14">
+        <section id="team" className="container mx-auto px-4 sm:px-6 mb-10 sm:mb-16 scroll-mt-32">
+          <div className="text-center mb-6 sm:mb-10">
             <span className="text-secondary-surface-dark font-extrabold tracking-[0.2em] uppercase text-xl mb-3">
               {teamEyebrow}
             </span>
@@ -111,14 +81,14 @@ export default async function AboutPage() {
             </p>
           </div>
 
-          <AboutCardGrid items={teamMembers} accentColor="blue" />
+          <AboutCardGrid items={teamMembers} accentColor="gold" />
         </section>
       )}
 
       {/* ─── Meet the Investors ─── */}
       {investorsVisible && (
-        <section id="investors" className="container mx-auto px-4 sm:px-6 mb-16 sm:mb-24 scroll-mt-32">
-          <div className="text-center mb-10 sm:mb-14">
+        <section id="investors" className="container mx-auto px-4 sm:px-6 mb-10 sm:mb-16 scroll-mt-32">
+          <div className="text-center mb-6 sm:mb-10">
             <span className="text-secondary-surface-dark font-extrabold tracking-[0.2em] uppercase text-xl mb-3">
               {investorsEyebrow}
             </span>

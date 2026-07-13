@@ -102,8 +102,8 @@ export interface Testimonial {
   order?: number;
   imageUrl?: string;
   profileUrl?: string;
-  createdAt?: Timestamp;
-  updatedAt?: Timestamp;
+  createdAt?: Timestamp | string;
+  updatedAt?: Timestamp | string;
 }
 
 export interface BrandItem {

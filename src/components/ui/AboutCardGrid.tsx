@@ -33,14 +33,15 @@ export function AboutCardGrid({ items, accentColor }: AboutCardGridProps) {
 
   return (
     <>
-      <div className="flex flex-wrap justify-center gap-6">
+      <div className="flex flex-wrap justify-center gap-4 sm:gap-6 max-w-5xl mx-auto">
         {items.map((item, i) => (
-          <AboutCard
-            key={i}
-            item={item}
-            onClick={() => openModal(item)}
-            accentColor={accentColor}
-          />
+          <div key={i} className="w-[calc(50%-0.5rem)] sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1rem)] max-w-[280px] lg:max-w-[340px]">
+            <AboutCard
+              item={item}
+              onClick={() => openModal(item)}
+              accentColor={accentColor}
+            />
+          </div>
         ))}
       </div>
 
@@ -63,31 +64,23 @@ function AboutCard({
   onClick: () => void;
   accentColor: "blue" | "gold";
 }) {
-  const [initialTimerDone, setInitialTimerDone] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setInitialTimerDone(true), 5000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const showOverlay = !initialTimerDone || isHovered;
 
   return (
     <div
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group relative bg-secondary-surface/40 border border-primary-text/5 rounded-sm overflow-hidden cursor-pointer transition-all duration-300 w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)] max-w-sm"
+      className="group relative bg-secondary-surface/40 border border-primary-text/5 rounded-sm overflow-hidden cursor-pointer transition-all duration-300 w-full"
     >
-      <div className="relative h-[300px] sm:h-[420px] overflow-hidden">
+      <div className="relative aspect-[3/4] overflow-hidden">
         {item.imageUrl ? (
           <Image
             src={item.imageUrl}
             alt={item.name}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            sizes="(max-width: 640px) 100vw, 50vw"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-accent-blue/10 to-accent-gold/5">
@@ -95,17 +88,12 @@ function AboutCard({
           </div>
         )}
 
-        {/* Text overlay at bottom */}
+        {/* Text overlay at bottom — hidden on hover */}
         <div
           className={`absolute bottom-0 left-0 right-0 p-5 z-10 transition-all duration-500 bg-gradient-to-t from-black via-black/70 to-transparent ${
-            showOverlay ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+            !isHovered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
           }`}
         >
-          {item.cardOverlayText && (
-            <p className="text-white/80 text-sm font-medium mb-1">
-              {item.cardOverlayText}
-            </p>
-          )}
           <h3 className="text-lg font-bold text-white">{item.name}</h3>
           <p
             className={`text-sm font-semibold ${
@@ -114,6 +102,11 @@ function AboutCard({
           >
             {item.specialty}
           </p>
+          {item.description && (
+            <p className="text-white/70 text-xs mt-2 line-clamp-3">
+              {item.description}
+            </p>
+          )}
         </div>
       </div>
     </div>
@@ -210,9 +203,9 @@ function AboutDetailModal({
                 >
                   {item.specialty}
                 </p>
-                <div className="flex flex-col gap-4 text-muted-text font-light text-base sm:text-lg">
-                  {item.description.split("\n\n").map((paragraph, i) => (
-                    <p key={i}>{paragraph}</p>
+                <div className="flex flex-col gap-4 text-muted-text font-light text-base sm:text-lg [&>p]:mb-4 last:[&>p]:mb-0">
+                  {item.description.split(/\n\n|<br\s*\/?>/i).filter(Boolean).map((paragraph, i) => (
+                    <p key={i}>{paragraph.replace(/<[^>]*>/g, "")}</p>
                   ))}
                 </div>
               </div>

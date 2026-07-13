@@ -21,7 +21,7 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
   try {
     const docRef = doc(db, "settings", "global");
     const snapshot = await getDoc(docRef);
-    if (!snapshot.exists) return null;
+    if (!snapshot.exists()) return null;
     return snapshot.data() as SiteSettings;
   } catch (error) {
     console.error("Error fetching site settings:", error);
@@ -62,7 +62,7 @@ export async function getCaseStudyById(
 ): Promise<CaseStudy | null> {
   const docRef = doc(db, "case_studies", id);
   const snapshot = await getDoc(docRef);
-  if (!snapshot.exists) return null;
+  if (!snapshot.exists()) return null;
   return { id: snapshot.id, ...snapshot.data() } as CaseStudy;
 }
 
@@ -111,7 +111,7 @@ export async function getWorkItems(): Promise<WorkItem[]> {
 export async function getWorkItemById(id: string): Promise<WorkItem | null> {
   const docRef = doc(db, "work", id);
   const snapshot = await getDoc(docRef);
-  if (!snapshot.exists) return null;
+  if (!snapshot.exists()) return null;
   return { id: snapshot.id, ...snapshot.data() } as WorkItem;
 }
 
@@ -171,7 +171,7 @@ export async function getServices(): Promise<Service[]> {
 export async function getServiceById(id: string): Promise<Service | null> {
   const docRef = doc(db, "services", id);
   const snapshot = await getDoc(docRef);
-  if (!snapshot.exists) return null;
+  if (!snapshot.exists()) return null;
   return { id: snapshot.id, ...snapshot.data() } as Service;
 }
 
@@ -217,8 +217,10 @@ export async function getTestimonials(): Promise<Testimonial[]> {
     return snapshot.docs
       .map((d) => ({ id: d.id, ...d.data() }) as Testimonial)
       .sort((a, b) => {
-        const aTime = a.createdAt?.toMillis?.() ?? 0;
-        const bTime = b.createdAt?.toMillis?.() ?? 0;
+        const aTime = a.createdAt && typeof a.createdAt === "object" && "toMillis" in a.createdAt
+          ? a.createdAt.toMillis() : 0;
+        const bTime = b.createdAt && typeof b.createdAt === "object" && "toMillis" in b.createdAt
+          ? b.createdAt.toMillis() : 0;
         return bTime - aTime;
       });
   }

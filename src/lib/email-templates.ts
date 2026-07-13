@@ -6,6 +6,15 @@ interface LeadData {
   projectDetails: string;
 }
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 /**
  * Internal notification email sent to hello@upmark.co
  * when a new lead submits the contact form.
@@ -37,31 +46,31 @@ export function internalNotificationTemplate(lead: LeadData): string {
                 <tr>
                   <td style="padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
                     <span style="font-size:12px; text-transform:uppercase; letter-spacing:1px; color:#94A3B8; display:block; margin-bottom:4px;">Name</span>
-                    <span style="font-size:16px; color:#F8FAFC; font-weight:500;">${lead.name}</span>
+                    <span style="font-size:16px; color:#F8FAFC; font-weight:500;">${escapeHtml(lead.name)}</span>
                   </td>
                 </tr>
                 <tr>
                   <td style="padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
                     <span style="font-size:12px; text-transform:uppercase; letter-spacing:1px; color:#94A3B8; display:block; margin-bottom:4px;">Email</span>
-                    <a href="mailto:${lead.email}" style="font-size:16px; color:#3B82F6; font-weight:500; text-decoration:none;">${lead.email}</a>
+                    <a href="mailto:${encodeURIComponent(lead.email)}" style="font-size:16px; color:#3B82F6; font-weight:500; text-decoration:none;">${escapeHtml(lead.email)}</a>
                   </td>
                 </tr>
                 <tr>
                   <td style="padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
                     <span style="font-size:12px; text-transform:uppercase; letter-spacing:1px; color:#94A3B8; display:block; margin-bottom:4px;">Company</span>
-                    <span style="font-size:16px; color:#F8FAFC; font-weight:500;">${lead.company || "Not specified"}</span>
+                    <span style="font-size:16px; color:#F8FAFC; font-weight:500;">${escapeHtml(lead.company || "Not specified")}</span>
                   </td>
                 </tr>
                 <tr>
                   <td style="padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
                     <span style="font-size:12px; text-transform:uppercase; letter-spacing:1px; color:#94A3B8; display:block; margin-bottom:4px;">Service Interest</span>
-                    <span style="font-size:16px; color:#F8FAFC; font-weight:500;">${lead.services.join(", ")}</span>
+                    <span style="font-size:16px; color:#F8FAFC; font-weight:500;">${escapeHtml(lead.services.join(", "))}</span>
                   </td>
                 </tr>
                 <tr>
                   <td style="padding:12px 0;">
                     <span style="font-size:12px; text-transform:uppercase; letter-spacing:1px; color:#94A3B8; display:block; margin-bottom:4px;">Project Details</span>
-                    <p style="font-size:15px; color:#F8FAFC; line-height:1.6; margin:0; white-space:pre-wrap;">${lead.projectDetails}</p>
+                    <p style="font-size:15px; color:#F8FAFC; line-height:1.6; margin:0; white-space:pre-wrap;">${escapeHtml(lead.projectDetails)}</p>
                   </td>
                 </tr>
               </table>
@@ -108,7 +117,7 @@ export function autoResponderTemplate(lead: LeadData): string {
           <tr>
             <td style="padding:0 40px 32px;">
               <h2 style="margin:0 0 16px; font-size:22px; font-weight:700; color:#F8FAFC;">
-                We've received your brief, ${lead.name.split(" ")[0]}! 🎯
+                We've received your brief, ${escapeHtml(lead.name.split(" ")[0])}! 🎯
               </h2>
               <p style="font-size:15px; line-height:1.7; color:#94A3B8; margin:0 0 24px;">
                 Thank you for getting in touch. Your project details are now with our team,

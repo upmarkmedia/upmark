@@ -49,6 +49,16 @@ export default async function Home() {
     getServices(),
   ]);
 
+  const serializedTestimonials = testimonials.map((t) => ({
+    ...t,
+    createdAt: t.createdAt && typeof t.createdAt === "object" && "toDate" in t.createdAt
+      ? t.createdAt.toDate().toISOString()
+      : t.createdAt,
+    updatedAt: t.updatedAt && typeof t.updatedAt === "object" && "toDate" in t.updatedAt
+      ? t.updatedAt.toDate().toISOString()
+      : t.updatedAt,
+  }));
+
   const featuredServiceIds = settings?.featuredServiceIds;
   const featuredServices = (featuredServiceIds?.length
     ? featuredServiceIds
@@ -103,11 +113,11 @@ export default async function Home() {
       {brandCarouselVisible && <BrandCarousel brands={brandCarouselItems} />}
 
       {/* Remaining sections with gaps */}
-      <div className="flex flex-col gap-12 sm:gap-16 md:gap-24 pt-4 sm:pt-16 md:pt-24">
+      <div className="flex flex-col gap-8 sm:gap-12 md:gap-16 pt-2 sm:pt-8 md:pt-12">
       {/* About Section */}
       {aboutVisible && (
       <section id="about" className="container mx-auto px-4 sm:px-6 scroll-mt-32 overflow-hidden">
-        <div className="mb-6 sm:mb-20 text-primary-text">
+        <div className="mb-4 sm:mb-12 text-primary-text">
           <div className="flex flex-col lg:flex-row gap-4 sm:gap-12 lg:gap-16 items-start">
             {/* Left: Heading */}
             <div className="lg:w-1/2 flex flex-col items-start min-w-0">
@@ -181,7 +191,7 @@ export default async function Home() {
       {/* Content Studio */}
       {(contentStudioVisible || studioCapVisible) && (
       <section className="container mx-auto px-4 sm:px-6 relative z-10 content-visibility-auto">
-        <div className="mb-10 sm:mb-20 text-center flex flex-col items-center">
+        <div className="mb-6 sm:mb-12 text-center flex flex-col items-center">
           <span className="text-secondary-surface-dark font-extrabold tracking-[0.2em] uppercase text-xl mb-3">
             CONTENT THAT CONVERTS
           </span>
@@ -225,17 +235,17 @@ export default async function Home() {
       {portfolioPreviewVisible && <PortfolioPreview />}
 
       {/* Testimonials Carousel */}
-      {testimonialsVisible && <TestimonialsCarousel testimonials={testimonials} section={settings?.testimonialsSection} />}
+      {testimonialsVisible && <TestimonialsCarousel testimonials={serializedTestimonials} section={settings?.testimonialsSection} />}
 
       </div>
 
       {/* Contact Section — flush, no gaps */}
       {contactVisible && (
       <section id="contact" className="bg-accent-blue scroll-mt-32 overflow-hidden">
-        <div className="container mx-auto px-4 sm:px-6 py-10 sm:py-24 md:py-32">
+        <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-16 md:py-20">
           <div className="flex flex-col lg:flex-row gap-6 sm:gap-12 lg:gap-16 items-start">
             {/* Left: Heading */}
-            <div className="lg:w-1/2 flex flex-col items-start min-w-0 self-center">
+            <div className="lg:w-1/2 flex flex-col items-start min-w-0">
               <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold font-heading text-[#0A0A0A] tracking-tight leading-tight mb-4 sm:mb-4 uppercase break-words">
                 LET&apos;S <span className="text-white">CREATE</span><br />SOMETHING <span className="text-white">GREAT</span>
               </h2>
@@ -244,7 +254,7 @@ export default async function Home() {
               </p>
             </div>
             {/* Right: Contact Form */}
-            <div className="lg:w-1/2 w-full pt-0 lg:pt-14">
+            <div className="lg:w-1/2 w-full">
               <ContactForm variant="yellow" />
             </div>
           </div>

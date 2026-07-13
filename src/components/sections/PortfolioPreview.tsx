@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
 import { getWorkItems } from "@/lib/firestore";
 import type { WorkItem } from "@/types";
 
@@ -46,20 +48,20 @@ export function PortfolioPreview() {
             ["Studies", "Portfolio", "Success Stories", "Client Testimonials"].includes(w.category)
         );
         if (published.length > 0) {
-          setItems(shuffleArray(published).slice(0, 4));
+          setItems(shuffleArray(published));
         } else {
-          setItems(shuffleArray(FALLBACK_ITEMS).slice(0, 4));
+          setItems(shuffleArray(FALLBACK_ITEMS));
         }
       })
       .catch(() => {
-        setItems(shuffleArray(FALLBACK_ITEMS).slice(0, 4));
+        setItems(shuffleArray(FALLBACK_ITEMS));
       });
   }, []);
 
   if (items.length === 0) return null;
 
   return (
-    <section className="container mx-auto px-4 sm:px-6 relative z-10 pb-12 sm:pb-16 md:pb-24">
+    <section className="container mx-auto px-4 sm:px-6 relative z-10 pb-8 sm:pb-10 md:pb-16">
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-12">
         <div className="lg:w-1/2">
           <span className="text-secondary-surface-dark font-extrabold tracking-[0.2em] uppercase text-lg sm:text-xl mb-2 block">
@@ -85,47 +87,77 @@ export function PortfolioPreview() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
-        {items.map((item) => (
-          <Link
-            key={item.id || item.title}
-            href={`/work?item=${item.id || encodeURIComponent(item.title)}`}
-            className="group cursor-pointer"
-          >
-            <div className="relative rounded-sm overflow-hidden bg-secondary-surface/40 border border-primary-text/10 hover:border-accent-blue/30 transition-[border-color,box-shadow] duration-200 aspect-square">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={item.imageUrl || "/images/placeholder.png"}
-                alt={`${item.title} — ${item.tag || item.category} case study by Upmark`}
-                className="h-full w-full object-contain group-hover:scale-[1.03] transition-transform duration-500"
-              />
+      <div className="relative group">
+        <button
+          id="portfolio-prev"
+          className="absolute -left-2 sm:-left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-primary-bg/90 backdrop-blur-md border border-primary-text/10 flex items-center justify-center text-primary-text transition-all duration-300 hover:bg-primary-bg hover:border-accent-blue/50 shadow-lg opacity-0 group-hover:opacity-100"
+        >
+          <ChevronLeft size={20} />
+        </button>
+        <button
+          id="portfolio-next"
+          className="absolute -right-2 sm:-right-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-primary-bg/90 backdrop-blur-md border border-primary-text/10 flex items-center justify-center text-primary-text transition-all duration-300 hover:bg-primary-bg hover:border-accent-blue/50 shadow-lg opacity-0 group-hover:opacity-100"
+        >
+          <ChevronRight size={20} />
+        </button>
 
-              <div
-                className={`absolute inset-0 bg-gradient-to-t z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
-                  GRADIENT_HOVER_MAP[item.gradient || ""] || DEFAULT_HOVER_GRADIENT
-                }`}
-              />
+        <Swiper
+          modules={[Navigation]}
+          spaceBetween={12}
+          slidesPerView={2}
+          loop={items.length > 2}
+          speed={600}
+          navigation={{
+            prevEl: "#portfolio-prev",
+            nextEl: "#portfolio-next",
+          }}
+          breakpoints={{
+            640: { slidesPerView: 2, spaceBetween: 16 },
+            1024: { slidesPerView: 4, spaceBetween: 20 },
+          }}
+        >
+          {items.map((item) => (
+            <SwiperSlide key={item.id || item.title}>
+              <Link
+                href={`/work?item=${item.id || encodeURIComponent(item.title)}`}
+                className="group/card block cursor-pointer"
+              >
+                <div className="relative rounded-sm overflow-hidden bg-secondary-surface/40 border border-primary-text/10 hover:border-accent-blue/30 transition-[border-color,box-shadow] duration-200 aspect-square">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={item.imageUrl || "/images/placeholder.png"}
+                    alt={`${item.title} — ${item.tag || item.category} case study by Upmark`}
+                    className="h-full w-full object-contain group-hover/card:scale-[1.03] transition-transform duration-500"
+                  />
 
-              <div className="absolute top-3 left-3 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <div className="px-3 py-1 bg-black/60 rounded-full text-[10px] text-white uppercase tracking-widest font-semibold border border-white/10">
-                  {item.tag || item.category}
-                </div>
-              </div>
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-t z-20 pointer-events-none opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 ${
+                      GRADIENT_HOVER_MAP[item.gradient || ""] || DEFAULT_HOVER_GRADIENT
+                    }`}
+                  />
 
-              <div className="absolute bottom-0 left-0 right-0 p-4 z-30 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                <h3 className="text-base sm:text-lg font-bold text-white">{item.title}</h3>
-                {item.client && (
-                  <div className="text-xs font-semibold text-blue-400 uppercase tracking-wider mt-0.5">
-                    {item.client}
+                  <div className="absolute top-3 left-3 z-30 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500">
+                    <div className="px-3 py-1 bg-black/60 rounded-full text-[10px] text-white uppercase tracking-widest font-semibold border border-white/10">
+                      {item.tag || item.category}
+                    </div>
                   </div>
-                )}
-                <div className="inline-flex items-center gap-2 text-blue-400 font-semibold text-xs mt-2 group-hover:gap-3 transition-[gap]">
-                  View Details <ArrowUpRight size={14} />
+
+                  <div className="absolute bottom-0 left-0 right-0 p-4 z-30 translate-y-4 opacity-0 group-hover/card:translate-y-0 group-hover/card:opacity-100 transition-all duration-500">
+                    <h3 className="text-base sm:text-lg font-bold text-white">{item.title}</h3>
+                    {item.client && (
+                      <div className="text-xs font-semibold text-blue-400 uppercase tracking-wider mt-0.5">
+                        {item.client}
+                      </div>
+                    )}
+                    <div className="inline-flex items-center gap-2 text-blue-400 font-semibold text-xs mt-2 group-hover/card:gap-3 transition-[gap]">
+                      View Details <ArrowUpRight size={14} />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </Link>
-        ))}
+              </Link>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </section>
   );

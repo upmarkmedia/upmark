@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { getAdminDb } from "@/lib/firebase-admin";
 
 const SEED_TESTIMONIALS = [
@@ -32,8 +32,13 @@ const SEED_TESTIMONIALS = [
   },
 ];
 
-export async function POST() {
+export async function POST(req: NextRequest) {
   try {
+    const authHeader = req.headers.get("x-admin-secret");
+    if (!process.env.ADMIN_SECRET || authHeader !== process.env.ADMIN_SECRET) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const db = getAdminDb();
     const batch = db.batch();
     const now = new Date();
@@ -49,9 +54,15 @@ export async function POST() {
 
     await batch.commit();
 
-    return NextResponse.json({ success: true, count: SEED_TESTIMONIALS.length });
+    return NextResponse.json({
+      success: true,
+      count: SEED_TESTIMONIALS.length,
+    });
   } catch (error) {
     console.error("Failed to seed testimonials:", error);
-    return NextResponse.json({ error: "Failed to seed testimonials" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
