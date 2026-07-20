@@ -78,13 +78,13 @@ export const ContactForm = ({ variant = "default" }: ContactFormProps) => {
       <form onSubmit={handleSubmit} className="flex flex-col gap-1.5 sm:gap-3">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-3">
           <div className="flex flex-col gap-0.5">
-            <label htmlFor="name" className={isYellow ? "text-[10px] sm:text-[11px] uppercase tracking-widest font-extrabold text-[#0A0A0A]" : "text-[10px] uppercase tracking-widest text-muted-text font-bold"}>Full Name *</label>
+            <label htmlFor="name" className={isYellow ? "text-[10px] sm:text-[11px] uppercase tracking-widest font-extrabold text-[#0A0A0A]" : "text-[10px] uppercase tracking-widest text-muted-text font-bold"}>Your Name *</label>
             <input
               type="text"
               id="name"
               name="name"
               required
-              placeholder="Aditya"
+              placeholder="Your Name"
               className={`${isYellow ? inputYellow : inputDefault} border-2 rounded-none px-4 py-3 sm:px-5 sm:py-3.5 text-sm focus:outline-none focus:ring-2 transition-[border-color,box-shadow]`}
             />
           </div>

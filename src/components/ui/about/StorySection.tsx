@@ -35,7 +35,7 @@ export function StorySection({
 
           {/* Editorial Content */}
           <div
-            className="columns-1 md:columns-2 gap-8 sm:gap-12 
+            className="gap-8 sm:gap-12 
               [&>p]:mb-4 [&>p]:text-muted-text [&>p]:leading-relaxed [&>p]:font-light [&>p]:text-sm sm:[&>p]:text-base [&>p]:text-justify
               [&>p:first-of-type]:text-xl [&>p:first-of-type]:font-medium [&>p:first-of-type]:text-primary-text [&>p:first-of-type]:tracking-wide [&>p:first-of-type]:leading-snug
               [&>ul]:my-4 [&>ul]:border-y [&>ul]:border-primary-text/10 [&>ul]:py-4 [&>ul]:list-disc [&>ul]:pl-6 [&>ul>li]:text-primary-text [&>ul>li]:font-semibold [&>ul>li]:text-base sm:[&>ul>li]:text-lg [&>ul>li]:mb-4 [&>ul>li:last-child]:mb-0 [&>ul>li::marker]:text-accent-gold

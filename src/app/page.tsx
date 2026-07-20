@@ -235,7 +235,11 @@ export default async function Home() {
       {portfolioPreviewVisible && <PortfolioPreview />}
 
       {/* Testimonials Carousel */}
-      {testimonialsVisible && <TestimonialsCarousel testimonials={serializedTestimonials} section={settings?.testimonialsSection} />}
+      {testimonialsVisible && (
+        <div className="bg-[#0A0A0A] w-full">
+          <TestimonialsCarousel testimonials={serializedTestimonials} section={settings?.testimonialsSection} lightText />
+        </div>
+      )}
 
       </div>
 
