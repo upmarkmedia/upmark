@@ -113,10 +113,9 @@ export default async function AboutPage() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
               <Link
                 href="/contact"
-                className="group relative px-6 py-4 sm:px-10 sm:py-5 rounded-sm font-bold text-lg bg-accent-blue text-white transition-all justify-center hover:scale-[1.02] active:scale-95"
+                className="px-6 py-4 sm:px-10 sm:py-5 rounded-sm font-bold text-lg bg-accent-gold text-black transition-all justify-center hover:scale-[1.02] active:scale-95"
               >
-                <div className="absolute inset-0 rounded-sm bg-gradient-to-r from-blue-600 to-accent-blue opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <span className="relative z-10">Start a conversation</span>
+                Start a conversation
               </Link>
             </div>
           )}
