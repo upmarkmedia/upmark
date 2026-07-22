@@ -99,14 +99,14 @@ export function AdminLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const { user, logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [logoUrl, setLogoUrl] = useState("/upmark-wordmark.png");
+  const [logoUrl, setLogoUrl] = useState("https://pub-a71a6003788f4fc991bb79126b750fc0.r2.dev/uploads/e964a5b7-b0e4-40c4-9d06-c02c79401a2f-UpmarkLogoRGB-07Transparent.png");
   const [darkMode, setDarkMode] = useState(false);
   _setSidebarOpen = setSidebarOpen;
 
   useEffect(() => {
     getSiteSettings()
       .then(settings => {
-        setLogoUrl(settings?.navbarLogoV3 || settings?.editorialLogoUrl || "/upmark-wordmark.png");
+        setLogoUrl(settings?.navbarLogoV3 || settings?.editorialLogoUrl || "https://pub-a71a6003788f4fc991bb79126b750fc0.r2.dev/uploads/e964a5b7-b0e4-40c4-9d06-c02c79401a2f-UpmarkLogoRGB-07Transparent.png");
         const savedDark = localStorage.getItem("upmark_admin_v3_dark") === "true";
         setDarkMode(savedDark);
       })

@@ -110,7 +110,7 @@ export function autoResponderTemplate(lead: LeadData): string {
           <!-- Header -->
           <tr>
             <td style="padding:40px 40px 24px; text-align:center;">
-              <img src="https://upmark.co/upmark-wordmark.png" alt="Upmark" width="140" height="140" style="display:block; margin:0 auto;" />
+              <img src="https://pub-a71a6003788f4fc991bb79126b750fc0.r2.dev/uploads/e964a5b7-b0e4-40c4-9d06-c02c79401a2f-UpmarkLogoRGB-07Transparent.png" alt="Upmark" width="140" height="140" style="display:block; margin:0 auto;" />
             </td>
           </tr>
           <!-- Body -->
@@ -162,7 +162,7 @@ export function autoResponderTemplate(lead: LeadData): string {
           <!-- Footer -->
           <tr>
             <td style="padding:24px 40px; background-color:rgba(0,0,0,0.2); text-align:center; border-top:1px solid rgba(255,255,255,0.05);">
-              <img src="https://upmark.co/upmark-wordmark.png" alt="Upmark" width="100" height="100" style="display:block; margin:0 auto;" />
+              <img src="https://pub-a71a6003788f4fc991bb79126b750fc0.r2.dev/uploads/e964a5b7-b0e4-40c4-9d06-c02c79401a2f-UpmarkLogoRGB-07Transparent.png" alt="Upmark" width="100" height="100" style="display:block; margin:0 auto;" />
               <p style="margin:0; font-size:12px; color:#94A3B8;">Integrated Marketing That Moves Markets</p>
             </td>
           </tr>

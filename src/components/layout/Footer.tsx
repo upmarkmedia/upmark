@@ -74,7 +74,7 @@ export const Footer = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-8 sm:mb-12">
           <div className="lg:col-span-1">
             <Link href="/" className="mb-4 sm:mb-6 inline-block">
-              <Image src={settings?.globalLogoUrl || "/upmark-wordmark.png"} alt="Upmark" width={200} height={200} className="h-12 sm:h-14 w-auto object-contain" />
+              <Image src={settings?.globalLogoUrl || "https://pub-a71a6003788f4fc991bb79126b750fc0.r2.dev/uploads/d44bf7f2-2d65-4235-ae70-bc175a9d183c-UpmarkLogoRGB-02Transparent.png"} alt="Upmark" width={200} height={200} className="h-12 sm:h-14 w-auto object-contain" />
             </Link>
             <p className="text-neutral-500 text-xs sm:text-sm leading-relaxed max-w-xs">
               {settings?.footerTagline || "Integrated marketing that moves markets."}

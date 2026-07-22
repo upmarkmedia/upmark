@@ -14,7 +14,7 @@ export const Navbar = () => {
   const [hidden, setHidden] = useState(false);
   const lastScrollY = useRef(0);
 
-  const [logoUrl, setLogoUrl] = useState("/upmark-wordmark.png");
+  const [logoUrl, setLogoUrl] = useState("https://pub-a71a6003788f4fc991bb79126b750fc0.r2.dev/uploads/e964a5b7-b0e4-40c4-9d06-c02c79401a2f-UpmarkLogoRGB-07Transparent.png");
   const [settingsLoaded, setSettingsLoaded] = useState(false);
   const pathname = usePathname();
 
@@ -22,7 +22,7 @@ export const Navbar = () => {
 
   useEffect(() => {
     getSiteSettings().then(data => {
-      setLogoUrl(data?.navbarLogoV3 || data?.editorialLogoUrl || "/upmark-wordmark.png");
+      setLogoUrl(data?.navbarLogoV3 || data?.editorialLogoUrl || "https://pub-a71a6003788f4fc991bb79126b750fc0.r2.dev/uploads/e964a5b7-b0e4-40c4-9d06-c02c79401a2f-UpmarkLogoRGB-07Transparent.png");
       if (data?.visibility) setVisibility(data.visibility as Record<string, boolean>);
     }).catch(console.error).finally(() => setSettingsLoaded(true));
   }, []);

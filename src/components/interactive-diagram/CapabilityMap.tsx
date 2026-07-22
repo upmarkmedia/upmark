@@ -13,11 +13,11 @@ export function CapabilityMap({ services = [] }: { services?: Service[] }) {
   const data = services.length > 0 ? services : [];
 
   const [activeId, setActiveId] = useState(data[0]?.id || "");
-  const [logoUrl, setLogoUrl] = useState("/upmark-wordmark.png");
+  const [logoUrl, setLogoUrl] = useState("https://pub-a71a6003788f4fc991bb79126b750fc0.r2.dev/uploads/e964a5b7-b0e4-40c4-9d06-c02c79401a2f-UpmarkLogoRGB-07Transparent.png");
 
   useEffect(() => {
     getSiteSettings().then(data => {
-      setLogoUrl(data?.navbarLogoV3 || data?.editorialLogoUrl || "/upmark-wordmark.png");
+      setLogoUrl(data?.navbarLogoV3 || data?.editorialLogoUrl || "https://pub-a71a6003788f4fc991bb79126b750fc0.r2.dev/uploads/e964a5b7-b0e4-40c4-9d06-c02c79401a2f-UpmarkLogoRGB-07Transparent.png");
     }).catch(console.error);
 
     const handleHashChange = () => {
